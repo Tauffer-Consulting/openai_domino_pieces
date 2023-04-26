@@ -1,0 +1,7 @@
+{
+    "name": "TextSummarizerPiece",
+    "description": "This Piece runs a text summarizer using OpenAI API.",
+    "dependency": {
+        "requirements_file": "requirements.txt"
+    }
+}
