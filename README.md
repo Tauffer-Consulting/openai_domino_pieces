@@ -1,2 +1,2 @@
-# [Pieces repository name]
-[Description of this Pieces repository]
+# Openai Domino Pieces
+Domino Pieces for OpenAI api operations.

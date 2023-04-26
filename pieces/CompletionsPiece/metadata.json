@@ -1,8 +1,8 @@
 {
-    "name": "ExampleComplexPiece",
-    "description": "This is an example of a complex Domino Piece",
+    "name": "CompletionsPiece",
+    "description": "This Piece uses the OpenAI API to generate text completions.",
     "dependency": {
-        "dockerfile": "Dockerfile_1"
+        "requirements_file": "requirements.txt"
     },
     "container_resources": {
         "requests": {
@@ -15,10 +15,10 @@
         }
     },
     "tags": [
-        "Example"
+        "OpenAI"
     ],
     "style": {
-        "node_label": "Complex Piece",
-        "icon_class_name": "fas fa-database"
+        "node_label": "OpenAI Completions",
+        "icon_class_name": "fa-regular fa-comment-dots"
     }
 }

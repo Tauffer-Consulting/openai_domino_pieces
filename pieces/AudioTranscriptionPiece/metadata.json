@@ -1,0 +1,24 @@
+{
+    "name": "AudioTranscriptionPiece",
+    "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
+    "dependency": {
+        "requirements_file": "requirements.txt"
+    },
+    "container_resources": {
+        "requests": {
+            "cpu": "100m",
+            "memory": "128Mi"
+        },
+        "limits": {
+            "cpu": "500m",
+            "memory": "512Mi"
+        }
+    },
+    "tags": [
+        "OpenAI"
+    ],
+    "style": {
+        "node_label": "OpenAI Audio Transcript",
+        "icon_class_name": "fa-solid fa-headset"
+    }
+}
