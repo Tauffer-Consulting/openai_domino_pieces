@@ -4,6 +4,8 @@ from typing import List
 import openai
 import tiktoken
 import asyncio
+
+
 class TextSummarizerPiece(BasePiece):
     
     prompt = """Write a summary of the given text while maintaining its original writing form.
