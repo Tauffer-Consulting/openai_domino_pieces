@@ -1,26 +1,26 @@
 {
-    "ExampleSimplePiece": {
-        "name": "ExampleSimplePiece",
+    "CompletionsPiece": {
+        "name": "CompletionsPiece",
         "dependency": {
             "dockerfile": null,
-            "requirements_file": "requirements_0.txt"
+            "requirements_file": "requirements.txt"
         },
         "tags": [
-            "Example"
+            "OpenAI"
         ],
         "style": {
-            "node_label": "Simple Piece",
+            "node_label": "OpenAI Completions",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-database",
+            "icon_class_name": "fa-regular fa-comment-dots",
             "iconStyle": {
                 "cursor": "pointer"
             }
         },
-        "description": "This is an example of a simple Domino Piece",
+        "description": "This Piece uses the OpenAI API to generate text completions.",
         "container_resources": {
             "requests": {
                 "cpu": "100m",
@@ -35,38 +35,48 @@
             "title": "InputModel",
             "type": "object",
             "properties": {
-                "distribution_name": {
-                    "description": "Name of the distribution to sample from",
+                "llm_model_name": {
+                    "description": "The name of the model to use. Options: ada, babbage, curie, davinci",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/DistributionType"
+                            "$ref": "#/definitions/LLMModelType"
                         }
                     ]
                 },
-                "distribution_mean": {
-                    "title": "Distribution Mean",
-                    "description": "Distribution mean",
-                    "type": "number"
+                "prompt": {
+                    "title": "Prompt",
+                    "description": "The prompt to use for the completion",
+                    "type": "string"
                 },
-                "distribution_sd": {
-                    "title": "Distribution Sd",
-                    "description": "Distribution standard deviation",
+                "max_tokens": {
+                    "title": "Max Tokens",
+                    "description": "The maximum number of tokens to generate in the completion.",
+                    "default": 16,
+                    "exclusiveMinimum": 0,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "What sampling temperature to use, between 0 and 2.",
                     "default": 1.0,
                     "exclusiveMinimum": 0.0,
+                    "maximum": 2.0,
                     "type": "number"
                 }
             },
             "required": [
-                "distribution_name",
-                "distribution_mean"
+                "llm_model_name",
+                "prompt"
             ],
             "definitions": {
-                "DistributionType": {
-                    "title": "DistributionType",
+                "LLMModelType": {
+                    "title": "LLMModelType",
                     "description": "An enumeration.",
                     "enum": [
-                        "gaussian",
-                        "poisson"
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
                     ],
                     "type": "string"
                 }
@@ -81,29 +91,244 @@
                     "description": "Output message to log",
                     "type": "string"
                 },
-                "sample_result": {
-                    "title": "Sample Result",
-                    "description": "The result of this Piece's processing",
+                "result_text": {
+                    "title": "Result Text",
+                    "description": "The result of the text completion.",
                     "type": "string"
+                },
+                "usage_total_tokens": {
+                    "title": "Usage Total Tokens",
+                    "description": "The total number of tokens used in the completion.",
+                    "type": "integer"
                 }
             },
             "required": [
                 "message",
-                "sample_result"
+                "result_text",
+                "usage_total_tokens"
             ]
         },
         "secrets_schema": {
             "title": "SecretsModel",
             "type": "object",
             "properties": {
-                "EXAMPLE_OPERATOR_SECRET_1": {
-                    "title": "Example Operator Secret 1",
-                    "description": "A secret necessary to run this Piece",
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "OpenAI API key",
                     "type": "string"
                 }
             },
             "required": [
-                "EXAMPLE_OPERATOR_SECRET_1"
+                "OPENAI_API_KEY"
+            ]
+        }
+    },
+    "TextSummarizerPiece": {
+        "name": "TextSummarizerPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [],
+        "style": {
+            "node_label": "Piece",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid fa-circle",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece runs a text summarizer using OpenAI API.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "Text Summarizer Piece",
+            "type": "object",
+            "properties": {
+                "prompt_template": {
+                    "title": "Prompt Template",
+                    "description": "Prompt template to use for summarization",
+                    "default": "Write a summary of the given text while maintaining its original writing form.\n\ntext:\n    \n{text}\n\nCONCISE SUMMARY:",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "description": "Text to summarize",
+                    "default": "",
+                    "type": "string"
+                },
+                "openai_model_name": {
+                    "title": "Openai Model Name",
+                    "description": "OpenAI model name to use for summarization",
+                    "default": "gpt-3.5-turbo",
+                    "type": "string"
+                },
+                "max_tokens": {
+                    "title": "Max Tokens",
+                    "description": "The maximum number of tokens to generate in the summary.",
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.2,
+                    "type": "number"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "Text Summarizer Piece",
+            "type": "object",
+            "properties": {
+                "summarized_text": {
+                    "title": "Summarized Text",
+                    "description": "summarized text",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "summarized_text"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "Text Summarizer Piece Secrets",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        }
+    },
+    "AudioTranscriptionPiece": {
+        "name": "AudioTranscriptionPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [
+            "OpenAI"
+        ],
+        "style": {
+            "node_label": "OpenAI Audio Transcript",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid fa-headset",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
+        "container_resources": {
+            "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+            },
+            "limits": {
+                "cpu": "500m",
+                "memory": "512Mi"
+            }
+        },
+        "input_schema": {
+            "title": "InputModel",
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "title": "File Path",
+                    "description": "The path to the text file to process.",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output fot the result text.",
+                    "default": "xcom",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "prompt": {
+                    "title": "Prompt",
+                    "description": "An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.",
+                    "type": "string"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "What sampling temperature to use, between 0 and 2.",
+                    "default": 0.0,
+                    "exclusiveMinimum": 0.0,
+                    "maximum": 2.0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "file_path",
+                "prompt"
+            ],
+            "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "xcom",
+                        "file"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "type": "object",
+            "properties": {
+                "message": {
+                    "title": "Message",
+                    "description": "Output message to log",
+                    "type": "string"
+                },
+                "transcription_result": {
+                    "title": "Transcription Result",
+                    "description": "The result transcription text.",
+                    "default": "",
+                    "type": "string"
+                },
+                "file_path": {
+                    "title": "File Path",
+                    "description": "The path to the results text file.",
+                    "default": "",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
             ]
         }
     }
