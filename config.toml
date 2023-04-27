@@ -1,7 +1,7 @@
 [repository]
 # The name of the github organization / person owner, e.g. tauffer-consulting.
 # Must be in lower-case letters
-REGISTRY_NAME = "Tauffer-Consulting"
+REGISTRY_NAME = "tauffer-consulting"
 
 # The name of this Pieces repository
 REPOSITORY_NAME = "openai_domino_pieces"
