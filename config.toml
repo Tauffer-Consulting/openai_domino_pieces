@@ -1,4 +1,11 @@
 [repository]
+# The name of the github organization / person owner, e.g. tauffer-consulting.
+# Must be in lower-case letters
 REGISTRY_NAME = "Tauffer-Consulting"
+
+# The name of this Pieces repository
 REPOSITORY_NAME = "openai_domino_pieces"
+
+# The version of this Pieces release
+# Attention: changing this will create a new release
 VERSION = "0.1.0"
