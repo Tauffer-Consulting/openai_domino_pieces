@@ -1,4 +1,4 @@
 [repository]
-REGISTRY_NAME = "Tauffer-Consulting"
+REGISTRY_NAME = "tauffer-consulting"
 REPOSITORY_NAME = "openai_domino_pieces"
 VERSION = "0.1.0"
