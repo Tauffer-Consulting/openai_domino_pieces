@@ -1,26 +1,27 @@
 from pydantic import BaseModel, Field
-
+from enum import Enum
+class LLMModelType(str, Enum):
+    gpt_3_5_turbo = "gpt-3.5-turbo"
+    gpt_4 = "gpt-4"
 class InputModel(BaseModel):
-    """Text Summarizer Piece"""
-
-    prompt_template: str = Field(
-        default="""Write a summary of the given text while maintaining its original writing form.
-
-text:
-    
-{text}
-
-CONCISE SUMMARY:""",
-        description="Prompt template to use for summarization"
-    )
-    
+    """Text Summarizer Piece"""    
     text: str = Field(
         default="",
         description="Text to summarize",
     )
 
-    openai_model_name: str = Field(
-        default="gpt-3.5-turbo",
+    chunk_size: int = Field(
+        default=1000,
+        description="Chunk size of each pre-summary chunk"
+    )
+
+    chunk_overlap: int = Field(
+        default=20,
+        description="Chunk overlap of each pre-summary chunk"
+    )
+
+    openai_model_name: LLMModelType = Field(
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for summarization"
     )
 
