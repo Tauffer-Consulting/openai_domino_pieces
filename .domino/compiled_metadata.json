@@ -148,27 +148,40 @@
             "description": "Text Summarizer Piece",
             "type": "object",
             "properties": {
-                "prompt_template": {
-                    "title": "Prompt Template",
-                    "description": "Prompt template to use for summarization",
-                    "default": "Write a summary of the given text while maintaining its original writing form.\n\ntext:\n    \n{text}\n\nCONCISE SUMMARY:",
-                    "type": "string"
-                },
                 "text": {
                     "title": "Text",
                     "description": "Text to summarize",
                     "default": "",
                     "type": "string"
                 },
-                "openai_model_name": {
-                    "title": "Openai Model Name",
+                "chunk_size": {
+                    "title": "Chunk Size",
+                    "description": "Chunk size, measured in tokens, of each pre-summary chunk",
+                    "default": 1000,
+                    "type": "integer"
+                },
+                "chunk_overlap_rate": {
+                    "title": "Chunk Overlap Rate",
+                    "description": "The percentage of overlap between each chunk",
+                    "default": 0.2,
+                    "type": "number"
+                },
+                "openai_model": {
                     "description": "OpenAI model name to use for summarization",
-                    "default": "gpt-3.5-turbo",
-                    "type": "string"
+                    "default": [
+                        "gpt-3.5-turbo",
+                        4000
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
                 },
                 "max_tokens": {
                     "title": "Max Tokens",
                     "description": "The maximum number of tokens to generate in the summary.",
+                    "default": 500,
                     "type": "integer"
                 },
                 "temperature": {
@@ -176,6 +189,24 @@
                     "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
                     "default": 0.2,
                     "type": "number"
+                }
+            },
+            "definitions": {
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        [
+                            "gpt-3.5-turbo",
+                            4000
+                        ],
+                        [
+                            "gpt-4",
+                            8000
+                        ]
+                    ],
+                    "type": "array",
+                    "items": {}
                 }
             }
         },
