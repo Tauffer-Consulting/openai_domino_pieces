@@ -12,7 +12,8 @@ class AudioTranscriptionPiece(BasePiece):
     
     def piece_function(self, input_model: InputModel):
         # Secrets are retrieved from ENV vars
-        openai_api_key = os.environ.get("OPENAI_API_KEY", None)
+        # openai_api_key = os.environ.get("OPENAI_API_KEY", None)
+        openai_api_key = self.secrets.OPENAI_API_KEY
         if openai_api_key is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
         openai.api_key = openai_api_key
@@ -63,7 +64,6 @@ class AudioTranscriptionPiece(BasePiece):
             output_file_path = f"{self.results_path}/transcription_result.txt"
             with open(output_file_path, "w") as f:
                 f.write(full_transcript)
-
 
         # Finally, results should return as an Output model
         return OutputModel(
