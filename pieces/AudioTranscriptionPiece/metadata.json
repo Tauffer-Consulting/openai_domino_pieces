@@ -2,7 +2,7 @@
     "name": "AudioTranscriptionPiece",
     "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
     "dependency": {
-        "requirements_file": "Dockerfile_AudioTranscription"
+        "dockerfile": "Dockerfile_AudioTranscription"
     },
     "container_resources": {
         "requests": {
