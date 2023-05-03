@@ -10,18 +10,20 @@
         ],
         "secrets": [
             "OPENAI_API_KEY"
-        ]
+        ],
+        "source_image": "local/openai_domino_pieces:0.1.2-group0"
     },
     "group1": {
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "Dockerfile_AudioTranscription"
+            "dockerfile": "Dockerfile_AudioTranscription",
+            "requirements_file": null
         },
         "pieces": [
             "AudioTranscriptionPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
-        ]
+        ],
+        "source_image": "local/openai_domino_pieces:0.1.2-group1"
     }
 }

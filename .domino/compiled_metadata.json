@@ -242,8 +242,8 @@
     "AudioTranscriptionPiece": {
         "name": "AudioTranscriptionPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "Dockerfile_AudioTranscription"
+            "dockerfile": "Dockerfile_AudioTranscription",
+            "requirements_file": null
         },
         "tags": [
             "OpenAI"
