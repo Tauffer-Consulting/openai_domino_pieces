@@ -11,8 +11,6 @@ class LLMModelType(Enum):
     @property
     def token_limits(self):
         return self.value[1]
-    class Config:
-        use_enum_values = True
 
 class InputModel(BaseModel):
     """Text Summarizer Piece"""    
