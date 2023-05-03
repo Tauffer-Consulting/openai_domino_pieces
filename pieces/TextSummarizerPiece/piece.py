@@ -62,6 +62,10 @@ CONCISE SUMMARY:"""
             text_token_count = len(encoding.encode(text=text))
 
         final_summary = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
+        
+        output_file_path = f"{self.results_path}/summary.txt"
+        with open(output_file_path, "w") as f:
+                f.write(final_summary[0])
 
         return OutputModel(
             summarized_text = final_summary[0]

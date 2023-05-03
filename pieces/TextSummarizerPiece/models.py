@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from enum import Enum
-class LLMModelType(tuple, Enum):
-    GPT_3_5_TURBO = ("gpt-3.5-turbo", 4000)
-    GPT_4 = ("gpt-4", 8000)
+class LLMModelType(Enum):
+    GPT_3_5_TURBO = ["gpt-3.5-turbo", 4000]
+    GPT_4 = ["gpt-4", 8000]
 
     @property
     def model_name(self):
@@ -11,12 +11,19 @@ class LLMModelType(tuple, Enum):
     @property
     def token_limits(self):
         return self.value[1]
+    class Config:
+        use_enum_values = True
 
 class InputModel(BaseModel):
     """Text Summarizer Piece"""    
     text: str = Field(
         default="",
         description="Text to summarize",
+    )
+    
+    openai_model: LLMModelType = Field(
+        default=LLMModelType.GPT_3_5_TURBO,
+        description="OpenAI model name to use for summarization"
     )
 
     chunk_size: int = Field(
@@ -27,11 +34,6 @@ class InputModel(BaseModel):
     chunk_overlap_rate: float = Field(
         default=0.2,
         description="The percentage of overlap between each chunk"
-    )
-
-    openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
-        description="OpenAI model name to use for summarization"
     )
 
     max_tokens: int = Field(
@@ -60,3 +62,10 @@ class SecretsModel(BaseModel):
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )
+
+if  __name__ == "__main__":
+    input_model = InputModel(
+        text="This is a test of the summarizer",
+        openai_model=['gpt-3.5-turbo', 4000]
+    )
+    print(input_model)
