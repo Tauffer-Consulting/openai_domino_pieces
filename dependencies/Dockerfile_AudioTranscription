@@ -1,8 +1,8 @@
-FROM taufferconsulting/flowui-airflow-pod:latest
+FROM ghcr.io/tauffer-consulting/domino-airflow-pod:latest
 
 # Install specific requirements
-RUN apt update
-RUN apt install ffmpeg -y
+RUN apt-get -y update
+RUN apt-get install -y ffmpeg
 
 # Need to copy pieces source code
 COPY config.toml domino/pieces_repository/
@@ -11,3 +11,4 @@ COPY .domino domino/pieces_repository/.domino
 
 # Install specific python dependencies
 RUN pip install openai
+RUN pip install pydub
