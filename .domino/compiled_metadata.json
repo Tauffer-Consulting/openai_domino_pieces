@@ -131,7 +131,7 @@
         },
         "tags": [],
         "style": {
-            "node_label": "Piece",
+            "node_label": "OpenAI Text Summarizer",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
@@ -156,10 +156,7 @@
                 },
                 "openai_model": {
                     "description": "OpenAI model name to use for summarization",
-                    "default": [
-                        "gpt-3.5-turbo",
-                        4000
-                    ],
+                    "default": "gpt-3.5-turbo",
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
@@ -178,8 +175,8 @@
                     "default": 0.2,
                     "type": "number"
                 },
-                "max_tokens": {
-                    "title": "Max Tokens",
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
                     "description": "The maximum number of tokens to generate in the summary.",
                     "default": 500,
                     "type": "integer"
@@ -196,15 +193,10 @@
                     "title": "LLMModelType",
                     "description": "An enumeration.",
                     "enum": [
-                        [
-                            "gpt-3.5-turbo",
-                            4000
-                        ],
-                        [
-                            "gpt-4",
-                            8000
-                        ]
-                    ]
+                        "gpt-3.5-turbo",
+                        "gpt-4"
+                    ],
+                    "type": "string"
                 }
             }
         },
