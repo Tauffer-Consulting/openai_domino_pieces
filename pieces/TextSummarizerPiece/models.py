@@ -1,16 +1,8 @@
 from pydantic import BaseModel, Field
 from enum import Enum
-class LLMModelType(Enum):
-    GPT_3_5_TURBO = ["gpt-3.5-turbo", 4000]
-    GPT_4 = ["gpt-4", 8000]
-
-    @property
-    def model_name(self):
-        return self.value[0]
-
-    @property
-    def token_limits(self):
-        return self.value[1]
+class LLMModelType(str, Enum):
+    GPT_3_5_TURBO = "gpt-3.5-turbo"
+    GPT_4 = "gpt-4"
 
 class InputModel(BaseModel):
     """Text Summarizer Piece"""    
@@ -34,7 +26,7 @@ class InputModel(BaseModel):
         description="The percentage of overlap between each chunk"
     )
 
-    max_tokens: int = Field(
+    completion_max_tokens: int = Field(
         default=500,
         description="The maximum number of tokens to generate in the summary."
     )

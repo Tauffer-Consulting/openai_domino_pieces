@@ -3,5 +3,9 @@
     "description": "This Piece runs a text summarizer using OpenAI API.",
     "dependency": {
         "requirements_file": "requirements.txt"
+    },
+
+    "style": {
+        "node_label": "OpenAI Text Summarizer"
     }
 }

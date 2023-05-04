@@ -18,12 +18,12 @@ CONCISE SUMMARY:"""
     
     async def chat_completion_method(self, input_model: InputModel, text: str):
         response = openai.ChatCompletion.create(
-            model = input_model.openai_model.model_name,
+            model = input_model.openai_model,
             messages = [
                 {"role": "user", "content": text}
             ],
             temperature = input_model.temperature,
-            max_tokens = input_model.max_tokens,
+            max_tokens = input_model.completion_max_tokens,
         )
 
         return response['choices'][0]['message']['content']
@@ -33,14 +33,14 @@ CONCISE SUMMARY:"""
         return await asyncio.gather(*tasks)
     
     def create_chunks_with_prompt(self, input_model: InputModel, text: str):
-        encoding = tiktoken.encoding_for_model(input_model.openai_model.model_name)
+        encoding = tiktoken.encoding_for_model(input_model.openai_model)
         text_chunk_size = input_model.chunk_size - len(encoding.encode(text=self.prompt))
-        full_text_tokens = encoding.encode(text=text)
+        total_text_tokens = encoding.encode(text=text)
         chunk_overlap = round(input_model.chunk_overlap_rate * text_chunk_size)
         text_chunks_with_prompt = []
-        for i in range(0, len(full_text_tokens), text_chunk_size):
+        for i in range(0, len(total_text_tokens), text_chunk_size):
             idx_chunk_start = [i - chunk_overlap if i>0 else 0][0]
-            decoded_text_chunk = encoding.decode(full_text_tokens[idx_chunk_start:i+text_chunk_size])
+            decoded_text_chunk = encoding.decode(total_text_tokens[idx_chunk_start:i+text_chunk_size])
             chunk_with_prompt = self.prompt.format(text=decoded_text_chunk) 
             text_chunks_with_prompt.append(chunk_with_prompt)
         return text_chunks_with_prompt
@@ -50,12 +50,12 @@ CONCISE SUMMARY:"""
         openai.api_key = self.secrets.OPENAI_API_KEY
         loop = asyncio.new_event_loop()
 
-        encoding = tiktoken.encoding_for_model(input_model.openai_model.model_name)
-        token_limits = input_model.openai_model.token_limits
-        completion_max_token = input_model.max_tokens
+        encoding = tiktoken.encoding_for_model(input_model.openai_model)
+        token_limits = (4000 if input_model.openai_model == "gpt-3.5-turbo" else 8000)
+        completion_max_tokens = input_model.completion_max_tokens
         text_token_count = token_limits
         text = input_model.text
-        while text_token_count > (token_limits - completion_max_token):
+        while text_token_count > (token_limits - completion_max_tokens):
             texts_chunks_with_prompt = self.create_chunks_with_prompt(input_model=input_model, text=text)
             summaries_chunks = loop.run_until_complete(self.agenerate_chat_completion(input_model, texts_chunks_with_prompt))
             text = " ".join(summaries_chunks)
