@@ -60,7 +60,7 @@ class AudioTranscriptionPiece(BasePiece):
         else:
             self.logger.info("Transcription complete successfully. Result returned as file.")
             msg = f"Transcription complete successfully. Result returned as file."
-            transcription_result = ""
+            transcription_result = full_transcript
             output_file_path = f"{self.results_path}/transcription_result.txt"
             with open(output_file_path, "w") as f:
                 f.write(full_transcript)
