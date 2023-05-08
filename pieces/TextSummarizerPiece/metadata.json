@@ -6,6 +6,7 @@
     },
 
     "style": {
-        "node_label": "OpenAI Text Summarizer"
+        "node_label": "OpenAI Text Summarizer",
+        "icon_class_name": "fas fa-file-contract"
     }
 }
