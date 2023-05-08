@@ -11,7 +11,7 @@
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.4-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.5-group0"
     },
     "group1": {
         "dependency": {
@@ -24,6 +24,6 @@
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.4-group1"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.5-group1"
     }
 }

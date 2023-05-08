@@ -15,7 +15,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-regular fa-comment-dots",
+            "icon_class_name": "fas fa-comment-dots",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -137,7 +137,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-solid fa-circle",
+            "icon_class_name": "fas fa-file-contract",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -247,7 +247,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-solid fa-headset",
+            "icon_class_name": "fas fa-headset",
             "iconStyle": {
                 "cursor": "pointer"
             }
