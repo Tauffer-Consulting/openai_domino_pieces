@@ -12,7 +12,7 @@ class InputModel(BaseModel):
         description='The path to the text file to process.',
     )
     output_type: OutputTypeType = Field(
-        description='The type of output fot the result text.',
+        description='The type of output fot the result text',
         default=OutputTypeType.xcom
     )
     temperature: float = Field(
