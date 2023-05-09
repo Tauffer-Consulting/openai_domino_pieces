@@ -281,23 +281,17 @@
                         }
                     ]
                 },
-                "prompt": {
-                    "title": "Prompt",
-                    "description": "An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.",
-                    "type": "string"
-                },
                 "temperature": {
                     "title": "Temperature",
-                    "description": "What sampling temperature to use, between 0 and 2.",
-                    "default": 0.0,
+                    "description": "What sampling temperature to use, between 0 and 1",
+                    "default": 0.1,
                     "exclusiveMinimum": 0.0,
-                    "maximum": 2.0,
+                    "maximum": 1,
                     "type": "number"
                 }
             },
             "required": [
-                "file_path",
-                "prompt"
+                "file_path"
             ],
             "definitions": {
                 "OutputTypeType": {
