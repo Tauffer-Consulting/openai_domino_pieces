@@ -54,7 +54,10 @@ CONCISE SUMMARY:"""
         token_limits = (4000 if input_model.openai_model == "gpt-3.5-turbo" else 8000)
         completion_max_tokens = input_model.completion_max_tokens
         text_token_count = token_limits
-        text = input_model.text
+        if input_model.text_file_path:
+             with open(input_model.text_file_path, "r") as f:
+                text = f.read()
+        else: text = input_model.text
         while text_token_count > (token_limits - completion_max_tokens):
             texts_chunks_with_prompt = self.create_chunks_with_prompt(input_model=input_model, text=text)
             summaries_chunks = loop.run_until_complete(self.agenerate_chat_completion(input_model, texts_chunks_with_prompt))
@@ -62,14 +65,13 @@ CONCISE SUMMARY:"""
             text_token_count = len(encoding.encode(text=text))
 
         final_summary = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
-        self.logger.info("final_summary")
-        self.logger.info(final_summary)
         
-        output_file_path = f"{self.results_path}/summary.txt"
+        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
                 f.write(final_summary[0])
 
         return OutputModel(
-            summarized_text = final_summary[0]
+            summarized_text=final_summary[0],
+            summarized_text_file_path=output_file_path
         )
 

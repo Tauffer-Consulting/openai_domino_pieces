@@ -10,7 +10,17 @@ class InputModel(BaseModel):
         default="",
         description="Text to summarize",
     )
-    
+
+    text_file_path: str = Field(
+        default=None,
+        description="Path to text file to summarize"
+    )
+
+    output_file_name: str = Field(
+        default="summarized_text.txt",
+        description="Name of output file"
+    )
+
     openai_model: LLMModelType = Field(
         default=LLMModelType.GPT_3_5_TURBO,
         description="OpenAI model name to use for summarization"
@@ -42,6 +52,10 @@ class OutputModel(BaseModel):
 
     summarized_text: str = Field(
         description="summarized text"
+    )
+
+    summarized_text_file_path: str = Field(
+        description="Path to summarized text file"
     )
 
 class SecretsModel(BaseModel):
