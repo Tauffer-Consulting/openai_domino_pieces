@@ -154,6 +154,17 @@
                     "default": "",
                     "type": "string"
                 },
+                "text_file_path": {
+                    "title": "Text File Path",
+                    "description": "Path to text file to summarize",
+                    "type": "string"
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "Name of output file",
+                    "default": "summarized_text.txt",
+                    "type": "string"
+                },
                 "openai_model": {
                     "description": "OpenAI model name to use for summarization",
                     "default": "gpt-3.5-turbo",
@@ -209,10 +220,16 @@
                     "title": "Summarized Text",
                     "description": "summarized text",
                     "type": "string"
+                },
+                "summarized_text_file_path": {
+                    "title": "Summarized Text File Path",
+                    "description": "Path to summarized text file",
+                    "type": "string"
                 }
             },
             "required": [
-                "summarized_text"
+                "summarized_text",
+                "summarized_text_file_path"
             ]
         },
         "secrets_schema": {
@@ -273,7 +290,7 @@
                     "type": "string"
                 },
                 "output_type": {
-                    "description": "The type of output fot the result text.",
+                    "description": "The type of output fot the result text",
                     "default": "xcom",
                     "allOf": [
                         {
