@@ -39,7 +39,6 @@ class AudioTranscriptionPiece(BasePiece):
                 transcript = openai.Audio.transcribe(
                     model="whisper-1", 
                     file=audio_file,
-                    prompt=input_model.prompt,
                     temperature=input_model.temperature
                 ).to_dict()["text"]
                 full_transcript += " " + transcript

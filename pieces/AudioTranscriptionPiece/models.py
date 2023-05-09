@@ -15,14 +15,11 @@ class InputModel(BaseModel):
         description='The type of output fot the result text.',
         default=OutputTypeType.xcom
     )
-    prompt: str = Field(
-        description="An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language."
-    )
     temperature: float = Field(
-        description="What sampling temperature to use, between 0 and 2.",
-        default=0.,
+        description="What sampling temperature to use, between 0 and 1",
+        default=0.1,
         gt=0.,
-        le=2.
+        le=1
     )
 
 
