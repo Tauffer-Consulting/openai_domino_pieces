@@ -5,13 +5,16 @@
             "requirements_file": "requirements.txt"
         },
         "pieces": [
+            "PromptForImageGeneratorPiece",
             "CompletionsPiece",
-            "TextSummarizerPiece"
+            "TextSummarizerPiece",
+            "ImageGeneratorPiece",
+            "StorytellerCharacterPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.5-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.6-group0"
     },
     "group1": {
         "dependency": {
@@ -24,6 +27,6 @@
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.5-group1"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.6-group1"
     }
 }

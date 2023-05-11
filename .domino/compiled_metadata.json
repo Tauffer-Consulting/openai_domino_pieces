@@ -1,4 +1,105 @@
 {
+    "PromptForImageGeneratorPiece": {
+        "name": "PromptForImageGeneratorPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [],
+        "style": {
+            "node_label": "OpenAI DALL-E Image Generator for stories",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-file-contract",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "MyNewPiece Input",
+            "type": "object",
+            "properties": {
+                "context": {
+                    "title": "Context",
+                    "description": "The context to generate an image from",
+                    "type": "string"
+                },
+                "openai_model": {
+                    "description": "OpenAI model to bring your character to life",
+                    "default": "gpt-3.5-turbo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
+                },
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
+                    "description": "The maximum number of tokens to generate the new history.",
+                    "default": 500,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.7,
+                    "type": "number"
+                }
+            },
+            "definitions": {
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "gpt-4"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "MyNewPiece Output",
+            "type": "object",
+            "properties": {
+                "generated_prompt": {
+                    "title": "Generated Prompt",
+                    "description": "The generated prompt to pass to an image generator AI",
+                    "type": "string"
+                },
+                "prompt_file_path": {
+                    "title": "Prompt File Path",
+                    "description": "The path to the generated prompt, in .txt format",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "generated_prompt",
+                "prompt_file_path"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "MyNewPiece Secrets",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        }
+    },
     "CompletionsPiece": {
         "name": "CompletionsPiece",
         "dependency": {
@@ -248,6 +349,87 @@
             ]
         }
     },
+    "ImageGeneratorPiece": {
+        "name": "ImageGeneratorPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [],
+        "style": {
+            "node_label": "OpenAI DALL-E Image Generator",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-file-contract",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "MyNewPiece Input",
+            "type": "object",
+            "properties": {
+                "prompt": {
+                    "title": "Prompt",
+                    "description": "A text description of the desired image",
+                    "type": "string"
+                },
+                "size": {
+                    "title": "Size",
+                    "description": "The size of the generated images",
+                    "default": "1024x1024",
+                    "type": "string"
+                },
+                "response_format": {
+                    "title": "Response Format",
+                    "description": "The format in which the generated images are returned",
+                    "default": "url",
+                    "type": "string"
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "The name of the generated image, without the extension",
+                    "default": "output_image",
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "MyNewPiece Output",
+            "type": "object",
+            "properties": {
+                "output_file_path": {
+                    "title": "Output File Path",
+                    "description": "Path to the generated image",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "output_file_path"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "MyNewPiece Secrets",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        }
+    },
     "AudioTranscriptionPiece": {
         "name": "AudioTranscriptionPiece",
         "dependency": {
@@ -356,6 +538,127 @@
                 "OPENAI_API_KEY": {
                     "title": "Openai Api Key",
                     "description": "OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        }
+    },
+    "StorytellerCharacterPiece": {
+        "name": "StorytellerCharacterPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [],
+        "style": {
+            "node_label": "Storyteller Character",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-file-contract",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece assumes a storyteller character based on the characteristics determined by you.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "MyNewPiece Input",
+            "type": "object",
+            "properties": {
+                "character_name": {
+                    "title": "Character Name",
+                    "description": "Your character's name",
+                    "type": "string"
+                },
+                "character_description": {
+                    "title": "Character Description",
+                    "description": "Your character's description",
+                    "type": "string"
+                },
+                "previous_stories_file_path": {
+                    "title": "Previous Stories File Path",
+                    "description": "Path to your character's previous stories. Must be a .txt file",
+                    "type": "string"
+                },
+                "openai_model": {
+                    "description": "OpenAI model to bring your character to life",
+                    "default": "gpt-3.5-turbo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
+                },
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
+                    "description": "The maximum number of tokens to generate the new history.",
+                    "default": 500,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.5,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "character_name",
+                "character_description"
+            ],
+            "definitions": {
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "gpt-4"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "MyNewPiece Output",
+            "type": "object",
+            "properties": {
+                "new_story": {
+                    "title": "New Story",
+                    "description": "Your new story",
+                    "type": "string"
+                },
+                "new_story_with_character_info": {
+                    "title": "New Story With Character Info",
+                    "description": "Your new story with your character's name and description",
+                    "type": "string"
+                },
+                "stories_file_path": {
+                    "title": "Stories File Path",
+                    "description": "Path to your stories including the new one.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "new_story",
+                "new_story_with_character_info",
+                "stories_file_path"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "MyNewPiece Secrets",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
                     "type": "string"
                 }
             },
