@@ -1,0 +1,12 @@
+{
+    "name": "PromptForImageGeneratorPiece",
+    "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
+    "dependency": {
+        "requirements_file": "requirements.txt"
+    },
+
+    "style": {
+        "node_label": "OpenAI DALL-E Image Generator for stories",
+        "icon_class_name": "fas fa-file-contract"
+    }
+}
