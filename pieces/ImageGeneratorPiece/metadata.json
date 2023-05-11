@@ -6,7 +6,7 @@
     },
 
     "style": {
-        "node_label": "OpenAI DALL-E Image Generator",
+        "node_label": "DALL-E Image Generator",
         "icon_class_name": "fas fa-file-contract"
     }
 }
