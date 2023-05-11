@@ -1,0 +1,12 @@
+{
+    "name": "ImageGeneratorPiece",
+    "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
+    "dependency": {
+        "requirements_file": "requirements.txt"
+    },
+
+    "style": {
+        "node_label": "OpenAI DALL-E Image Generator",
+        "icon_class_name": "fas fa-file-contract"
+    }
+}
