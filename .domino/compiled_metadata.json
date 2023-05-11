@@ -7,7 +7,7 @@
         },
         "tags": [],
         "style": {
-            "node_label": "OpenAI DALL-E Image Generator for stories",
+            "node_label": "Prompt Creator for Image Generator AI",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
@@ -357,7 +357,7 @@
         },
         "tags": [],
         "style": {
-            "node_label": "OpenAI DALL-E Image Generator",
+            "node_label": "DALL-E Image Generator",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
