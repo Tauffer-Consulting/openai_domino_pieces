@@ -7,6 +7,6 @@
 
     "style": {
         "node_label": "OpenAI Text Summarizer",
-        "icon_class_name": "fas fa-file-contract"
+        "icon_class_name": "fas fa-align-right"
     }
 }
