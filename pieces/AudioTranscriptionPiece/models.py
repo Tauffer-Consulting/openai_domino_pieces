@@ -1,19 +1,28 @@
 from pydantic import BaseModel, Field, FilePath
 from enum import Enum
-
+from typing import Union
 
 class OutputTypeType(str, Enum):
-    xcom = "xcom"
+    """
+    Output type for the result text
+    """
+
+    string = "string"
     file = "file"
 
 
 class InputModel(BaseModel):
-    file_path: str = Field(
-        description='The path to the text file to process.',
+    """
+    Audio Transcript input model
+    """
+
+    audio_file_path: str = Field(
+        ...,
+        description='The path to the audio file to process.',
     )
     output_type: OutputTypeType = Field(
-        description='The type of output fot the result text',
-        default=OutputTypeType.xcom
+        default=OutputTypeType.string,
+        description='The type of output fot the result text'
     )
     temperature: float = Field(
         description="What sampling temperature to use, between 0 and 1",
@@ -24,20 +33,23 @@ class InputModel(BaseModel):
 
 
 class OutputModel(BaseModel):
+    """
+    Audio Transcript output model
+    """
+
     message: str = Field(
         description="Output message to log"
     )
-    transcription_result: str = Field(
-        default="",
+    transcription_result: Union[str, FilePath] = Field(
         description="The result transcription text."
-    )
-    file_path: FilePath = Field(
-        default="",
-        description="The path to the results text file."
     )
 
 
 class SecretsModel(BaseModel):
+    """
+    Audio Transcript secret model
+    """
+    
     OPENAI_API_KEY: str = Field(
         description="OpenAI API key"
     )

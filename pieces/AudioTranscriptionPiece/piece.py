@@ -11,15 +11,13 @@ class AudioTranscriptionPiece(BasePiece):
     """
     
     def piece_function(self, input_model: InputModel):
-        # Secrets are retrieved from ENV vars
-        # openai_api_key = os.environ.get("OPENAI_API_KEY", None)
         openai_api_key = self.secrets.OPENAI_API_KEY
         if openai_api_key is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
         openai.api_key = openai_api_key
 
         # Input arguments are retrieved from the Input model object
-        file_path = input_model.file_path
+        file_path = input_model.audio_file_path
         
         print("Making OpenAI audio transcription request...")
         try:
@@ -51,16 +49,20 @@ class AudioTranscriptionPiece(BasePiece):
             raise Exception(f"Transcription task failed: {e}")
         
         # Prepare output based on the output type
-        if input_model.output_type == "xcom":
-            self.logger.info("Transcription complete successfully. Result returned as XCom.")
-            msg = f"Transcription complete successfully. Result returned as XCom."
+        if input_model.output_type == "string":
+            self.logger.info("Transcription complete successfully. Result returned as string.")
+            msg = f"Transcription complete successfully. Result returned as string."
             transcription_result = full_transcript
-            output_file_path = ""
-        else:
-            self.logger.info("Transcription complete successfully. Result returned as file.")
+        else:          
+            #getting the file name without the extension
+            file_name, ext = os.path.splitext(os.path.basename(input_model.audio_file_path)) 
+            #getting the directory path
+            dir_path = os.path.dirname(input_model.audio_file_path) 
+
+            output_file_path = f"{dir_path}/{file_name}_transcription_result.txt"
+            self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
             msg = f"Transcription complete successfully. Result returned as file."
-            transcription_result = ""
-            output_file_path = f"{self.results_path}/transcription_result.txt"
+            transcription_result = output_file_path
             with open(output_file_path, "w") as f:
                 f.write(full_transcript)
 
@@ -68,5 +70,4 @@ class AudioTranscriptionPiece(BasePiece):
         return OutputModel(
             message=msg,
             transcription_result=transcription_result,
-            file_path=output_file_path
         )
