@@ -7,6 +7,6 @@
 
     "style": {
         "node_label": "DALL-E Image Generator",
-        "icon_class_name": "fas fa-file-contract"
+        "icon_class_name": "fas fa-picture-o"
     }
 }

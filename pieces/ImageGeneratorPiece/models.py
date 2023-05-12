@@ -7,29 +7,30 @@ class ImageSize(str, Enum):
     low_quality = "256x256"
 
 class ResponseFormat(str, Enum):
-    url = "url",
-    b64_json = "b64_json"
+    url = "url"
+    image_png = "image_png"
+    base64_string = "base64_string"
 
 class InputModel(BaseModel):
     """MyNewPiece Input"""
     prompt: str = Field(
-        default=None,
+        ...,
         description="A text description of the desired image",
     )
 
-    size: str = Field(
+    size: ImageSize = Field(
         default=ImageSize.high_quality,
         description="The size of the generated images",
     )
 
-    response_format: str = Field(
+    response_format: ResponseFormat = Field(
         default=ResponseFormat.url,
-        description="The format in which the generated images are returned"
+        description="The format in which the generated image is returned"
     )
 
     output_file_name: str = Field(
-        default="output_image",
-        description="The name of the generated image, without the extension"
+        default="generated_image",
+        description="The name of the generated image, without the extension format"
     )
 
 class OutputModel(BaseModel):
