@@ -22,7 +22,7 @@ class InputModel(BaseModel):
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
-        description='The type of output fot the result text'
+        description='The type of output for the result text'
     )
     temperature: float = Field(
         description="What sampling temperature to use, between 0 and 1",
