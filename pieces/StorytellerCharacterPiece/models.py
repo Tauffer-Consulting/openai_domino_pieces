@@ -8,10 +8,12 @@ class LLMModelType(str, Enum):
 class InputModel(BaseModel):
     """MyNewPiece Input"""
     character_name: str = Field(
+        ...,
         description="Your character's name",
     )
 
     character_description: str = Field(
+        ...,
         description="Your character's description",
     )
 
@@ -32,7 +34,9 @@ class InputModel(BaseModel):
 
     temperature: float = Field(
         default=0.5,
-        description="Temperature of the model, between 0 (more precise) and 1 (more creative)"
+        description="Temperature of the model, between 0 (more precise) and 1 (more creative)",
+        gt=0,
+        lt=1
     )
 
 
