@@ -19,6 +19,6 @@
     ],
     "style": {
         "node_label": "OpenAI Completions",
-        "icon_class_name": "fas fa-comment-dots"
+        "icon_class_name": "fas fa-align-justify"
     }
 }
