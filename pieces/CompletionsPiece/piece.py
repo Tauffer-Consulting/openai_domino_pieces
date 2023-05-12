@@ -44,17 +44,17 @@ class CompletionsPiece(BasePiece):
         if input_model.output_type == "string":
             return OutputModel(
                 message=message,
-                completion_result=completion_result,
+                string_completion_result=completion_result,
                 usage_total_tokens=usage_total_tokens
             )
 
-        output_file_path = f"{self.results_path}/completion_result.txt"
+        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
             f.write(completion_result)
 
         # Finally, results should return as an Output model
         return OutputModel(
             message=message,
-            completion_result=output_file_path,
+            file_completion_result=output_file_path,
             usage_total_tokens=usage_total_tokens
         )

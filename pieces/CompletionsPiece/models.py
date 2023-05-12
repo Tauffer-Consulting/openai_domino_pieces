@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, FilePath
 from enum import Enum
-from typing import Union
 
 class OutputTypeType(str, Enum):
     """
@@ -40,6 +39,10 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description="The type of output to return"
     )
+    output_file_name: str = Field(
+        default="completion_result.txt",
+        description="It works only with Output Type = file. The name of the file to save the completion result"
+    )
     llm_model_name: LLMModelType = Field(
         default=LLMModelType.babbage,
         description="The name of the model to use. Options: ada, babbage, curie, davinci"
@@ -65,8 +68,13 @@ class OutputModel(BaseModel):
     message: str = Field(
         description="Output message to log"
     )
-    completion_result: Union[str, FilePath] = Field(
-        description="The result of the completion"
+    string_completion_result: str = Field(
+        default=None,
+        description="The result of the completion as a string"
+    )
+    file_completion_result: FilePath = Field(
+        default=None,
+        description="The result of the completion as a .txt file"
     )
     usage_total_tokens: int = Field(
         description="The total number of tokens used in the completion"
