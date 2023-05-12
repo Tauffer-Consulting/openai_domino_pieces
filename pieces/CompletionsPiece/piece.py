@@ -52,6 +52,8 @@ class CompletionsPiece(BasePiece):
         with open(output_file_path, "w") as f:
             f.write(completion_result)
 
+        self.logger.info(f"Completion result saved at: {output_file_path}")
+
         # Finally, results should return as an Output model
         return OutputModel(
             message=message,
