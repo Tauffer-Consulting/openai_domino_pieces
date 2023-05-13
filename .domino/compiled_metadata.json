@@ -13,7 +13,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-file-contract",
+            "icon_class_name": "fas fa-terminal",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -21,12 +21,17 @@
         "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
         "input_schema": {
             "title": "InputModel",
-            "description": "MyNewPiece Input",
+            "description": "Prompt For Image Generator Piece Input",
             "type": "object",
             "properties": {
                 "context": {
                     "title": "Context",
                     "description": "The context to generate an image from",
+                    "type": "string"
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "Use it only if you want to save the prompt result to a file in addition to the string output",
                     "type": "string"
                 },
                 "openai_model": {
@@ -40,21 +45,26 @@
                 },
                 "completion_max_tokens": {
                     "title": "Completion Max Tokens",
-                    "description": "The maximum number of tokens to generate the new history.",
-                    "default": 500,
+                    "description": "The maximum number of tokens to generate the prompt.",
+                    "default": 350,
                     "type": "integer"
                 },
                 "temperature": {
                     "title": "Temperature",
                     "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
                     "default": 0.7,
+                    "exclusiveMinimum": 0,
+                    "maximum": 1,
                     "type": "number"
                 }
             },
+            "required": [
+                "context"
+            ],
             "definitions": {
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "An enumeration.",
+                    "description": "OpenAI model types",
                     "enum": [
                         "gpt-3.5-turbo",
                         "gpt-4"
@@ -65,28 +75,27 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "MyNewPiece Output",
+            "description": "Prompt For Image Generator Piece Output",
             "type": "object",
             "properties": {
-                "generated_prompt": {
-                    "title": "Generated Prompt",
+                "generated_prompt_string": {
+                    "title": "Generated Prompt String",
                     "description": "The generated prompt to pass to an image generator AI",
                     "type": "string"
                 },
-                "prompt_file_path": {
-                    "title": "Prompt File Path",
+                "generated_prompt_file_path": {
+                    "title": "Generated Prompt File Path",
                     "description": "The path to the generated prompt, in .txt format",
                     "type": "string"
                 }
             },
             "required": [
-                "generated_prompt",
-                "prompt_file_path"
+                "generated_prompt_string"
             ]
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "MyNewPiece Secrets",
+            "description": "Prompt For Image Generator Piece Secrets",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -98,7 +107,8 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptForImageGeneratorPiece"
     },
     "CompletionsPiece": {
         "name": "CompletionsPiece",
@@ -116,7 +126,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-comment-dots",
+            "icon_class_name": "fas fa-align-justify",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -134,45 +144,71 @@
         },
         "input_schema": {
             "title": "InputModel",
+            "description": "Completions Piece input model",
             "type": "object",
             "properties": {
+                "prompt": {
+                    "title": "Prompt",
+                    "description": "The prompt to use for the completion",
+                    "type": "string"
+                },
+                "prompt_file_path": {
+                    "title": "Prompt File Path",
+                    "description": "Use only if not using prompt field. The path to a file containing the prompt to use for the completion. Must be .txt format",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output to return",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "It works only with Output Type = file. The name of the file to save the completion result",
+                    "default": "completion_result.txt",
+                    "type": "string"
+                },
                 "llm_model_name": {
                     "description": "The name of the model to use. Options: ada, babbage, curie, davinci",
+                    "default": "text-babbage-001",
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
                         }
                     ]
                 },
-                "prompt": {
-                    "title": "Prompt",
-                    "description": "The prompt to use for the completion",
-                    "type": "string"
-                },
                 "max_tokens": {
                     "title": "Max Tokens",
-                    "description": "The maximum number of tokens to generate in the completion.",
-                    "default": 16,
+                    "description": "The maximum number of tokens to generate in the completion",
                     "exclusiveMinimum": 0,
                     "type": "integer"
                 },
                 "temperature": {
                     "title": "Temperature",
-                    "description": "What sampling temperature to use, between 0 and 2.",
+                    "description": "What sampling temperature to use, between 0 and 2",
                     "default": 1.0,
                     "exclusiveMinimum": 0.0,
                     "maximum": 2.0,
                     "type": "number"
                 }
             },
-            "required": [
-                "llm_model_name",
-                "prompt"
-            ],
             "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the completion result",
+                    "enum": [
+                        "string",
+                        "file"
+                    ],
+                    "type": "string"
+                },
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "An enumeration.",
+                    "description": "The name of the model to use.\nOptions: ada, babbage, curie, davinci",
                     "enum": [
                         "text-ada-001",
                         "text-babbage-001",
@@ -185,6 +221,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
+            "description": "Completions Piece output model",
             "type": "object",
             "properties": {
                 "message": {
@@ -192,25 +229,31 @@
                     "description": "Output message to log",
                     "type": "string"
                 },
-                "result_text": {
-                    "title": "Result Text",
-                    "description": "The result of the text completion.",
+                "string_completion_result": {
+                    "title": "String Completion Result",
+                    "description": "The result of the completion as a string",
+                    "type": "string"
+                },
+                "file_completion_result": {
+                    "title": "File Completion Result",
+                    "description": "The result of the completion as a .txt file",
+                    "format": "file-path",
                     "type": "string"
                 },
                 "usage_total_tokens": {
                     "title": "Usage Total Tokens",
-                    "description": "The total number of tokens used in the completion.",
+                    "description": "The total number of tokens used in the completion",
                     "type": "integer"
                 }
             },
             "required": [
                 "message",
-                "result_text",
                 "usage_total_tokens"
             ]
         },
         "secrets_schema": {
             "title": "SecretsModel",
+            "description": "Completions Piece secret model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -222,7 +265,8 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/CompletionsPiece"
     },
     "TextSummarizerPiece": {
         "name": "TextSummarizerPiece",
@@ -347,7 +391,8 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextSummarizerPiece"
     },
     "ImageGeneratorPiece": {
         "name": "ImageGeneratorPiece",
@@ -363,7 +408,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-file-contract",
+            "icon_class_name": "fas fa-picture-o",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -380,21 +425,52 @@
                     "type": "string"
                 },
                 "size": {
-                    "title": "Size",
                     "description": "The size of the generated images",
                     "default": "1024x1024",
-                    "type": "string"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ImageSize"
+                        }
+                    ]
                 },
                 "response_format": {
-                    "title": "Response Format",
-                    "description": "The format in which the generated images are returned",
+                    "description": "The format in which the generated image is returned",
                     "default": "url",
-                    "type": "string"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ResponseFormat"
+                        }
+                    ]
                 },
                 "output_file_name": {
                     "title": "Output File Name",
-                    "description": "The name of the generated image, without the extension",
-                    "default": "output_image",
+                    "description": "The name of the generated image, without the extension format",
+                    "default": "generated_image",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "prompt"
+            ],
+            "definitions": {
+                "ImageSize": {
+                    "title": "ImageSize",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "1024x1024",
+                        "512x512",
+                        "256x256"
+                    ],
+                    "type": "string"
+                },
+                "ResponseFormat": {
+                    "title": "ResponseFormat",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "url",
+                        "image_png",
+                        "base64_string"
+                    ],
                     "type": "string"
                 }
             }
@@ -428,7 +504,8 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/ImageGeneratorPiece"
     },
     "AudioTranscriptionPiece": {
         "name": "AudioTranscriptionPiece",
@@ -464,16 +541,17 @@
         },
         "input_schema": {
             "title": "InputModel",
+            "description": "Audio Transcript input model",
             "type": "object",
             "properties": {
-                "file_path": {
-                    "title": "File Path",
-                    "description": "The path to the text file to process.",
+                "audio_file_path": {
+                    "title": "Audio File Path",
+                    "description": "The path to the audio file to process.",
                     "type": "string"
                 },
                 "output_type": {
-                    "description": "The type of output fot the result text",
-                    "default": "xcom",
+                    "description": "The type of output for the result text",
+                    "default": "string",
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -490,14 +568,14 @@
                 }
             },
             "required": [
-                "file_path"
+                "audio_file_path"
             ],
             "definitions": {
                 "OutputTypeType": {
                     "title": "OutputTypeType",
-                    "description": "An enumeration.",
+                    "description": "Output type for the result text",
                     "enum": [
-                        "xcom",
+                        "string",
                         "file"
                     ],
                     "type": "string"
@@ -506,6 +584,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
+            "description": "Audio Transcript output model",
             "type": "object",
             "properties": {
                 "message": {
@@ -516,23 +595,25 @@
                 "transcription_result": {
                     "title": "Transcription Result",
                     "description": "The result transcription text.",
-                    "default": "",
-                    "type": "string"
-                },
-                "file_path": {
-                    "title": "File Path",
-                    "description": "The path to the results text file.",
-                    "default": "",
-                    "format": "file-path",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "string",
+                            "format": "file-path"
+                        }
+                    ]
                 }
             },
             "required": [
-                "message"
+                "message",
+                "transcription_result"
             ]
         },
         "secrets_schema": {
             "title": "SecretsModel",
+            "description": "Audio Transcript secret model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -544,7 +625,8 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionPiece"
     },
     "StorytellerCharacterPiece": {
         "name": "StorytellerCharacterPiece",
@@ -665,6 +747,7 @@
             "required": [
                 "OPENAI_API_KEY"
             ]
-        }
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/StorytellerCharacterPiece"
     }
 }
