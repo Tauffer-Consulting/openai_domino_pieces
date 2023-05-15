@@ -1,0 +1,12 @@
+{
+    "name": "TextGeneratorPiece",
+    "description": "This Piece allows you to create a custom prompt with your own parameters and send it to OpenAI to generate text based on your prompt.",
+    "dependency": {
+        "requirements_file": "requirements.txt"
+    },
+    
+    "style": {
+        "node_label": "Text Generator",
+        "icon_class_name": "fas fa-pen-field"
+    }
+}
