@@ -29,6 +29,12 @@
                     "description": "The context to generate an image from",
                     "type": "string"
                 },
+                "art_style": {
+                    "title": "Art Style",
+                    "description": "The art style to generate an image from. Your imagination is the limit!",
+                    "default": "You know many art styles, so you always vary a lot on your suggestions!",
+                    "type": "string"
+                },
                 "output_file_name": {
                     "title": "Output File Name",
                     "description": "Use it only if you want to save the prompt result to a file in addition to the string output",
@@ -282,7 +288,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-file-contract",
+            "icon_class_name": "fas fa-align-right",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -296,12 +302,11 @@
                 "text": {
                     "title": "Text",
                     "description": "Text to summarize",
-                    "default": "",
                     "type": "string"
                 },
                 "text_file_path": {
                     "title": "Text File Path",
-                    "description": "Path to text file to summarize",
+                    "description": "Use it only if not using text field. File path to the text to summarize",
                     "type": "string"
                 },
                 "output_file_name": {
@@ -358,7 +363,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Text Summarizer Piece",
+            "description": "Text Summarizer Piece Output",
             "type": "object",
             "properties": {
                 "summarized_text": {
@@ -507,6 +512,133 @@
         },
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/ImageGeneratorPiece"
     },
+    "TextGeneratorPiece": {
+        "name": "TextGeneratorPiece",
+        "dependency": {
+            "dockerfile": null,
+            "requirements_file": "requirements.txt"
+        },
+        "tags": [],
+        "style": {
+            "node_label": "Text Generator",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-pen-field",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece allows you to create a custom prompt with your own arguments and send it to OpenAI to generate text based on your prompt.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "Text Generator Input",
+            "type": "object",
+            "properties": {
+                "template": {
+                    "title": "Template",
+                    "description": "Compose a prompt template using the { } notation to insert arguments into the prompt itself",
+                    "type": "string"
+                },
+                "prompt_args": {
+                    "title": "Prompt Args",
+                    "description": "List of arguments to insert into the prompt.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/InnerArgModel"
+                    }
+                },
+                "openai_model": {
+                    "description": "OpenAI model to bring your character to life",
+                    "default": "gpt-3.5-turbo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
+                },
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
+                    "description": "The maximum number of tokens to generate the text.",
+                    "default": 500,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.3,
+                    "exclusiveMinimum": 0,
+                    "exclusiveMaximum": 1,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "template"
+            ],
+            "definitions": {
+                "InnerArgModel": {
+                    "title": "InnerArgModel",
+                    "type": "object",
+                    "properties": {
+                        "arg_name": {
+                            "title": "Arg Name",
+                            "type": "string"
+                        },
+                        "arg_value": {
+                            "title": "Arg Value",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "arg_name",
+                        "arg_value"
+                    ]
+                },
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "gpt-4"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "Text Generator Output",
+            "type": "object",
+            "properties": {
+                "generated_text": {
+                    "title": "Generated Text",
+                    "description": "The generated text",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "generated_text"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "Text Generator Secrets",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextGeneratorPiece"
+    },
     "AudioTranscriptionPiece": {
         "name": "AudioTranscriptionPiece",
         "dependency": {
@@ -642,7 +774,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-file-contract",
+            "icon_class_name": "fas fa-thought-bubble",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -650,7 +782,7 @@
         "description": "This Piece assumes a storyteller character based on the characteristics determined by you.",
         "input_schema": {
             "title": "InputModel",
-            "description": "MyNewPiece Input",
+            "description": "Storyteller Character Input",
             "type": "object",
             "properties": {
                 "character_name": {
@@ -687,6 +819,8 @@
                     "title": "Temperature",
                     "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
                     "default": 0.5,
+                    "exclusiveMinimum": 0,
+                    "exclusiveMaximum": 1,
                     "type": "number"
                 }
             },
@@ -708,7 +842,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "MyNewPiece Output",
+            "description": "Storyteller Character Piece Output",
             "type": "object",
             "properties": {
                 "new_story": {
@@ -735,7 +869,7 @@
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "MyNewPiece Secrets",
+            "description": "Storyteller Character Piece Secrets",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
