@@ -6,16 +6,7 @@ import tiktoken
 import asyncio
 
 
-class TextSummarizerPiece(BasePiece):
-    
-    prompt = """Write a summary of the given text while maintaining its original writing form.
-
-text:
-    
-{text}
-
-CONCISE SUMMARY:"""
-    
+class TextSummarizerPiece(BasePiece):    
     async def chat_completion_method(self, input_model: InputModel, text: str):
         response = openai.ChatCompletion.create(
             model = input_model.openai_model,
@@ -47,6 +38,13 @@ CONCISE SUMMARY:"""
         
     
     def piece_function(self, input_model: InputModel):                
+        self.prompt = """Write a summary of the given text while maintaining its original writing form.
+
+text:
+    
+{text}
+
+CONCISE SUMMARY:"""
         openai.api_key = self.secrets.OPENAI_API_KEY
         loop = asyncio.new_event_loop()
 
@@ -58,17 +56,21 @@ CONCISE SUMMARY:"""
              with open(input_model.text_file_path, "r") as f:
                 text = f.read()
         else: text = input_model.text
+        self.logger.info(f"Loading text")
         while text_token_count > (token_limits - completion_max_tokens):
             texts_chunks_with_prompt = self.create_chunks_with_prompt(input_model=input_model, text=text)
             summaries_chunks = loop.run_until_complete(self.agenerate_chat_completion(input_model, texts_chunks_with_prompt))
             text = " ".join(summaries_chunks)
             text_token_count = len(encoding.encode(text=text))
 
+        self.logger.info(f"Summarizing text")
         final_summary = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
         
         output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
                 f.write(final_summary[0])
+        
+        self.logger.info(f"Saved final summary at {output_file_path}")
 
         return OutputModel(
             summarized_text=final_summary[0],

@@ -18,6 +18,10 @@ class InputModel(BaseModel):
         ...,
         description="The context to generate an image from",
     )
+    art_style: str = Field(
+        default="You know many art styles, so you always vary a lot on your suggestions!",
+        description="The art style to generate an image from. Your imagination is the limit!",
+    )
     output_file_name: str = Field(
         default=None,
         description="Use it only if you want to save the prompt result to a file in addition to the string output"
