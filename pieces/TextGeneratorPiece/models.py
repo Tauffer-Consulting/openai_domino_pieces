@@ -1,9 +1,14 @@
 from pydantic import BaseModel, Field
 from enum import Enum
+from typing import List
 
 class LLMModelType(str, Enum):
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_4 = "gpt-4"
+
+class InnerArgModel(BaseModel):
+    arg_name: str
+    arg_value: str
 
 class InputModel(BaseModel):
     """
@@ -12,12 +17,17 @@ class InputModel(BaseModel):
 
     template: str = Field(
         ...,
-        description="Compose a prompt template using the { } notation to insert parameters into the prompt itself",
+        description="Compose a prompt template using the { } notation to insert arguments into the prompt itself",
     )
-    prompt_params: dict = Field(
-        ...,
-        description="Parameters to insert into the prompt. Write as a python dictionary with the paramter name as the key and the parameter value as the value",
+    prompt_args: List[InnerArgModel] = Field(
+        default=None,
+        description="List of arguments to insert into the prompt.",
+
     )
+    # prompt_params: dict = Field(
+    #     ...,
+    #     description="Parameters to insert into the prompt. Write as a python dictionary with the paramter name as the key and the parameter value as the value",
+    # )
     openai_model: LLMModelType = Field(
         default=LLMModelType.GPT_3_5_TURBO,
         description="OpenAI model to bring your character to life"

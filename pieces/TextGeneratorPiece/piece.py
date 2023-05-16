@@ -18,8 +18,13 @@ class TextGeneratorPiece(BasePiece):
     def piece_function(self, input_model: InputModel):
         openai.api_key = self.secrets.OPENAI_API_KEY
         template = input_model.template
-        params = input_model.prompt_params
-        prompt = template.format(**params)
+        # params = input_model.prompt_params
+        prompt_args = input_model.prompt_args
+        dict_args = {}
+        for arg in prompt_args:
+            dict_args[arg.arg_name] = arg.arg_value
+        # prompt = template.format(**params)
+        prompt = template.format(**dict_args)
         response = self.openai_chat_completion(input_model.openai_model, prompt, input_model.temperature, input_model.completion_max_tokens)
 
         return OutputModel(
