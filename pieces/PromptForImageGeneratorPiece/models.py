@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field, FilePath
 from enum import Enum
+
+
 class OutputTypeType(str, Enum):
     """
     Output type
