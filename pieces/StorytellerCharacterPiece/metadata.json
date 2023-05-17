@@ -7,6 +7,6 @@
     
     "style": {
         "node_label": "Storyteller Character",
-        "icon_class_name": "far fa-sparkles"
+        "icon_class_name": "fas fa-feather-alt"
     }
 }
