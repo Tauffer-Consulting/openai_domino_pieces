@@ -7,6 +7,6 @@
     
     "style": {
         "node_label": "Text Generator",
-        "icon_class_name": "fas fa-pen-field"
+        "icon_class_name": "fas fa-i-cursor"
     }
 }
