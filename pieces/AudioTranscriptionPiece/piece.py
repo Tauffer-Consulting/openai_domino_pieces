@@ -61,7 +61,6 @@ class AudioTranscriptionPiece(BasePiece):
         with open(output_file_path, "w") as f:
             f.write(full_transcript)
 
-        # Finally, results should return as an Output model
         if input_model.output_type == "file":
             self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
             msg = f"Transcription complete successfully. Result returned as file."
