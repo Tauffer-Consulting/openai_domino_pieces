@@ -413,7 +413,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-picture-o",
+            "icon_class_name": "fas fa-image",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -526,7 +526,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-pen-field",
+            "icon_class_name": "fas fa-i-cursor",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -774,7 +774,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-thought-bubble",
+            "icon_class_name": "far fa-sparkles",
             "iconStyle": {
                 "cursor": "pointer"
             }
