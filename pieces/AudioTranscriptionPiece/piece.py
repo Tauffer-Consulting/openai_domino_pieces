@@ -52,22 +52,28 @@ class AudioTranscriptionPiece(BasePiece):
         if input_model.output_type == "string":
             self.logger.info("Transcription complete successfully. Result returned as string.")
             msg = f"Transcription complete successfully. Result returned as string."
-            transcription_result = full_transcript
-        else:          
-            #getting the file name without the extension
-            file_name, ext = os.path.splitext(os.path.basename(input_model.audio_file_path)) 
-            #getting the directory path
-            dir_path = os.path.dirname(input_model.audio_file_path) 
-
-            output_file_path = f"{dir_path}/{file_name}_transcription_result.txt"
-            self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
-            msg = f"Transcription complete successfully. Result returned as file."
-            transcription_result = output_file_path
-            with open(output_file_path, "w") as f:
-                f.write(full_transcript)
+            return OutputModel(
+                message=msg,
+                string_transcription_result=full_transcript
+            )
+                
+        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
+        with open(output_file_path, "w") as f:
+            f.write(full_transcript)
 
         # Finally, results should return as an Output model
+        if input_model.output_type == "file":
+            self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
+            msg = f"Transcription complete successfully. Result returned as file."
+            return OutputModel(
+                message=msg,
+                file_path_transcription_result=output_file_path
+            )
+
+        self.logger.info(f"Transcription complete successfully. Result returned as string and file in {output_file_path}")
+        msg = f"Transcription complete successfully. Result returned as string and file."
         return OutputModel(
             message=msg,
-            transcription_result=transcription_result,
+            string_transcription_result=full_transcript,
+            file_path_transcription_result=output_file_path
         )

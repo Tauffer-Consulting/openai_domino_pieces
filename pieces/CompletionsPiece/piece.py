@@ -42,6 +42,7 @@ class CompletionsPiece(BasePiece):
             raise Exception(f"Completion task failed: {e}")
         
         if input_model.output_type == "string":
+            self.logger.info(f"Completion result returned as a string")
             return OutputModel(
                 message=message,
                 string_completion_result=completion_result,
@@ -51,12 +52,19 @@ class CompletionsPiece(BasePiece):
         output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
             f.write(completion_result)
-
-        self.logger.info(f"Completion result saved at: {output_file_path}")
-
-        # Finally, results should return as an Output model
+        
+        if input_model.output_type == "file":
+            self.logger.info(f"Completion result saved at: {output_file_path}")
+            return OutputModel(
+                message=message,
+                file_completion_result=output_file_path,
+                usage_total_tokens=usage_total_tokens
+            )
+        
+        self.logger.info(f"Completion result returned as a string and file in: {output_file_path}")
         return OutputModel(
             message=message,
+            string_completion_result=completion_result,
             file_completion_result=output_file_path,
             usage_total_tokens=usage_total_tokens
         )

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
 
 class LLMModelType(str, Enum):
@@ -18,7 +18,7 @@ class InputModel(BaseModel):
         ...,
         description="Your character's description",
     )
-    previous_stories_file_path: str = Field(
+    previous_stories_file_path: FilePath = Field(
         default=None,
         description="Path to your character's previous stories. Must be a .txt file",
     )
@@ -49,7 +49,7 @@ class OutputModel(BaseModel):
     new_story_with_character_info: str = Field(
         description="Your new story with your character's name and description"
     )
-    stories_file_path: str = Field(
+    stories_file_path: FilePath = Field(
         description="Path to your stories including the new one."
     )
 

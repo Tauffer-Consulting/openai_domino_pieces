@@ -28,19 +28,26 @@ Now, create a prompt to help the image generator AI to create an image for this 
 
         openai.api_key = self.secrets.OPENAI_API_KEY
         prompt = template.format(art_style=input_model.art_style, context=input_model.context)
+        self.logger.info(f"Generating prompt")
         generated_prompt = self.openai_chat_completion(input_model, prompt)
 
-        if not input_model.output_file_name:
+        if input_model.output_type == "string":
+            self.logger.info("Returning prompt as a string")
             return OutputModel(
                 generated_prompt_string=generated_prompt,
             )
         
-        output_file_path = f"{self.results_path}/{input_model.output_file_name}.txt"
+        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
             f.write(generated_prompt)
+
+        if input_model.output_type == "file":
+            self.logger.info(f"Prompt file saved at: {output_file_path}")
+            return OutputModel(
+                generated_prompt_file_path=output_file_path
+            )
         
-        self.logger.info(f"Prompt file saved at: {output_file_path}")
-    
+        self.logger.info(f"Returning prompt as a string and file in: {output_file_path}")
         return OutputModel(
             generated_prompt_string=generated_prompt,
             generated_prompt_file_path=output_file_path

@@ -1,12 +1,25 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
 from typing import List
 
+class OutputTypeType(str, Enum):
+    """
+    Output type for the completion result
+    """
+    file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
 class LLMModelType(str, Enum):
+    """
+    OpenAI model type
+    """
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_4 = "gpt-4"
 
 class InnerArgModel(BaseModel):
+    """
+    Inner argument model to use in the prompt args
+    """
     arg_name: str
     arg_value: str
 
@@ -22,12 +35,15 @@ class InputModel(BaseModel):
     prompt_args: List[InnerArgModel] = Field(
         default=None,
         description="List of arguments to insert into the prompt.",
-
     )
-    # prompt_params: dict = Field(
-    #     ...,
-    #     description="Parameters to insert into the prompt. Write as a python dictionary with the paramter name as the key and the parameter value as the value",
-    # )
+    output_type: OutputTypeType = Field(
+        default=OutputTypeType.string,
+        description="The type of output to return"
+    )
+    output_file_name: str = Field(
+        default="generated_text.txt",
+        description="It works only with Output Type = file. The name of the file to save the generated text"
+    )
     openai_model: LLMModelType = Field(
         default=LLMModelType.GPT_3_5_TURBO,
         description="OpenAI model to bring your character to life"
@@ -49,8 +65,13 @@ class OutputModel(BaseModel):
     Text Generator Output
     """
 
-    generated_text: str = Field(
-        description="The generated text",
+    string_generated_text: str = Field(
+        default=None,
+        description="The generated text as a string"
+    )
+    file_path_generated_text: FilePath = Field(
+        default=None,
+        description="The generated text as a file path"
     )
 
 class SecretsModel(BaseModel):

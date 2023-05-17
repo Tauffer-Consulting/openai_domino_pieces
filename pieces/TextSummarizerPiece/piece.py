@@ -64,16 +64,28 @@ CONCISE SUMMARY:"""
             text_token_count = len(encoding.encode(text=text))
 
         self.logger.info(f"Summarizing text")
-        final_summary = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
+        response = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
+        final_summary = response[0]
+
+        if input_model.output_type == "string":
+            self.logger.info(f"Returning final summary as a string")
+            return OutputModel(
+            string_summarized_text=final_summary,
+            )
         
         output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
-                f.write(final_summary[0])
+                f.write(final_summary)
         
-        self.logger.info(f"Saved final summary at {output_file_path}")
-
+        if input_model.output_type == "file":
+            self.logger.info(f"Saved final summary at {output_file_path}")
+            return OutputModel(
+            file_path_summarized_text=output_file_path
+            )
+        
+        self.logger.info(f"Returning final summary as a string and file in: {output_file_path}")
         return OutputModel(
-            summarized_text=final_summary[0],
-            summarized_text_file_path=output_file_path
+            string_summarized_text=final_summary,
+            file_path_summarized_text=output_file_path
         )
 

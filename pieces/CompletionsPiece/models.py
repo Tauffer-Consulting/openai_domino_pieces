@@ -6,8 +6,9 @@ class OutputTypeType(str, Enum):
     Output type for the completion result
     """
 
-    string = "string"
     file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
 
 
 class LLMModelType(str, Enum):

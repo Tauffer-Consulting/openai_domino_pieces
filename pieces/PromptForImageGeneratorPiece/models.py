@@ -1,6 +1,13 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
+class OutputTypeType(str, Enum):
+    """
+    Output type
+    """
 
+    file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
 class LLMModelType(str, Enum):
     """
     OpenAI model types
@@ -22,9 +29,13 @@ class InputModel(BaseModel):
         default="You know many art styles, so you always vary a lot on your suggestions!",
         description="The art style to generate an image from. Your imagination is the limit!",
     )
+    output_type: OutputTypeType = Field(
+        default=OutputTypeType.string,
+        description="The type of output to return"
+    )
     output_file_name: str = Field(
-        default=None,
-        description="Use it only if you want to save the prompt result to a file in addition to the string output"
+        default="generated_prompt.txt",
+        description="It works only with Output Type = file. The name of the file to save the generated prompt"
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.GPT_3_5_TURBO,
@@ -49,7 +60,7 @@ class OutputModel(BaseModel):
     generated_prompt_string: str = Field(
         description="The generated prompt to pass to an image generator AI",
     )
-    generated_prompt_file_path: str = Field(
+    generated_prompt_file_path: FilePath = Field(
         default=None,
         description="The path to the generated prompt, in .txt format",
     )
