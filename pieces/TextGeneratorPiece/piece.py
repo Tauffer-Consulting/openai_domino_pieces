@@ -26,20 +26,20 @@ class TextGeneratorPiece(BasePiece):
         try:
             if openai_model in ["gpt-3.5-turbo", "gpt-4"]:
                 response = openai.ChatCompletion.create(
-                    model = openai_model,
-                    messages = [
+                    model=openai_model,
+                    messages=[
                         {"role": "user", "content": prompt}
                     ],
-                    temperature = temperature,
-                    max_tokens = completion_max_tokens,
+                    temperature=temperature,
+                    max_tokens=completion_max_tokens,
                 )
                 string_generated_text = response['choices'][0]['message']['content']
             else:
                 response = openai.Completion.create(
-                    model = openai_model,
-                    prompt = prompt,
-                    temperature = temperature,
-                    max_tokens = completion_max_tokens,
+                    model=openai_model,
+                    prompt=prompt,
+                    temperature=temperature,
+                    max_tokens=completion_max_tokens,
                 )
                 r_dict = response.to_dict_recursive()
                 string_generated_text = r_dict["choices"][0]["text"]
