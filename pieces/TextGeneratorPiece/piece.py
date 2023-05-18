@@ -7,7 +7,14 @@ class TextGeneratorPiece(BasePiece):
         
     def piece_function(self, input_model: InputModel):
         # OpenAI settings
+        if self.secrets.OPENAI_API_KEY is None:
+            raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
         openai.api_key = self.secrets.OPENAI_API_KEY
+
+        # Input arguments
+        openai_model = input_model.openai_model
+        completion_max_tokens = input_model.completion_max_tokens
+        temperature = input_model.temperature
         template = input_model.template
         dict_args = {}
         for arg in input_model.prompt_args:
@@ -15,16 +22,30 @@ class TextGeneratorPiece(BasePiece):
         prompt = template.format(**dict_args)
 
         # Generate text based on prompt
-        self.logger.info("Generating text...")
-        response = openai.ChatCompletion.create(
-            model = input_model.openai_model,
-            messages = [
-                {"role": "user", "content": prompt}
-            ],
-            temperature = input_model.temperature,
-            max_tokens = input_model.completion_max_tokens,
-        )
-        string_generated_text = response['choices'][0]['message']['content']
+        self.logger.info("Running OpenAI completion request...")
+        try:
+            if openai_model in ["gpt-3.5-turbo", "gpt-4"]:
+                response = openai.ChatCompletion.create(
+                    model = openai_model,
+                    messages = [
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature = temperature,
+                    max_tokens = completion_max_tokens,
+                )
+                string_generated_text = response['choices'][0]['message']['content']
+            else:
+                response = openai.Completion.create(
+                    model = openai_model,
+                    prompt = prompt,
+                    temperature = temperature,
+                    max_tokens = completion_max_tokens,
+                )
+                r_dict = response.to_dict_recursive()
+                string_generated_text = r_dict["choices"][0]["text"]
+        except Exception as e:
+            self.logger.info(f"\nCompletion task failed: {e}")
+            raise Exception(f"Completion task failed: {e}")
 
         # Format output
         self.logger.info("Text generated!")
