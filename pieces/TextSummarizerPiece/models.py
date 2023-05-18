@@ -44,7 +44,7 @@ class InputModel(BaseModel):
         description="Name of output file. It works only with Output Type = file"
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for summarization"
     )
     chunk_size: int = Field(

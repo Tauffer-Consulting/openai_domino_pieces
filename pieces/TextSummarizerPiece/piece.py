@@ -1,11 +1,19 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 from typing import List
+from enum import Enum
 import openai
 import tiktoken
 import asyncio
 
 
+class TokenLimit(int, Enum):
+    gpt_3_5_turbo = 4000
+    gpt_4 = 8000
+    ada = 2000
+    babbage = 2000
+    curie = 2000
+    davinci = 2000
 class TextSummarizerPiece(BasePiece):  
 
     async def chat_completion_method(self, input_model: InputModel, prompt: str):
@@ -51,15 +59,15 @@ class TextSummarizerPiece(BasePiece):
             text_chunks_with_prompt.append(chunk_with_prompt)
         return text_chunks_with_prompt
     
-    def format_display_result(self, final_summary: str):
+    def format_display_result(self, input_model: InputModel, final_summary: str):
         md_text = f"""
 ## Summarized text
 {final_summary}
 
 ## Args
-**model**: {self.input_model.openai_model}
-**temperature**: {self.input_model.temperature}
-**max_tokens**: {self.input_model.completion_max_tokens}
+**model**: {input_model.openai_model}
+**temperature**: {input_model.temperature}
+**max_tokens**: {input_model.completion_max_tokens}
 
 """
         file_path = f"{self.results_path}/display_result.md"
@@ -77,7 +85,7 @@ class TextSummarizerPiece(BasePiece):
         openai.api_key = self.secrets.OPENAI_API_KEY
 
         # Input arguments
-        token_limits = (4000 if input_model.openai_model == "gpt-3.5-turbo" else 8000)
+        token_limits = TokenLimit[input_model.openai_model.name].value
         completion_max_tokens = input_model.completion_max_tokens
         text_token_count = token_limits
         if input_model.text_file_path:
@@ -109,7 +117,7 @@ concise summary:"""
         final_summary = response[0]
 
         # Display result in the Domino GUI
-        self.format_display_result(final_summary)
+        self.format_display_result(input_model,final_summary)
 
         if input_model.output_type == "string":
             self.logger.info(f"Returning final summary as a string")
