@@ -487,6 +487,17 @@
                 }
             },
             "definitions": {
+                "ArgType": {
+                    "title": "ArgType",
+                    "description": "An enumeration.",
+                    "enum": [
+                        "string",
+                        "integer",
+                        "float",
+                        "boolean"
+                    ],
+                    "type": "string"
+                },
                 "InnerArgModel": {
                     "title": "InnerArgModel",
                     "description": "Inner argument model to use in the prompt args",
@@ -501,21 +512,7 @@
                             "type": "string"
                         },
                         "arg_type": {
-                            "title": "Arg Type",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "integer"
-                                },
-                                {
-                                    "type": "number"
-                                },
-                                {
-                                    "type": "boolean"
-                                }
-                            ]
+                            "$ref": "#/definitions/ArgType"
                         }
                     },
                     "required": [
