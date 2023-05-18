@@ -30,7 +30,7 @@ class InnerArgModel(BaseModel):
 
 class InputModel(BaseModel):
     """
-    Text Generator Input
+    TextGeneratorPiece Input model
     """
     template: str = Field(
         default="What is the capital city of {country}?",
