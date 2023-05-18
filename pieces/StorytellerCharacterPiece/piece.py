@@ -2,18 +2,35 @@ from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 import openai
 
-class StorytellerCharacterPiece(BasePiece):    
-    def openai_chat_completion(self, input_model: InputModel, prompt: str, temperature: float = None):
-        response = openai.ChatCompletion.create(
-            model = input_model.openai_model,
-            messages = [
-                {"role": "user", "content": prompt}
-            ],
-            temperature = input_model.temperature if temperature is None else temperature,
-            max_tokens = input_model.completion_max_tokens,
-        )
+class StorytellerCharacterPiece(BasePiece):
+    def openai_response(self, input_model: InputModel, prompt: str, temperature: float = None):
+        # Input arguments
+        openai_model = input_model.openai_model
+        completion_max_tokens = input_model.completion_max_tokens
 
-        return response['choices'][0]['message']['content']
+        try:
+            if openai_model in ["gpt-3.5-turbo", "gpt-4"]:
+                response = openai.ChatCompletion.create(
+                    model=openai_model,
+                    messages = [
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=input_model.temperature if temperature is None else temperature,
+                    max_tokens=completion_max_tokens,
+                )
+                return response['choices'][0]['message']['content']
+            else:
+                response = openai.Completion.create(
+                    model=openai_model,
+                    prompt=prompt,
+                    temperature=input_model.temperature if temperature is None else temperature,
+                    max_tokens=completion_max_tokens,
+                )
+                r_dict = response.to_dict_recursive()
+                return r_dict["choices"][0]["text"]
+        except Exception as e:
+            self.logger.info(f"\nCompletion task failed: {e}")
+            raise Exception(f"Completion task failed: {e}")  
     
     def summarize_previous_stories(self, input_model: InputModel, previous_stories: str):
         prompt = f"""Write a summary of the stories below.
@@ -21,7 +38,7 @@ Write as if you were telling this summary to the character themselves.
 The name of the character is {input_model.character_name}.
 Stories:
 {previous_stories}"""
-        return self.openai_chat_completion(input_model, prompt, temperature=0.3)
+        return self.openai_response(input_model, prompt, temperature=0.3)
         
     def piece_function(self, input_model: InputModel):
         storyteller_template = """You are a storyteller. You love to tell stories based on your experiences and your life. 
@@ -46,12 +63,12 @@ Begin of your new story:
             summary = self.summarize_previous_stories(input_model, all_stories)
             previous_stories_summary = f"You have already told some stories. Here is a summary of them:\n{summary}"
             prompt = storyteller_template.format(name=character_name, description=character_description, previous_stories_summary=previous_stories_summary)
-            new_story = self.openai_chat_completion(input_model, prompt).replace("\n\n", "\n")
+            new_story = self.openai_response(input_model, prompt).replace("\n\n", "\n")
             all_stories += f"Begin of a story:\n{new_story}\nEnd of a story\n"
             output_file_path = input_model.previous_stories_file_path
         else:
             prompt = storyteller_template.format(name=character_name, description=character_description, previous_stories_summary="")
-            new_story = self.openai_chat_completion(input_model, prompt).replace("\n\n", "\n")
+            new_story = self.openai_response(input_model, prompt).replace("\n\n", "\n")
             all_stories = f"""
 These all stories are told by {character_name}.
 The description of {character_name}: {character_description}.\n
@@ -66,8 +83,31 @@ The story: {new_story} """
         with open(output_file_path, "w") as f:
             f.write(all_stories)
 
+        # Display result in the Domino GUI
+        self.format_display_result(input_model, new_story)
+
         return OutputModel(
             new_story=new_story,
             new_story_with_character_info=new_story_with_character_info,
             stories_file_path=output_file_path
         )
+    
+    def format_display_result(self, input_model: InputModel, new_story: str):
+        md_text = f"""
+## New story
+{new_story}
+
+## Args
+**character name**: {input_model.character_name}
+**character description**: {input_model.character_description}
+**model**: {input_model.openai_model}
+**temperature**: {input_model.temperature}
+**max_tokens**: {input_model.completion_max_tokens}
+"""
+        file_path = f"{self.results_path}/display_result.md"
+        with open(file_path, "w") as f:
+            f.write(md_text)
+        self.display_result = {
+            "file_type": "md",
+            "file_path": file_path
+        }
