@@ -21,7 +21,7 @@
         "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
         "input_schema": {
             "title": "InputModel",
-            "description": "Prompt For Image Generator Piece Input",
+            "description": "PromptForImageGeneratorPiece input model",
             "type": "object",
             "properties": {
                 "context": {
@@ -35,9 +35,19 @@
                     "default": "You know many art styles, so you always vary a lot on your suggestions!",
                     "type": "string"
                 },
+                "output_type": {
+                    "description": "The type of output to return",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
                 "output_file_name": {
                     "title": "Output File Name",
-                    "description": "Use it only if you want to save the prompt result to a file in addition to the string output",
+                    "description": "It works only with Output Type = file. The name of the file to save the generated prompt",
+                    "default": "generated_prompt.txt",
                     "type": "string"
                 },
                 "openai_model": {
@@ -68,12 +78,26 @@
                 "context"
             ],
             "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                },
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "OpenAI model types",
+                    "description": "OpenAI model type",
                     "enum": [
                         "gpt-3.5-turbo",
-                        "gpt-4"
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
                     ],
                     "type": "string"
                 }
@@ -81,7 +105,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Prompt For Image Generator Piece Output",
+            "description": "PromptForImageGeneratorPiece output model",
             "type": "object",
             "properties": {
                 "generated_prompt_string": {
@@ -92,6 +116,7 @@
                 "generated_prompt_file_path": {
                     "title": "Generated Prompt File Path",
                     "description": "The path to the generated prompt, in .txt format",
+                    "format": "file-path",
                     "type": "string"
                 }
             },
@@ -101,7 +126,7 @@
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "Prompt For Image Generator Piece Secrets",
+            "description": "PromptForImageGeneratorPiece secrets model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -116,173 +141,19 @@
         },
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptForImageGeneratorPiece"
     },
-    "CompletionsPiece": {
-        "name": "CompletionsPiece",
-        "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
-        },
-        "tags": [
-            "OpenAI"
-        ],
-        "style": {
-            "node_label": "OpenAI Completions",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-align-justify",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece uses the OpenAI API to generate text completions.",
-        "container_resources": {
-            "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-            },
-            "limits": {
-                "cpu": "500m",
-                "memory": "512Mi"
-            }
-        },
-        "input_schema": {
-            "title": "InputModel",
-            "description": "Completions Piece input model",
-            "type": "object",
-            "properties": {
-                "prompt": {
-                    "title": "Prompt",
-                    "description": "The prompt to use for the completion",
-                    "type": "string"
-                },
-                "prompt_file_path": {
-                    "title": "Prompt File Path",
-                    "description": "Use only if not using prompt field. The path to a file containing the prompt to use for the completion. Must be .txt format",
-                    "type": "string"
-                },
-                "output_type": {
-                    "description": "The type of output to return",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "It works only with Output Type = file. The name of the file to save the completion result",
-                    "default": "completion_result.txt",
-                    "type": "string"
-                },
-                "llm_model_name": {
-                    "description": "The name of the model to use. Options: ada, babbage, curie, davinci",
-                    "default": "text-babbage-001",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/LLMModelType"
-                        }
-                    ]
-                },
-                "max_tokens": {
-                    "title": "Max Tokens",
-                    "description": "The maximum number of tokens to generate in the completion",
-                    "exclusiveMinimum": 0,
-                    "type": "integer"
-                },
-                "temperature": {
-                    "title": "Temperature",
-                    "description": "What sampling temperature to use, between 0 and 2",
-                    "default": 1.0,
-                    "exclusiveMinimum": 0.0,
-                    "maximum": 2.0,
-                    "type": "number"
-                }
-            },
-            "definitions": {
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type for the completion result",
-                    "enum": [
-                        "string",
-                        "file"
-                    ],
-                    "type": "string"
-                },
-                "LLMModelType": {
-                    "title": "LLMModelType",
-                    "description": "The name of the model to use.\nOptions: ada, babbage, curie, davinci",
-                    "enum": [
-                        "text-ada-001",
-                        "text-babbage-001",
-                        "text-curie-001",
-                        "text-davinci-003"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "Completions Piece output model",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "title": "Message",
-                    "description": "Output message to log",
-                    "type": "string"
-                },
-                "string_completion_result": {
-                    "title": "String Completion Result",
-                    "description": "The result of the completion as a string",
-                    "type": "string"
-                },
-                "file_completion_result": {
-                    "title": "File Completion Result",
-                    "description": "The result of the completion as a .txt file",
-                    "format": "file-path",
-                    "type": "string"
-                },
-                "usage_total_tokens": {
-                    "title": "Usage Total Tokens",
-                    "description": "The total number of tokens used in the completion",
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "message",
-                "usage_total_tokens"
-            ]
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "Completions Piece secret model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/CompletionsPiece"
-    },
     "TextSummarizerPiece": {
         "name": "TextSummarizerPiece",
         "dependency": {
             "dockerfile": null,
             "requirements_file": "requirements.txt"
         },
-        "tags": [],
+        "tags": [
+            "text",
+            "summarizer",
+            "openai"
+        ],
         "style": {
-            "node_label": "OpenAI Text Summarizer",
+            "node_label": "Text Summarizer",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
@@ -296,7 +167,7 @@
         "description": "This Piece runs a text summarizer using OpenAI API.",
         "input_schema": {
             "title": "InputModel",
-            "description": "Text Summarizer Piece",
+            "description": "TextSummarizerPiece Input model",
             "type": "object",
             "properties": {
                 "text": {
@@ -307,11 +178,21 @@
                 "text_file_path": {
                     "title": "Text File Path",
                     "description": "Use it only if not using text field. File path to the text to summarize",
+                    "format": "file-path",
                     "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output to return",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
                 },
                 "output_file_name": {
                     "title": "Output File Name",
-                    "description": "Name of output file",
+                    "description": "Name of output file. It works only with Output Type = file",
                     "default": "summarized_text.txt",
                     "type": "string"
                 },
@@ -350,12 +231,26 @@
                 }
             },
             "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the completion result",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                },
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "An enumeration.",
+                    "description": "OpenAI model type",
                     "enum": [
                         "gpt-3.5-turbo",
-                        "gpt-4"
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
                     ],
                     "type": "string"
                 }
@@ -363,28 +258,25 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Text Summarizer Piece Output",
+            "description": "TextSummarizerPiece Output model",
             "type": "object",
             "properties": {
-                "summarized_text": {
-                    "title": "Summarized Text",
+                "string_summarized_text": {
+                    "title": "String Summarized Text",
                     "description": "summarized text",
                     "type": "string"
                 },
-                "summarized_text_file_path": {
-                    "title": "Summarized Text File Path",
+                "file_path_summarized_text": {
+                    "title": "File Path Summarized Text",
                     "description": "Path to summarized text file",
+                    "format": "file-path",
                     "type": "string"
                 }
-            },
-            "required": [
-                "summarized_text",
-                "summarized_text_file_path"
-            ]
+            }
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "Text Summarizer Piece Secrets",
+            "description": "TextSummarizerPiece Secrets model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -421,7 +313,7 @@
         "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
         "input_schema": {
             "title": "InputModel",
-            "description": "MyNewPiece Input",
+            "description": "ImageGeneratorPiece input model",
             "type": "object",
             "properties": {
                 "prompt": {
@@ -460,7 +352,7 @@
             "definitions": {
                 "ImageSize": {
                     "title": "ImageSize",
-                    "description": "An enumeration.",
+                    "description": "Image size to generate",
                     "enum": [
                         "1024x1024",
                         "512x512",
@@ -470,7 +362,7 @@
                 },
                 "ResponseFormat": {
                     "title": "ResponseFormat",
-                    "description": "An enumeration.",
+                    "description": "Response format to return",
                     "enum": [
                         "url",
                         "image_png",
@@ -482,12 +374,13 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "MyNewPiece Output",
+            "description": "ImageGeneratorPiece output model",
             "type": "object",
             "properties": {
                 "output_file_path": {
                     "title": "Output File Path",
                     "description": "Path to the generated image",
+                    "format": "file-path",
                     "type": "string"
                 }
             },
@@ -497,7 +390,7 @@
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "MyNewPiece Secrets",
+            "description": "ImageGeneratorPiece secrets model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -518,7 +411,10 @@
             "dockerfile": null,
             "requirements_file": "requirements.txt"
         },
-        "tags": [],
+        "tags": [
+            "openai",
+            "text generation"
+        ],
         "style": {
             "node_label": "Text Generator",
             "node_type": "default",
@@ -531,15 +427,16 @@
                 "cursor": "pointer"
             }
         },
-        "description": "This Piece allows you to create a custom prompt with your own arguments and send it to OpenAI to generate text based on your prompt.",
+        "description": "This Piece allows you to create a custom prompt with your own arguments and send it to OpenAI for text generation.",
         "input_schema": {
             "title": "InputModel",
-            "description": "Text Generator Input",
+            "description": "TextGeneratorPiece Input model",
             "type": "object",
             "properties": {
                 "template": {
                     "title": "Template",
-                    "description": "Compose a prompt template using the { } notation to insert arguments into the prompt itself",
+                    "description": "Compose a prompt template using the { } notation to insert arguments.",
+                    "default": "What is the capital city of {country}?",
                     "type": "string"
                 },
                 "prompt_args": {
@@ -550,8 +447,23 @@
                         "$ref": "#/definitions/InnerArgModel"
                     }
                 },
+                "output_type": {
+                    "description": "The type of output to return.",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "It works only with Output Type = file. The name of the file to save the generated text.",
+                    "default": "generated_text.txt",
+                    "type": "string"
+                },
                 "openai_model": {
-                    "description": "OpenAI model to bring your character to life",
+                    "description": "OpenAI model name.",
                     "default": "gpt-3.5-turbo",
                     "allOf": [
                         {
@@ -561,25 +473,23 @@
                 },
                 "completion_max_tokens": {
                     "title": "Completion Max Tokens",
-                    "description": "The maximum number of tokens to generate the text.",
+                    "description": "The maximum number of tokens in the generated text.",
                     "default": 500,
                     "type": "integer"
                 },
                 "temperature": {
                     "title": "Temperature",
-                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative).",
                     "default": 0.3,
                     "exclusiveMinimum": 0,
                     "exclusiveMaximum": 1,
                     "type": "number"
                 }
             },
-            "required": [
-                "template"
-            ],
             "definitions": {
                 "InnerArgModel": {
                     "title": "InnerArgModel",
+                    "description": "Inner argument model to use in the prompt args",
                     "type": "object",
                     "properties": {
                         "arg_name": {
@@ -589,19 +499,51 @@
                         "arg_value": {
                             "title": "Arg Value",
                             "type": "string"
+                        },
+                        "arg_type": {
+                            "title": "Arg Type",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "boolean"
+                                }
+                            ]
                         }
                     },
                     "required": [
                         "arg_name",
-                        "arg_value"
+                        "arg_value",
+                        "arg_type"
                     ]
+                },
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the generated text",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
                 },
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "An enumeration.",
+                    "description": "OpenAI model type",
                     "enum": [
                         "gpt-3.5-turbo",
-                        "gpt-4"
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
                     ],
                     "type": "string"
                 }
@@ -609,22 +551,25 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Text Generator Output",
+            "description": "TextGeneratorPiece Output model",
             "type": "object",
             "properties": {
-                "generated_text": {
-                    "title": "Generated Text",
-                    "description": "The generated text",
+                "string_generated_text": {
+                    "title": "String Generated Text",
+                    "description": "The generated text as a string",
+                    "type": "string"
+                },
+                "file_path_generated_text": {
+                    "title": "File Path Generated Text",
+                    "description": "The path to text file containing generated text",
+                    "format": "file-path",
                     "type": "string"
                 }
-            },
-            "required": [
-                "generated_text"
-            ]
+            }
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "Text Generator Secrets",
+            "description": "TextGeneratorPiece Secrets model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -673,12 +618,13 @@
         },
         "input_schema": {
             "title": "InputModel",
-            "description": "Audio Transcript input model",
+            "description": "AudioTranscriptPiece input model",
             "type": "object",
             "properties": {
                 "audio_file_path": {
                     "title": "Audio File Path",
                     "description": "The path to the audio file to process.",
+                    "format": "file-path",
                     "type": "string"
                 },
                 "output_type": {
@@ -689,6 +635,12 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
+                },
+                "output_file_name": {
+                    "title": "Output File Name",
+                    "description": "It works only with Output Type = file. The name of the file to save the transcription result",
+                    "default": "transcription_result.txt",
+                    "type": "string"
                 },
                 "temperature": {
                     "title": "Temperature",
@@ -707,8 +659,9 @@
                     "title": "OutputTypeType",
                     "description": "Output type for the result text",
                     "enum": [
+                        "file",
                         "string",
-                        "file"
+                        "file_and_string"
                     ],
                     "type": "string"
                 }
@@ -716,7 +669,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Audio Transcript output model",
+            "description": "AudioTranscriptPiece output model",
             "type": "object",
             "properties": {
                 "message": {
@@ -724,28 +677,25 @@
                     "description": "Output message to log",
                     "type": "string"
                 },
-                "transcription_result": {
-                    "title": "Transcription Result",
-                    "description": "The result transcription text.",
-                    "anyOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "string",
-                            "format": "file-path"
-                        }
-                    ]
+                "string_transcription_result": {
+                    "title": "String Transcription Result",
+                    "description": "The result transcription text as a string.",
+                    "type": "string"
+                },
+                "file_path_transcription_result": {
+                    "title": "File Path Transcription Result",
+                    "description": "The result transcription text as a file path.",
+                    "format": "file-path",
+                    "type": "string"
                 }
             },
             "required": [
-                "message",
-                "transcription_result"
+                "message"
             ]
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "Audio Transcript secret model",
+            "description": "AudioTranscriptPiece secret model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
@@ -782,7 +732,7 @@
         "description": "This Piece assumes a storyteller character based on the characteristics determined by you.",
         "input_schema": {
             "title": "InputModel",
-            "description": "Storyteller Character Input",
+            "description": "StorytellerCharacterPiece input model",
             "type": "object",
             "properties": {
                 "character_name": {
@@ -798,6 +748,7 @@
                 "previous_stories_file_path": {
                     "title": "Previous Stories File Path",
                     "description": "Path to your character's previous stories. Must be a .txt file",
+                    "format": "file-path",
                     "type": "string"
                 },
                 "openai_model": {
@@ -831,10 +782,14 @@
             "definitions": {
                 "LLMModelType": {
                     "title": "LLMModelType",
-                    "description": "An enumeration.",
+                    "description": "OpenAI model type",
                     "enum": [
                         "gpt-3.5-turbo",
-                        "gpt-4"
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
                     ],
                     "type": "string"
                 }
@@ -842,7 +797,7 @@
         },
         "output_schema": {
             "title": "OutputModel",
-            "description": "Storyteller Character Piece Output",
+            "description": "StorytellerCharacterPiece output model",
             "type": "object",
             "properties": {
                 "new_story": {
@@ -858,6 +813,7 @@
                 "stories_file_path": {
                     "title": "Stories File Path",
                     "description": "Path to your stories including the new one.",
+                    "format": "file-path",
                     "type": "string"
                 }
             },
@@ -869,7 +825,7 @@
         },
         "secrets_schema": {
             "title": "SecretsModel",
-            "description": "Storyteller Character Piece Secrets",
+            "description": "StorytellerCharacterPiece secrets model",
             "type": "object",
             "properties": {
                 "OPENAI_API_KEY": {
