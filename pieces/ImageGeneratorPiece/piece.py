@@ -46,6 +46,7 @@ class ImageGeneratorPiece(BasePiece):
         
         self.logger.info(f"Image saved at: {output_file_path}")
 
+        # Display result in the Domino GUI
         self.format_display_result(file_type=file_type, output_file_path=output_file_path)
         
         return OutputModel(
