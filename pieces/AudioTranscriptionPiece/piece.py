@@ -9,7 +9,6 @@ class AudioTranscriptionPiece(BasePiece):
     """
     This Piece uses the OpenAI API to extract text transcripts from audio.
     """
-    
     def piece_function(self, input_model: InputModel):
         openai_api_key = self.secrets.OPENAI_API_KEY
         if openai_api_key is None:

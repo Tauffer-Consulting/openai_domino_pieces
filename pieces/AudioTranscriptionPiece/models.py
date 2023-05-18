@@ -2,11 +2,11 @@ from pydantic import BaseModel, Field, FilePath
 from enum import Enum
 from typing import Union
 
+
 class OutputTypeType(str, Enum):
     """
     Output type for the result text
     """
-
     file = "file"
     string = "string"
     file_and_string = "file_and_string"
@@ -14,9 +14,8 @@ class OutputTypeType(str, Enum):
 
 class InputModel(BaseModel):
     """
-    Audio Transcript input model
+    AudioTranscriptPiece input model
     """
-
     audio_file_path: FilePath = Field(
         ...,
         description='The path to the audio file to process.',
@@ -39,9 +38,8 @@ class InputModel(BaseModel):
 
 class OutputModel(BaseModel):
     """
-    Audio Transcript output model
+    AudioTranscriptPiece output model
     """
-
     message: str = Field(
         description="Output message to log"
     )
@@ -57,9 +55,8 @@ class OutputModel(BaseModel):
 
 class SecretsModel(BaseModel):
     """
-    Audio Transcript secret model
+    AudioTranscriptPiece secret model
     """
-    
     OPENAI_API_KEY: str = Field(
         description="OpenAI API key"
     )
