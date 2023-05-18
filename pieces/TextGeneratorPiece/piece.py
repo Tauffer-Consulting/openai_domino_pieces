@@ -48,7 +48,7 @@ class TextGeneratorPiece(BasePiece):
             raise Exception(f"Completion task failed: {e}")
         
         # Display result in the Domino GUI
-        self.format_display_result(string_generated_text, prompt)
+        self.format_display_result(input_model,string_generated_text, prompt)
 
         # Format output
         self.logger.info("Text generated!")
@@ -74,16 +74,16 @@ class TextGeneratorPiece(BasePiece):
             file_path_generated_text=output_file_path
         )
     
-    def format_display_result(self, string_generated_text: str, prompt: str):
+    def format_display_result(self, input_model: InputModel, string_generated_text: str, prompt: str):
         md_text = f"""
 ## Generated text
 {string_generated_text}
 
 ## Args
 **prompt**: {prompt}
-**model**: {self.input_model.openai_model}
-**temperature**: {self.input_model.temperature}
-**max_tokens**: {self.input_model.completion_max_tokens}
+**model**: {input_model.openai_model}
+**temperature**: {input_model.temperature}
+**max_tokens**: {input_model.completion_max_tokens}
 
 """
         file_path = f"{self.results_path}/display_result.md"

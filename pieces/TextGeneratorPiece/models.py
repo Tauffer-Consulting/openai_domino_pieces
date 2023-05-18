@@ -53,7 +53,7 @@ class InputModel(BaseModel):
         description="It works only with Output Type = file. The name of the file to save the generated text."
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name."
     )
     completion_max_tokens: int = Field(
