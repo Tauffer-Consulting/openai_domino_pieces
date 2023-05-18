@@ -6,23 +6,25 @@ class OutputTypeType(str, Enum):
     """
     Output type
     """
-
     file = "file"
     string = "string"
     file_and_string = "file_and_string"
 class LLMModelType(str, Enum):
     """
-    OpenAI model types
+    OpenAI model type
     """
+    gpt_3_5_turbo = "gpt-3.5-turbo"
+    gpt_4 = "gpt-4"
+    ada = "text-ada-001"
+    babbage = "text-babbage-001"
+    curie = "text-curie-001"
+    davinci = "text-davinci-003"
 
-    GPT_3_5_TURBO = "gpt-3.5-turbo"
-    GPT_4 = "gpt-4"
 
 class InputModel(BaseModel):
     """
-    Prompt For Image Generator Piece Input
+    PromptForImageGeneratorPiece input model
     """
-
     context: str = Field(
         ...,
         description="The context to generate an image from",
@@ -40,7 +42,7 @@ class InputModel(BaseModel):
         description="It works only with Output Type = file. The name of the file to save the generated prompt"
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model to bring your character to life"
     )
     completion_max_tokens: int = Field(
@@ -54,11 +56,11 @@ class InputModel(BaseModel):
         le=1
     )
 
+
 class OutputModel(BaseModel):
     """
-    Prompt For Image Generator Piece Output
+    PromptForImageGeneratorPiece output model
     """
-
     generated_prompt_string: str = Field(
         description="The generated prompt to pass to an image generator AI",
     )
@@ -67,11 +69,11 @@ class OutputModel(BaseModel):
         description="The path to the generated prompt, in .txt format",
     )
 
+
 class SecretsModel(BaseModel):
     """
-    Prompt For Image Generator Piece Secrets
+    PromptForImageGeneratorPiece secrets model
     """    
-
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )
