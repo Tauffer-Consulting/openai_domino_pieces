@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, FilePath
 from enum import Enum
-from typing import List
+from typing import List, Union
+
 
 
 class OutputTypeType(str, Enum):
@@ -24,12 +25,15 @@ class LLMModelType(str, Enum):
     davinci = "text-davinci-003"
 
 
+
 class InnerArgModel(BaseModel):
     """
     Inner argument model to use in the prompt args
     """
     arg_name: str
     arg_value: str
+    arg_type: Union[str, int, float, bool]
+
 
 
 class InputModel(BaseModel):
@@ -64,7 +68,7 @@ class InputModel(BaseModel):
         default=0.3,
         description="Temperature of the model, between 0 (more precise) and 1 (more creative).",
         gt=0,
-        lt=1
+        lt=1,
     )
 
 
@@ -82,6 +86,7 @@ class OutputModel(BaseModel):
     )
 
 
+
 class SecretsModel(BaseModel):
     """
     TextGeneratorPiece Secrets model
@@ -89,3 +94,4 @@ class SecretsModel(BaseModel):
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )
+

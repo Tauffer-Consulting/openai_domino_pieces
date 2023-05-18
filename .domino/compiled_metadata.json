@@ -774,7 +774,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "far fa-sparkles",
+            "icon_class_name": "fas fa-feather-alt",
             "iconStyle": {
                 "cursor": "pointer"
             }
