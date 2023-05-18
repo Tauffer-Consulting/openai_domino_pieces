@@ -4,6 +4,10 @@
     "dependency": {
         "requirements_file": "requirements.txt"
     },
+    "tags": [
+        "openai",
+        "text generation"
+    ],
     "style": {
         "node_label": "Text Generator",
         "icon_class_name": "fas fa-i-cursor"
