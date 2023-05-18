@@ -50,6 +50,25 @@ class TextSummarizerPiece(BasePiece):
             chunk_with_prompt = self.prompt.format(text=decoded_text_chunk) 
             text_chunks_with_prompt.append(chunk_with_prompt)
         return text_chunks_with_prompt
+    
+    def format_display_result(self, final_summary: str):
+        md_text = f"""
+## Summarized text
+{final_summary}
+
+## Args
+**model**: {self.input_model.openai_model}
+**temperature**: {self.input_model.temperature}
+**max_tokens**: {self.input_model.completion_max_tokens}
+
+"""
+        file_path = f"{self.results_path}/display_result.md"
+        with open(file_path, "w") as f:
+            f.write(md_text)
+        self.display_result = {
+            "file_type": "md",
+            "file_path": file_path
+        }
         
     def piece_function(self, input_model: InputModel):                
         # OpenAI settings
@@ -88,6 +107,9 @@ concise summary:"""
         self.logger.info(f"Summarizing text")
         response = loop.run_until_complete(self.agenerate_chat_completion(input_model, [text]))
         final_summary = response[0]
+
+        # Display result in the Domino GUI
+        self.format_display_result(final_summary)
 
         if input_model.output_type == "string":
             self.logger.info(f"Returning final summary as a string")
