@@ -1,28 +1,50 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
+
+
+class OutputTypeType(str, Enum):
+    """
+    Output type for the completion result
+    """
+    file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
+
+
 class LLMModelType(str, Enum):
-    GPT_3_5_TURBO = "gpt-3.5-turbo"
-    GPT_4 = "gpt-4"
+    """
+    OpenAI model type
+    """
+    gpt_3_5_turbo = "gpt-3.5-turbo"
+    gpt_4 = "gpt-4"
+    ada = "text-ada-001"
+    babbage = "text-babbage-001"
+    curie = "text-curie-001"
+    davinci = "text-davinci-003"
+
 
 class InputModel(BaseModel):
     """
-    Text Summarizer Piece
+    TextSummarizerPiece Input model
     """    
-
     text: str = Field(
         default=None,
         description="Text to summarize",
     )
-    text_file_path: str = Field(
+    text_file_path: FilePath = Field(
         default=None,
         description="Use it only if not using text field. File path to the text to summarize"
     )
+    output_type: OutputTypeType = Field(
+        default=OutputTypeType.string,
+        description="The type of output to return"
+    )
     output_file_name: str = Field(
         default="summarized_text.txt",
-        description="Name of output file"
+        description="Name of output file. It works only with Output Type = file"
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for summarization"
     )
     chunk_size: int = Field(
@@ -42,24 +64,25 @@ class InputModel(BaseModel):
         default=0.2
     )
 
+
 class OutputModel(BaseModel):
     """
-    Text Summarizer Piece Output
+    TextSummarizerPiece Output model
     """
-
-    summarized_text: str = Field(
+    string_summarized_text: str = Field(
+        default=None,
         description="summarized text"
     )
-
-    summarized_text_file_path: str = Field(
+    file_path_summarized_text: FilePath = Field(
+        default=None,
         description="Path to summarized text file"
     )
 
+
 class SecretsModel(BaseModel):
     """
-    Text Summarizer Piece Secrets
+    TextSummarizerPiece Secrets model
     """
-
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )

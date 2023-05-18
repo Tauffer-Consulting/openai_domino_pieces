@@ -1,15 +1,23 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
 
+
 class LLMModelType(str, Enum):
-    GPT_3_5_TURBO = "gpt-3.5-turbo"
-    GPT_4 = "gpt-4"
+    """
+    OpenAI model type
+    """
+    gpt_3_5_turbo = "gpt-3.5-turbo"
+    gpt_4 = "gpt-4"
+    ada = "text-ada-001"
+    babbage = "text-babbage-001"
+    curie = "text-curie-001"
+    davinci = "text-davinci-003"
+
 
 class InputModel(BaseModel):
     """
-    Storyteller Character Input
+    StorytellerCharacterPiece input model
     """
-
     character_name: str = Field(
         ...,
         description="Your character's name",
@@ -18,12 +26,12 @@ class InputModel(BaseModel):
         ...,
         description="Your character's description",
     )
-    previous_stories_file_path: str = Field(
+    previous_stories_file_path: FilePath = Field(
         default=None,
         description="Path to your character's previous stories. Must be a .txt file",
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model to bring your character to life"
     )
     completion_max_tokens: int = Field(
@@ -40,24 +48,23 @@ class InputModel(BaseModel):
 
 class OutputModel(BaseModel):
     """
-    Storyteller Character Piece Output
+    StorytellerCharacterPiece output model
     """
-
     new_story: str = Field(
         description="Your new story",
     )
     new_story_with_character_info: str = Field(
         description="Your new story with your character's name and description"
     )
-    stories_file_path: str = Field(
+    stories_file_path: FilePath = Field(
         description="Path to your stories including the new one."
     )
 
+
 class SecretsModel(BaseModel):
     """
-    Storyteller Character Piece Secrets
-    """
-    
+    StorytellerCharacterPiece secrets model
+    """    
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )

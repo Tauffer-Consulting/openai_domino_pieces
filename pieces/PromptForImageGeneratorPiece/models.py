@@ -1,19 +1,30 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 from enum import Enum
 
+
+class OutputTypeType(str, Enum):
+    """
+    Output type
+    """
+    file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
 class LLMModelType(str, Enum):
     """
-    OpenAI model types
+    OpenAI model type
     """
+    gpt_3_5_turbo = "gpt-3.5-turbo"
+    gpt_4 = "gpt-4"
+    ada = "text-ada-001"
+    babbage = "text-babbage-001"
+    curie = "text-curie-001"
+    davinci = "text-davinci-003"
 
-    GPT_3_5_TURBO = "gpt-3.5-turbo"
-    GPT_4 = "gpt-4"
 
 class InputModel(BaseModel):
     """
-    Prompt For Image Generator Piece Input
+    PromptForImageGeneratorPiece input model
     """
-
     context: str = Field(
         ...,
         description="The context to generate an image from",
@@ -22,12 +33,16 @@ class InputModel(BaseModel):
         default="You know many art styles, so you always vary a lot on your suggestions!",
         description="The art style to generate an image from. Your imagination is the limit!",
     )
+    output_type: OutputTypeType = Field(
+        default=OutputTypeType.string,
+        description="The type of output to return"
+    )
     output_file_name: str = Field(
-        default=None,
-        description="Use it only if you want to save the prompt result to a file in addition to the string output"
+        default="generated_prompt.txt",
+        description="It works only with Output Type = file. The name of the file to save the generated prompt"
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.GPT_3_5_TURBO,
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model to bring your character to life"
     )
     completion_max_tokens: int = Field(
@@ -41,24 +56,24 @@ class InputModel(BaseModel):
         le=1
     )
 
+
 class OutputModel(BaseModel):
     """
-    Prompt For Image Generator Piece Output
+    PromptForImageGeneratorPiece output model
     """
-
     generated_prompt_string: str = Field(
         description="The generated prompt to pass to an image generator AI",
     )
-    generated_prompt_file_path: str = Field(
+    generated_prompt_file_path: FilePath = Field(
         default=None,
         description="The path to the generated prompt, in .txt format",
     )
 
+
 class SecretsModel(BaseModel):
     """
-    Prompt For Image Generator Piece Secrets
+    PromptForImageGeneratorPiece secrets model
     """    
-
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )

@@ -4,9 +4,13 @@
     "dependency": {
         "requirements_file": "requirements.txt"
     },
-
+    "tags": [
+        "text",
+        "summarizer",
+        "openai"
+    ],
     "style": {
-        "node_label": "OpenAI Text Summarizer",
+        "node_label": "Text Summarizer",
         "icon_class_name": "fas fa-align-right"
     }
 }
