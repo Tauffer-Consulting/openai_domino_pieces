@@ -75,7 +75,7 @@ class ImageGeneratorPiece(BasePiece):
             self.display_result = {
                 "file_type": "png",
                 "base64_content": image_data,
-                # "file_path": ""
+                "file_path": ""
             }
             return
 
