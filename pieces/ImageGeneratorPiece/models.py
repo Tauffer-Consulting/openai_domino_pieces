@@ -11,13 +11,22 @@ class ImageSize(str, Enum):
     low_quality = "256x256"
 
 
-class ResponseFormat(str, Enum):
+class ImageFormat(str, Enum):
     """
-    Response format to return
+    Image format to return
     """
     url = "url"
     image_png = "image_png"
     base64_string = "base64_string"
+
+
+class OutputTypeType(str, Enum):
+    """
+    Output type for the result text
+    """
+    file = "file"
+    string = "string"
+    file_and_string = "file_and_string"
 
 
 class InputModel(BaseModel):
@@ -32,9 +41,13 @@ class InputModel(BaseModel):
         default=ImageSize.high_quality,
         description="The size of the generated images",
     )
-    response_format: ResponseFormat = Field(
-        default=ResponseFormat.url,
+    image_format: ImageFormat = Field(
+        default=ImageFormat.url,
         description="The format in which the generated image is returned"
+    )
+    output_type: OutputTypeType = Field(
+        default=OutputTypeType.string,
+        description='The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.'
     )
     output_file_name: str = Field(
         default="generated_image",
@@ -46,7 +59,12 @@ class OutputModel(BaseModel):
     """
     ImageGeneratorPiece output model
     """
+    output_string: str = Field(
+        default=None,
+        description="The generated image as string",
+    )
     output_file_path: FilePath = Field(
+        default=None,
         description="Path to the generated image",
     )
 
