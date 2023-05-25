@@ -46,8 +46,10 @@ class AudioTranscriptionPiece(BasePiece):
         except Exception as e:
             print(f"\nTrascription task failed: {e}")
             raise Exception(f"Transcription task failed: {e}")
+
+        # Display result in the Domino GUI
+        self.format_display_result(input_model=input_model, string_transcription_result=full_transcript)
         
-        # Prepare output based on the output type
         if input_model.output_type == "string":
             self.logger.info("Transcription complete successfully. Result returned as string.")
             msg = f"Transcription complete successfully. Result returned as string."
@@ -59,9 +61,6 @@ class AudioTranscriptionPiece(BasePiece):
         output_file_path = f"{self.results_path}/{input_model.output_file_name}"
         with open(output_file_path, "w") as f:
             f.write(full_transcript)
-        
-        # Display result in the Domino GUI
-        self.format_display_result(input_model=input_model, string_transcription_result=full_transcript)
 
         if input_model.output_type == "file":
             self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
@@ -81,8 +80,8 @@ class AudioTranscriptionPiece(BasePiece):
     
     def format_display_result(self, input_model: InputModel, string_transcription_result: str):
         md_text = f"""
-## Generated transcription:
-{string_transcription_result}
+## Generated transcription:  \n
+{string_transcription_result}  \n
 
 ## Args
 **temperature**: {input_model.temperature}
