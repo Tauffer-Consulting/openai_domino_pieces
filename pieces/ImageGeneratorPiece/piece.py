@@ -70,11 +70,12 @@ class ImageGeneratorPiece(BasePiece):
             output_file_path=output_file_path,
         )
     
-    def format_display_result(self, image_format: str, image_data):
+    def format_display_result(self, image_format: str, image_data: str):
         if image_format == "image_png":
             self.display_result = {
                 "file_type": "png",
-                "base64_content": image_data
+                "base64_content": image_data,
+                # "file_path": ""
             }
             return
 
@@ -83,15 +84,15 @@ Image generated as {image_format}.  \n
 """
         if image_format == "url":
             final_md_text = md_text.format(image_format="URL")
-            final_md_text += f"Image URL: ({image_data})[{image_data}]"
+            final_md_text += f"Image URL: [{image_data}]({image_data})"
         if image_format == "base64_string":
             final_md_text = md_text.format(image_format="Base64 String")
             final_md_text += "Base64 String too long to be displayed."
 
         file_path = f"{self.results_path}/display_result.md"
         with open(file_path, "w") as f:
-            f.write(md_text)
+            f.write(final_md_text)
         self.display_result = {
             "file_type": "md",
-            "md_text": final_md_text
+            "file_path": file_path
         }
