@@ -330,12 +330,21 @@
                         }
                     ]
                 },
-                "response_format": {
+                "image_format": {
                     "description": "The format in which the generated image is returned",
                     "default": "url",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/ResponseFormat"
+                            "$ref": "#/definitions/ImageFormat"
+                        }
+                    ]
+                },
+                "output_type": {
+                    "description": "The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
                 },
@@ -360,13 +369,23 @@
                     ],
                     "type": "string"
                 },
-                "ResponseFormat": {
-                    "title": "ResponseFormat",
-                    "description": "Response format to return",
+                "ImageFormat": {
+                    "title": "ImageFormat",
+                    "description": "Image format to return",
                     "enum": [
                         "url",
                         "image_png",
                         "base64_string"
+                    ],
+                    "type": "string"
+                },
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the result text",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
                     ],
                     "type": "string"
                 }
@@ -377,16 +396,18 @@
             "description": "ImageGeneratorPiece output model",
             "type": "object",
             "properties": {
+                "output_string": {
+                    "title": "Output String",
+                    "description": "The generated image as string",
+                    "type": "string"
+                },
                 "output_file_path": {
                     "title": "Output File Path",
                     "description": "Path to the generated image",
                     "format": "file-path",
                     "type": "string"
                 }
-            },
-            "required": [
-                "output_file_path"
-            ]
+            }
         },
         "secrets_schema": {
             "title": "SecretsModel",
