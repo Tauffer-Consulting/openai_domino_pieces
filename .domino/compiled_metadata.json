@@ -456,13 +456,19 @@
             "properties": {
                 "template": {
                     "title": "Template",
-                    "description": "Compose a prompt template using the { } notation to insert arguments.",
+                    "description": "Compose a prompt template using the {arg_name} notation to insert arguments.",
                     "default": "What is the capital city of {country}?",
                     "type": "string"
                 },
                 "prompt_args": {
                     "title": "Prompt Args",
                     "description": "List of arguments to insert into the prompt.",
+                    "default": [
+                        {
+                            "arg_name": "country",
+                            "arg_value": "Brazil"
+                        }
+                    ],
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/InnerArgModel"
@@ -508,17 +514,6 @@
                 }
             },
             "definitions": {
-                "ArgType": {
-                    "title": "ArgType",
-                    "description": "An enumeration.",
-                    "enum": [
-                        "string",
-                        "integer",
-                        "float",
-                        "boolean"
-                    ],
-                    "type": "string"
-                },
                 "InnerArgModel": {
                     "title": "InnerArgModel",
                     "description": "Inner argument model to use in the prompt args",
@@ -526,21 +521,16 @@
                     "properties": {
                         "arg_name": {
                             "title": "Arg Name",
+                            "description": "Name of the prompt argument.",
+                            "from_upstream": "never",
                             "type": "string"
                         },
                         "arg_value": {
                             "title": "Arg Value",
+                            "description": "Value of the prompt argument.",
                             "type": "string"
-                        },
-                        "arg_type": {
-                            "$ref": "#/definitions/ArgType"
                         }
-                    },
-                    "required": [
-                        "arg_name",
-                        "arg_value",
-                        "arg_type"
-                    ]
+                    }
                 },
                 "OutputTypeType": {
                     "title": "OutputTypeType",
