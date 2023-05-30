@@ -58,7 +58,7 @@ class TextGeneratorPiece(BasePiece):
                 string_generated_text=string_generated_text,
             )
         
-        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
+        output_file_path = f"{self.results_path}/generated_text.txt"
         with open(output_file_path, "w") as f:
             f.write(string_generated_text)
         

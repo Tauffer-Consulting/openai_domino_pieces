@@ -39,10 +39,6 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description="The type of output to return"
     )
-    output_file_name: str = Field(
-        default="summarized_text.txt",
-        description="Name of output file. It works only with Output Type = file"
-    )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for summarization"

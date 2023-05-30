@@ -37,10 +37,6 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description="The type of output to return"
     )
-    output_file_name: str = Field(
-        default="generated_prompt.txt",
-        description="It works only with Output Type = file. The name of the file to save the generated prompt"
-    )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model to bring your character to life"

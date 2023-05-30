@@ -24,10 +24,6 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description='The type of output for the result text'
     )
-    output_file_name: str = Field(
-        default="transcription_result.txt",
-        description="It works only with Output Type = file. The name of the file to save the transcription result"
-    )
     temperature: float = Field(
         description="What sampling temperature to use, between 0 and 1",
         default=0.1,

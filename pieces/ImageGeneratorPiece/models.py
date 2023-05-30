@@ -49,10 +49,6 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description='The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.'
     )
-    output_file_name: str = Field(
-        default="generated_image",
-        description="The name of the generated image, without the extension format"
-    )
 
 
 class OutputModel(BaseModel):

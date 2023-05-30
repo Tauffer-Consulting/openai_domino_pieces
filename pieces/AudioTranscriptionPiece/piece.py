@@ -58,7 +58,7 @@ class AudioTranscriptionPiece(BasePiece):
                 string_transcription_result=full_transcript
             )
                 
-        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
+        output_file_path = f"{self.results_path}/audio_transcription_result.txt"
         with open(output_file_path, "w") as f:
             f.write(full_transcript)
 

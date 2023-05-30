@@ -47,7 +47,7 @@ class ImageGeneratorPiece(BasePiece):
             open_mode = "w"
 
         #Save image to file
-        output_file_path = f"{self.results_path}/{input_model.output_file_name}.{file_type}"
+        output_file_path = f"{self.results_path}/generated_image.{file_type}"
         with open(output_file_path, open_mode) as f:
             f.write(image)
 

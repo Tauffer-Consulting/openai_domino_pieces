@@ -60,7 +60,7 @@ Now, create a prompt to help the image generator AI to create an image for this 
                 generated_prompt_string=generated_prompt,
             )
         
-        output_file_path = f"{self.results_path}/{input_model.output_file_name}"
+        output_file_path = f"{self.results_path}/generated_prompt.txt"
         with open(output_file_path, "w") as f:
             f.write(generated_prompt)
 
