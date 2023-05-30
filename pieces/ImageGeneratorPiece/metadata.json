@@ -2,7 +2,7 @@
     "name": "ImageGeneratorPiece",
     "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
     "dependency": {
-        "requirements_file": "requirements.txt"
+        "requirements_file": "Dockerfile_01"
     },
 
     "style": {

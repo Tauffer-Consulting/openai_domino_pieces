@@ -10,5 +10,6 @@ COPY pieces domino/pieces_repository/pieces
 COPY .domino domino/pieces_repository/.domino
 
 # Install specific python dependencies
-RUN pip install openai
-RUN pip install pydub
+RUN pip install openai==0.27.4
+RUN pip install pydub==0.25.1
+RUN pip install tiktoken==0.3.3
