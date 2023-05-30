@@ -2,7 +2,7 @@
     "name": "StorytellerCharacterPiece",
     "description": "This Piece assumes a storyteller character based on the characteristics determined by you.",
     "dependency": {
-        "requirements_file": "Dockerfile_01"
+        "dockerfile": "Dockerfile_01"
     },
     
     "style": {
