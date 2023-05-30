@@ -2,8 +2,8 @@
     "PromptForImageGeneratorPiece": {
         "name": "PromptForImageGeneratorPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "tags": [],
         "style": {
@@ -43,12 +43,6 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "It works only with Output Type = file. The name of the file to save the generated prompt",
-                    "default": "generated_prompt.txt",
-                    "type": "string"
                 },
                 "openai_model": {
                     "description": "OpenAI model to bring your character to life",
@@ -144,8 +138,8 @@
     "TextSummarizerPiece": {
         "name": "TextSummarizerPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "tags": [
             "text",
@@ -189,12 +183,6 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "Name of output file. It works only with Output Type = file",
-                    "default": "summarized_text.txt",
-                    "type": "string"
                 },
                 "openai_model": {
                     "description": "OpenAI model name to use for summarization",
@@ -294,8 +282,8 @@
     "ImageGeneratorPiece": {
         "name": "ImageGeneratorPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "tags": [],
         "style": {
@@ -347,12 +335,6 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "The name of the generated image, without the extension format",
-                    "default": "generated_image",
-                    "type": "string"
                 }
             },
             "required": [
@@ -429,8 +411,8 @@
     "TextGeneratorPiece": {
         "name": "TextGeneratorPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "tags": [
             "openai",
@@ -482,12 +464,6 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "It works only with Output Type = file. The name of the file to save the generated text.",
-                    "default": "generated_text.txt",
-                    "type": "string"
                 },
                 "openai_model": {
                     "description": "OpenAI model name.",
@@ -595,7 +571,7 @@
     "AudioTranscriptionPiece": {
         "name": "AudioTranscriptionPiece",
         "dependency": {
-            "dockerfile": "Dockerfile_AudioTranscription",
+            "dockerfile": "Dockerfile_01",
             "requirements_file": null
         },
         "tags": [
@@ -643,12 +619,6 @@
                             "$ref": "#/definitions/OutputTypeType"
                         }
                     ]
-                },
-                "output_file_name": {
-                    "title": "Output File Name",
-                    "description": "It works only with Output Type = file. The name of the file to save the transcription result",
-                    "default": "transcription_result.txt",
-                    "type": "string"
                 },
                 "temperature": {
                     "title": "Temperature",
@@ -721,8 +691,8 @@
     "StorytellerCharacterPiece": {
         "name": "StorytellerCharacterPiece",
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "tags": [],
         "style": {

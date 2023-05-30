@@ -1,32 +1,20 @@
 {
     "group0": {
         "dependency": {
-            "dockerfile": null,
-            "requirements_file": "requirements.txt"
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
         },
         "pieces": [
             "PromptForImageGeneratorPiece",
             "TextSummarizerPiece",
             "ImageGeneratorPiece",
             "TextGeneratorPiece",
+            "AudioTranscriptionPiece",
             "StorytellerCharacterPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.2.0-group0"
-    },
-    "group1": {
-        "dependency": {
-            "dockerfile": "Dockerfile_AudioTranscription",
-            "requirements_file": null
-        },
-        "pieces": [
-            "AudioTranscriptionPiece"
-        ],
-        "secrets": [
-            "OPENAI_API_KEY"
-        ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.2.0-group1"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.1.91-group0"
     }
 }
