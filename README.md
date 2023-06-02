@@ -5,5 +5,5 @@ Domino Pieces for OpenAI api operations.
 - **TextSummarizerPiece** - A piece that summarizes long texts using the OpenAI API.
 - **AudioTranscriptionPiece** - A piece that transcribes audio using the OpenAI Whisper API.
 - **ImageGeneratorPiece** - A piece that utilizes DALL-E, an OpenAI model that generates images based on a prompt.
-- **PromptForImageGeneratorPiece** - A piece that generates a prompt to pass to an image generator AI.
+- **PromptCreatorForImageGeneratorPiece** - A piece that creates a prompt to pass to an image generator AI.
 - **StorytellerCharacterPiece** - A Piece that assumes a storyteller character based on the characteristics determined by you.

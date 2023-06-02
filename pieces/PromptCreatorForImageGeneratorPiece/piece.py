@@ -2,7 +2,7 @@ from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 import openai
 
-class PromptForImageGeneratorPiece(BasePiece):
+class PromptCreatorForImageGeneratorPiece(BasePiece):
     def openai_response(self, input_model: InputModel, prompt: str):
         # Input arguments
         openai_model = input_model.openai_model

@@ -1,5 +1,5 @@
 {
-    "name": "PromptForImageGeneratorPiece",
+    "name": "PromptCreatorForImageGeneratorPiece",
     "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
     "dependency": {
         "dockerfile": "Dockerfile_01"
