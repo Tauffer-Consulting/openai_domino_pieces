@@ -5,12 +5,12 @@
             "requirements_file": null
         },
         "pieces": [
-            "PromptForImageGeneratorPiece",
-            "TextSummarizerPiece",
+            "PromptCreatorForImageGeneratorPiece",
             "ImageGeneratorPiece",
             "TextGeneratorPiece",
+            "StorytellerCharacterPiece",
             "AudioTranscriptionPiece",
-            "StorytellerCharacterPiece"
+            "TextSummarizerPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"

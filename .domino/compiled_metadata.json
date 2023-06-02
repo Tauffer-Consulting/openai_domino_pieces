@@ -1,6 +1,6 @@
 {
-    "PromptForImageGeneratorPiece": {
-        "name": "PromptForImageGeneratorPiece",
+    "PromptCreatorForImageGeneratorPiece": {
+        "name": "PromptCreatorForImageGeneratorPiece",
         "dependency": {
             "dockerfile": "Dockerfile_01",
             "requirements_file": null
@@ -133,151 +133,7 @@
                 "OPENAI_API_KEY"
             ]
         },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptForImageGeneratorPiece"
-    },
-    "TextSummarizerPiece": {
-        "name": "TextSummarizerPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile_01",
-            "requirements_file": null
-        },
-        "tags": [
-            "text",
-            "summarizer",
-            "openai"
-        ],
-        "style": {
-            "node_label": "Text Summarizer",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-align-right",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece runs a text summarizer using OpenAI API.",
-        "input_schema": {
-            "title": "InputModel",
-            "description": "TextSummarizerPiece Input model",
-            "type": "object",
-            "properties": {
-                "text": {
-                    "title": "Text",
-                    "description": "Text to summarize",
-                    "type": "string"
-                },
-                "text_file_path": {
-                    "title": "Text File Path",
-                    "description": "Use it only if not using text field. File path to the text to summarize",
-                    "format": "file-path",
-                    "type": "string"
-                },
-                "output_type": {
-                    "description": "The type of output to return",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                },
-                "openai_model": {
-                    "description": "OpenAI model name to use for summarization",
-                    "default": "gpt-3.5-turbo",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/LLMModelType"
-                        }
-                    ]
-                },
-                "chunk_size": {
-                    "title": "Chunk Size",
-                    "description": "Chunk size, measured in tokens, of each pre-summary chunk",
-                    "default": 1000,
-                    "type": "integer"
-                },
-                "chunk_overlap_rate": {
-                    "title": "Chunk Overlap Rate",
-                    "description": "The percentage of overlap between each chunk",
-                    "default": 0.2,
-                    "type": "number"
-                },
-                "completion_max_tokens": {
-                    "title": "Completion Max Tokens",
-                    "description": "The maximum number of tokens to generate in the summary.",
-                    "default": 500,
-                    "type": "integer"
-                },
-                "temperature": {
-                    "title": "Temperature",
-                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
-                    "default": 0.2,
-                    "type": "number"
-                }
-            },
-            "definitions": {
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type for the completion result",
-                    "enum": [
-                        "file",
-                        "string",
-                        "file_and_string"
-                    ],
-                    "type": "string"
-                },
-                "LLMModelType": {
-                    "title": "LLMModelType",
-                    "description": "OpenAI model type",
-                    "enum": [
-                        "gpt-3.5-turbo",
-                        "gpt-4",
-                        "text-ada-001",
-                        "text-babbage-001",
-                        "text-curie-001",
-                        "text-davinci-003"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "TextSummarizerPiece Output model",
-            "type": "object",
-            "properties": {
-                "string_summarized_text": {
-                    "title": "String Summarized Text",
-                    "description": "summarized text",
-                    "type": "string"
-                },
-                "file_path_summarized_text": {
-                    "title": "File Path Summarized Text",
-                    "description": "Path to summarized text file",
-                    "format": "file-path",
-                    "type": "string"
-                }
-            }
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "TextSummarizerPiece Secrets model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "Your OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextSummarizerPiece"
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptCreatorForImageGeneratorPiece"
     },
     "ImageGeneratorPiece": {
         "name": "ImageGeneratorPiece",
@@ -568,126 +424,6 @@
         },
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextGeneratorPiece"
     },
-    "AudioTranscriptionPiece": {
-        "name": "AudioTranscriptionPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile_01",
-            "requirements_file": null
-        },
-        "tags": [
-            "OpenAI"
-        ],
-        "style": {
-            "node_label": "OpenAI Audio Transcript",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-headset",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
-        "container_resources": {
-            "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-            },
-            "limits": {
-                "cpu": "500m",
-                "memory": "512Mi"
-            }
-        },
-        "input_schema": {
-            "title": "InputModel",
-            "description": "AudioTranscriptPiece input model",
-            "type": "object",
-            "properties": {
-                "audio_file_path": {
-                    "title": "Audio File Path",
-                    "description": "The path to the audio file to process.",
-                    "format": "file-path",
-                    "type": "string"
-                },
-                "output_type": {
-                    "description": "The type of output for the result text",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                },
-                "temperature": {
-                    "title": "Temperature",
-                    "description": "What sampling temperature to use, between 0 and 1",
-                    "default": 0.1,
-                    "exclusiveMinimum": 0.0,
-                    "maximum": 1,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "audio_file_path"
-            ],
-            "definitions": {
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type for the result text",
-                    "enum": [
-                        "file",
-                        "string",
-                        "file_and_string"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "AudioTranscriptPiece output model",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "title": "Message",
-                    "description": "Output message to log",
-                    "type": "string"
-                },
-                "string_transcription_result": {
-                    "title": "String Transcription Result",
-                    "description": "The result transcription text as a string.",
-                    "type": "string"
-                },
-                "file_path_transcription_result": {
-                    "title": "File Path Transcription Result",
-                    "description": "The result transcription text as a file path.",
-                    "format": "file-path",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "message"
-            ]
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "AudioTranscriptPiece secret model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionPiece"
-    },
     "StorytellerCharacterPiece": {
         "name": "StorytellerCharacterPiece",
         "dependency": {
@@ -817,5 +553,269 @@
             ]
         },
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/StorytellerCharacterPiece"
+    },
+    "AudioTranscriptionPiece": {
+        "name": "AudioTranscriptionPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [
+            "OpenAI"
+        ],
+        "style": {
+            "node_label": "OpenAI Audio Transcript",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-headset",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
+        "container_resources": {
+            "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+            },
+            "limits": {
+                "cpu": "500m",
+                "memory": "512Mi"
+            }
+        },
+        "input_schema": {
+            "title": "InputModel",
+            "description": "AudioTranscriptPiece input model",
+            "type": "object",
+            "properties": {
+                "audio_file_path": {
+                    "title": "Audio File Path",
+                    "description": "The path to the audio file to process.",
+                    "format": "file-path",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output for the result text",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "What sampling temperature to use, between 0 and 1",
+                    "default": 0.1,
+                    "exclusiveMinimum": 0.0,
+                    "maximum": 1,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "audio_file_path"
+            ],
+            "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the result text",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "AudioTranscriptPiece output model",
+            "type": "object",
+            "properties": {
+                "message": {
+                    "title": "Message",
+                    "description": "Output message to log",
+                    "type": "string"
+                },
+                "string_transcription_result": {
+                    "title": "String Transcription Result",
+                    "description": "The result transcription text as a string.",
+                    "type": "string"
+                },
+                "file_path_transcription_result": {
+                    "title": "File Path Transcription Result",
+                    "description": "The result transcription text as a file path.",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "AudioTranscriptPiece secret model",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionPiece"
+    },
+    "TextSummarizerPiece": {
+        "name": "TextSummarizerPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [
+            "text",
+            "summarizer",
+            "openai"
+        ],
+        "style": {
+            "node_label": "Text Summarizer",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-align-right",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece runs a text summarizer using OpenAI API.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "TextSummarizerPiece Input model",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "description": "Text to summarize",
+                    "type": "string"
+                },
+                "text_file_path": {
+                    "title": "Text File Path",
+                    "description": "Use it only if not using text field. File path to the text to summarize",
+                    "format": "file-path",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output to return",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "openai_model": {
+                    "description": "OpenAI model name to use for summarization",
+                    "default": "gpt-3.5-turbo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
+                },
+                "chunk_size": {
+                    "title": "Chunk Size",
+                    "description": "Chunk size, measured in tokens, of each pre-summary chunk",
+                    "default": 1000,
+                    "type": "integer"
+                },
+                "chunk_overlap_rate": {
+                    "title": "Chunk Overlap Rate",
+                    "description": "The percentage of overlap between each chunk",
+                    "default": 0.2,
+                    "type": "number"
+                },
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
+                    "description": "The maximum number of tokens to generate in the summary.",
+                    "default": 500,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.2,
+                    "type": "number"
+                }
+            },
+            "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the completion result",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                },
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "OpenAI model type",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "TextSummarizerPiece Output model",
+            "type": "object",
+            "properties": {
+                "string_summarized_text": {
+                    "title": "String Summarized Text",
+                    "description": "summarized text",
+                    "type": "string"
+                },
+                "file_path_summarized_text": {
+                    "title": "File Path Summarized Text",
+                    "description": "Path to summarized text file",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            }
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "TextSummarizerPiece Secrets model",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextSummarizerPiece"
     }
 }
