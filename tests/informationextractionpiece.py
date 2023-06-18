@@ -27,10 +27,10 @@ output = piece_dry_run(
         "openai_model": openai_model,
         "extract_items": extract_items
     },
-    secret_input={
+    secrets_input={
         "OPENAI_API_KEY": OPENAI_API_KEY
     }
 )
 
-assert output["name"] == "John"
-assert output["age"] == 30
+assert output.name == "John"
+assert output.age == 30

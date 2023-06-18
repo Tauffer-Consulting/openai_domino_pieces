@@ -1,11 +1,10 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
-from enum import Enum
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import create_extraction_chain
 
 
-class TextSummarizerPiece(BasePiece):  
+class InformationExtractionPiece(BasePiece):  
 
     def piece_function(self, input_model: InputModel):                
         # OpenAI settings
@@ -26,7 +25,7 @@ class TextSummarizerPiece(BasePiece):
                 "type": item.type,
                 "description": item.description,
             }
-            schema["required"].append(item)
+            schema["required"].append(item.name)
         chain = create_extraction_chain(schema, llm)
 
         # Run extraction chain
