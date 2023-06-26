@@ -23,7 +23,7 @@ class LLMModelType(str, Enum):
 
 class InputModel(BaseModel):
     """
-    PromptForImageGeneratorPiece input model
+    PromptCreatorForImageGeneratorPiece input model
     """
     context: str = Field(
         ...,
@@ -55,9 +55,10 @@ class InputModel(BaseModel):
 
 class OutputModel(BaseModel):
     """
-    PromptForImageGeneratorPiece output model
+    PromptCreatorForImageGeneratorPiece output model
     """
     generated_prompt_string: str = Field(
+        default=None,
         description="The generated prompt to pass to an image generator AI",
     )
     generated_prompt_file_path: FilePath = Field(
@@ -68,7 +69,7 @@ class OutputModel(BaseModel):
 
 class SecretsModel(BaseModel):
     """
-    PromptForImageGeneratorPiece secrets model
+    PromptCreatorForImageGeneratorPiece secrets model
     """    
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
