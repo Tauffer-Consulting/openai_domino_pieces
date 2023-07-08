@@ -1,0 +1,21 @@
+{
+    "group0": {
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "pieces": [
+            "PromptCreatorForImageGeneratorPiece",
+            "InformationExtractionPiece",
+            "StorytellerCharacterPiece",
+            "TextSummarizerPiece",
+            "AudioTranscriptionPiece",
+            "TextGeneratorPiece",
+            "ImageGeneratorPiece"
+        ],
+        "secrets": [
+            "OPENAI_API_KEY"
+        ],
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.3.0-group0"
+    }
+}
