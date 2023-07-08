@@ -6,12 +6,11 @@
         },
         "pieces": [
             "PromptCreatorForImageGeneratorPiece",
-            "InformationExtractionPiece",
-            "StorytellerCharacterPiece",
-            "TextSummarizerPiece",
-            "AudioTranscriptionPiece",
             "TextGeneratorPiece",
-            "ImageGeneratorPiece"
+            "AudioTranscriptionPiece",
+            "ImageGeneratorPiece",
+            "InformationExtractionPiece",
+            "TextSummarizerPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
