@@ -7,4 +7,3 @@ Domino Pieces for OpenAI api operations.
 - **ImageGeneratorPiece** - A piece that utilizes DALL-E, an OpenAI model that generates images based on a prompt.
 - **InformationExtractorPiece** - A piece that extracts user-requested information from a source text using the OpenAI API.
 - **PromptCreatorForImageGeneratorPiece** - A piece that creates a prompt to pass to an image generator AI.
-- **StorytellerCharacterPiece** - A Piece that assumes a storyteller character based on the characteristics determined by you.

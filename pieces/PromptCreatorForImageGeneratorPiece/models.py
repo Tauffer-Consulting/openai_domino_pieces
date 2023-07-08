@@ -58,6 +58,7 @@ class OutputModel(BaseModel):
     PromptCreatorForImageGeneratorPiece output model
     """
     generated_prompt_string: str = Field(
+        default=None,
         description="The generated prompt to pass to an image generator AI",
     )
     generated_prompt_file_path: FilePath = Field(
