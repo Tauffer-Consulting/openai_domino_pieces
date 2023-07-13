@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, FilePath, Extra
+from pydantic import BaseModel, Field, Extra
+from domino.models import OutputModifierModel, OutputModifierItemType
 from enum import Enum
 from typing import List
 
@@ -9,34 +10,6 @@ class LLMModelType(str, Enum):
     """
     gpt_3_5_turbo = "gpt-3.5-turbo-0613"
     gpt_4 = "gpt-4"
-
-
-class ExtractItemType(str, Enum):
-    """
-    OutputArgsType Enum
-    """
-    string = 'string'
-    integer = 'integer'
-    float = 'float'
-    boolean = 'boolean'
-
-
-class ExtractItemsModel(BaseModel):
-    name: str = Field(
-        default=None,
-        description='Name of the output argument.',
-        from_upstream="never"
-    )
-    description: str = Field(
-        default=None,
-        description='Description of the output argument.',
-        from_upstream="never"
-    )
-    type: ExtractItemType = Field(
-        default=ExtractItemType.string,
-        description='Type of the output argument.',
-        from_upstream="never"
-    )
 
 
 class InputModel(BaseModel):
@@ -52,10 +25,10 @@ class InputModel(BaseModel):
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for information extraction."
     )
-    extract_items: List[ExtractItemsModel] = Field(
+    extract_items: List[OutputModifierModel] = Field(
         default=[
-            ExtractItemsModel(name="name", type=ExtractItemType.string),
-            ExtractItemsModel(name="age", type=ExtractItemType.integer),
+            OutputModifierModel(name="name", type=OutputModifierItemType.string, description="Name of the person"),
+            OutputModifierModel(name="age", type=OutputModifierItemType.integer, description="Age of the person"),
         ],
         description='Information items to be extracted from source text.',
         from_upstream="never"
