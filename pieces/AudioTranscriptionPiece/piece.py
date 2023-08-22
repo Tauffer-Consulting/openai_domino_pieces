@@ -1,5 +1,5 @@
 from domino.base_piece import BasePiece
-from .models import InputModel, OutputModel
+from .models import InputModel, OutputModel, SecretsModel
 import os
 import openai
 from pydub import AudioSegment
@@ -9,14 +9,14 @@ class AudioTranscriptionPiece(BasePiece):
     """
     This Piece uses the OpenAI API to extract text transcripts from audio.
     """
-    def piece_function(self, input_model: InputModel):
-        openai_api_key = self.secrets.OPENAI_API_KEY
+    def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):
+        openai_api_key = secrets_data.OPENAI_API_KEY
         if openai_api_key is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
         openai.api_key = openai_api_key
 
         # Input arguments are retrieved from the Input model object
-        file_path = input_model.audio_file_path
+        file_path = input_data.audio_file_path
         
         print("Making OpenAI audio transcription request...")
         try:
@@ -36,7 +36,7 @@ class AudioTranscriptionPiece(BasePiece):
                 transcript = openai.Audio.transcribe(
                     model="whisper-1", 
                     file=audio_file,
-                    temperature=input_model.temperature
+                    temperature=input_data.temperature
                 ).to_dict()["text"]
                 full_transcript += " " + transcript
                 i += 1
@@ -48,9 +48,9 @@ class AudioTranscriptionPiece(BasePiece):
             raise Exception(f"Transcription task failed: {e}")
 
         # Display result in the Domino GUI
-        self.format_display_result(input_model=input_model, string_transcription_result=full_transcript)
+        self.format_display_result(input_data=input_data, string_transcription_result=full_transcript)
         
-        if input_model.output_type == "string":
+        if input_data.output_type == "string":
             self.logger.info("Transcription complete successfully. Result returned as string.")
             msg = f"Transcription complete successfully. Result returned as string."
             return OutputModel(
@@ -62,7 +62,7 @@ class AudioTranscriptionPiece(BasePiece):
         with open(output_file_path, "w") as f:
             f.write(full_transcript)
 
-        if input_model.output_type == "file":
+        if input_data.output_type == "file":
             self.logger.info(f"Transcription complete successfully. Result returned as file in {output_file_path}")
             msg = f"Transcription complete successfully. Result returned as file."
             return OutputModel(
@@ -78,13 +78,13 @@ class AudioTranscriptionPiece(BasePiece):
             file_path_transcription_result=output_file_path
         )
     
-    def format_display_result(self, input_model: InputModel, string_transcription_result: str):
+    def format_display_result(self, input_data: InputModel, string_transcription_result: str):
         md_text = f"""
 ## Generated transcription:  \n
 {string_transcription_result}  \n
 
 ## Args
-**temperature**: {input_model.temperature}
+**temperature**: {input_data.temperature}
 """
         file_path = f"{self.results_path}/display_result.md"
         with open(file_path, "w") as f:
