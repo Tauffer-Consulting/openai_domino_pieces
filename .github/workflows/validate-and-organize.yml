@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "config.toml"
+      - 'config.toml'
 
 jobs:
   validate-and-organize:
@@ -34,10 +34,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run organize, build and publish images
+      - name: pip list
+        run: pip list | grep domino
+
+      - name: Run organize and build images
+        run: |
+          domino piece organize --build-images --source-url=https://github.com/${{github.repository}}
+
+      # - name: Install Tests Dependencies
+      #   run: pip install pytest
+
+      # - name: Run tests over built images
+      #   run: |
+      #     pytest
+      
+      - name: Publish images
         env:
           GHCR_USERNAME: ${{ github.actor }}
-        run: domino piece organize --build-images --publish-images --registry-token=${{ secrets.REGISTRY_TOKEN }} --source-url=https://github.com/${{github.repository}}
+        run: domino piece publish-images --registry-token ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit files
         run: |
