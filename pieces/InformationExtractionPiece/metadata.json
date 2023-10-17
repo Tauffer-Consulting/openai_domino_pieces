@@ -11,6 +11,6 @@
     ],
     "style": {
         "node_label": "Information Extraction",
-        "icon_class_name": "fas fa-align-right"
+        "icon_class_name": "fa-solid:align-right"
     }
 }

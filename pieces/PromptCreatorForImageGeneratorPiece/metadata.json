@@ -7,6 +7,6 @@
 
     "style": {
         "node_label": "Prompt Creator for Image Generator AI",
-        "icon_class_name": "fas fa-terminal"
+        "icon_class_name": "fa-solid:terminal"
     }
 }

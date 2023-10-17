@@ -10,6 +10,6 @@
     ],
     "style": {
         "node_label": "Text Generator",
-        "icon_class_name": "fas fa-i-cursor"
+        "icon_class_name": "fa-solid:i-cursor"
     }
 }
