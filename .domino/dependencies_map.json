@@ -5,16 +5,16 @@
             "requirements_file": null
         },
         "pieces": [
-            "PromptCreatorForImageGeneratorPiece",
-            "AudioTranscriptionPiece",
-            "ImageGeneratorPiece",
             "TextGeneratorPiece",
             "TextSummarizerPiece",
+            "ImageGeneratorPiece",
+            "PromptCreatorForImageGeneratorPiece",
+            "AudioTranscriptionPiece",
             "InformationExtractionPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.3.2-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.3.3-group0"
     }
 }

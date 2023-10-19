@@ -1,386 +1,4 @@
 {
-    "PromptCreatorForImageGeneratorPiece": {
-        "name": "PromptCreatorForImageGeneratorPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile_01",
-            "requirements_file": null
-        },
-        "tags": [],
-        "style": {
-            "node_label": "Prompt Creator for Image Generator AI",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-terminal",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
-        "input_schema": {
-            "title": "InputModel",
-            "description": "PromptCreatorForImageGeneratorPiece input model",
-            "type": "object",
-            "properties": {
-                "context": {
-                    "title": "Context",
-                    "description": "The context to generate an image from",
-                    "type": "string"
-                },
-                "art_style": {
-                    "title": "Art Style",
-                    "description": "The art style to generate an image from. Your imagination is the limit!",
-                    "default": "You know many art styles, so you always vary a lot on your suggestions!",
-                    "type": "string"
-                },
-                "output_type": {
-                    "description": "The type of output to return",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                },
-                "openai_model": {
-                    "description": "OpenAI model to bring your character to life",
-                    "default": "gpt-3.5-turbo",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/LLMModelType"
-                        }
-                    ]
-                },
-                "completion_max_tokens": {
-                    "title": "Completion Max Tokens",
-                    "description": "The maximum number of tokens to generate the prompt.",
-                    "default": 350,
-                    "type": "integer"
-                },
-                "temperature": {
-                    "title": "Temperature",
-                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
-                    "default": 0.7,
-                    "exclusiveMinimum": 0,
-                    "maximum": 1,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "context"
-            ],
-            "definitions": {
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type",
-                    "enum": [
-                        "file",
-                        "string",
-                        "file_and_string"
-                    ],
-                    "type": "string"
-                },
-                "LLMModelType": {
-                    "title": "LLMModelType",
-                    "description": "OpenAI model type",
-                    "enum": [
-                        "gpt-3.5-turbo",
-                        "gpt-4",
-                        "text-ada-001",
-                        "text-babbage-001",
-                        "text-curie-001",
-                        "text-davinci-003"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "PromptCreatorForImageGeneratorPiece output model",
-            "type": "object",
-            "properties": {
-                "generated_prompt_string": {
-                    "title": "Generated Prompt String",
-                    "description": "The generated prompt to pass to an image generator AI",
-                    "type": "string"
-                },
-                "generated_prompt_file_path": {
-                    "title": "Generated Prompt File Path",
-                    "description": "The path to the generated prompt, in .txt format",
-                    "format": "file-path",
-                    "type": "string"
-                }
-            }
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "PromptCreatorForImageGeneratorPiece secrets model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "Your OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptCreatorForImageGeneratorPiece"
-    },
-    "AudioTranscriptionPiece": {
-        "name": "AudioTranscriptionPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile_01",
-            "requirements_file": null
-        },
-        "tags": [
-            "OpenAI"
-        ],
-        "style": {
-            "node_label": "OpenAI Audio Transcript",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-headset",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
-        "container_resources": {
-            "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-            },
-            "limits": {
-                "cpu": "500m",
-                "memory": "512Mi"
-            }
-        },
-        "input_schema": {
-            "title": "InputModel",
-            "description": "AudioTranscriptPiece input model",
-            "type": "object",
-            "properties": {
-                "audio_file_path": {
-                    "title": "Audio File Path",
-                    "description": "The path to the audio file to process.",
-                    "format": "file-path",
-                    "type": "string"
-                },
-                "output_type": {
-                    "description": "The type of output for the result text",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                },
-                "temperature": {
-                    "title": "Temperature",
-                    "description": "What sampling temperature to use, between 0 and 1",
-                    "default": 0.1,
-                    "exclusiveMinimum": 0.0,
-                    "maximum": 1,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "audio_file_path"
-            ],
-            "definitions": {
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type for the result text",
-                    "enum": [
-                        "file",
-                        "string",
-                        "file_and_string"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "AudioTranscriptPiece output model",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "title": "Message",
-                    "description": "Output message to log",
-                    "type": "string"
-                },
-                "string_transcription_result": {
-                    "title": "String Transcription Result",
-                    "description": "The result transcription text as a string.",
-                    "type": "string"
-                },
-                "file_path_transcription_result": {
-                    "title": "File Path Transcription Result",
-                    "description": "The result transcription text as a file path.",
-                    "format": "file-path",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "message"
-            ]
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "AudioTranscriptPiece secret model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionPiece"
-    },
-    "ImageGeneratorPiece": {
-        "name": "ImageGeneratorPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile_01",
-            "requirements_file": null
-        },
-        "tags": [],
-        "style": {
-            "node_label": "DALL-E Image Generator",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fas fa-image",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
-        "input_schema": {
-            "title": "InputModel",
-            "description": "ImageGeneratorPiece input model",
-            "type": "object",
-            "properties": {
-                "prompt": {
-                    "title": "Prompt",
-                    "description": "A text description of the desired image",
-                    "type": "string"
-                },
-                "size": {
-                    "description": "The size of the generated images",
-                    "default": "1024x1024",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/ImageSize"
-                        }
-                    ]
-                },
-                "image_format": {
-                    "description": "The format in which the generated image is returned",
-                    "default": "url",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/ImageFormat"
-                        }
-                    ]
-                },
-                "output_type": {
-                    "description": "The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.",
-                    "default": "string",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/OutputTypeType"
-                        }
-                    ]
-                }
-            },
-            "required": [
-                "prompt"
-            ],
-            "definitions": {
-                "ImageSize": {
-                    "title": "ImageSize",
-                    "description": "Image size to generate",
-                    "enum": [
-                        "1024x1024",
-                        "512x512",
-                        "256x256"
-                    ],
-                    "type": "string"
-                },
-                "ImageFormat": {
-                    "title": "ImageFormat",
-                    "description": "Image format to return",
-                    "enum": [
-                        "url",
-                        "image_png",
-                        "base64_string"
-                    ],
-                    "type": "string"
-                },
-                "OutputTypeType": {
-                    "title": "OutputTypeType",
-                    "description": "Output type for the result text",
-                    "enum": [
-                        "file",
-                        "string",
-                        "file_and_string"
-                    ],
-                    "type": "string"
-                }
-            }
-        },
-        "output_schema": {
-            "title": "OutputModel",
-            "description": "ImageGeneratorPiece output model",
-            "type": "object",
-            "properties": {
-                "output_string": {
-                    "title": "Output String",
-                    "description": "The generated image as string",
-                    "type": "string"
-                },
-                "output_file_path": {
-                    "title": "Output File Path",
-                    "description": "Path to the generated image",
-                    "format": "file-path",
-                    "type": "string"
-                }
-            }
-        },
-        "secrets_schema": {
-            "title": "SecretsModel",
-            "description": "ImageGeneratorPiece secrets model",
-            "type": "object",
-            "properties": {
-                "OPENAI_API_KEY": {
-                    "title": "Openai Api Key",
-                    "description": "Your OpenAI API key",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "OPENAI_API_KEY"
-            ]
-        },
-        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/ImageGeneratorPiece"
-    },
     "TextGeneratorPiece": {
         "name": "TextGeneratorPiece",
         "dependency": {
@@ -398,7 +16,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-i-cursor",
+            "icon_class_name": "fa-solid:i-cursor",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -559,7 +177,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-align-right",
+            "icon_class_name": "fa-solid:align-right",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -685,6 +303,388 @@
         },
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextSummarizerPiece"
     },
+    "ImageGeneratorPiece": {
+        "name": "ImageGeneratorPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [],
+        "style": {
+            "node_label": "DALL-E Image Generator",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:image",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece utilizes DALL-E, an OpenAI model that generates images based on a prompt.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "ImageGeneratorPiece input model",
+            "type": "object",
+            "properties": {
+                "prompt": {
+                    "title": "Prompt",
+                    "description": "A text description of the desired image",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The size of the generated images",
+                    "default": "1024x1024",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ImageSize"
+                        }
+                    ]
+                },
+                "image_format": {
+                    "description": "The format in which the generated image is returned",
+                    "default": "url",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ImageFormat"
+                        }
+                    ]
+                },
+                "output_type": {
+                    "description": "The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "prompt"
+            ],
+            "definitions": {
+                "ImageSize": {
+                    "title": "ImageSize",
+                    "description": "Image size to generate",
+                    "enum": [
+                        "1024x1024",
+                        "512x512",
+                        "256x256"
+                    ],
+                    "type": "string"
+                },
+                "ImageFormat": {
+                    "title": "ImageFormat",
+                    "description": "Image format to return",
+                    "enum": [
+                        "url",
+                        "image_png",
+                        "base64_string"
+                    ],
+                    "type": "string"
+                },
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the result text",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "ImageGeneratorPiece output model",
+            "type": "object",
+            "properties": {
+                "output_string": {
+                    "title": "Output String",
+                    "description": "The generated image as string",
+                    "type": "string"
+                },
+                "output_file_path": {
+                    "title": "Output File Path",
+                    "description": "Path to the generated image",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            }
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "ImageGeneratorPiece secrets model",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/ImageGeneratorPiece"
+    },
+    "PromptCreatorForImageGeneratorPiece": {
+        "name": "PromptCreatorForImageGeneratorPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [],
+        "style": {
+            "node_label": "Prompt Creator for Image Generator AI",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:terminal",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece utilizes OpenAI to generates a prompt to pass to an image generator AI.",
+        "input_schema": {
+            "title": "InputModel",
+            "description": "PromptCreatorForImageGeneratorPiece input model",
+            "type": "object",
+            "properties": {
+                "context": {
+                    "title": "Context",
+                    "description": "The context to generate an image from",
+                    "type": "string"
+                },
+                "art_style": {
+                    "title": "Art Style",
+                    "description": "The art style to generate an image from. Your imagination is the limit!",
+                    "default": "You know many art styles, so you always vary a lot on your suggestions!",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output to return",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "openai_model": {
+                    "description": "OpenAI model to bring your character to life",
+                    "default": "gpt-3.5-turbo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/LLMModelType"
+                        }
+                    ]
+                },
+                "completion_max_tokens": {
+                    "title": "Completion Max Tokens",
+                    "description": "The maximum number of tokens to generate the prompt.",
+                    "default": 350,
+                    "type": "integer"
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
+                    "default": 0.7,
+                    "exclusiveMinimum": 0,
+                    "maximum": 1,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "context"
+            ],
+            "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                },
+                "LLMModelType": {
+                    "title": "LLMModelType",
+                    "description": "OpenAI model type",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "gpt-4",
+                        "text-ada-001",
+                        "text-babbage-001",
+                        "text-curie-001",
+                        "text-davinci-003"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "PromptCreatorForImageGeneratorPiece output model",
+            "type": "object",
+            "properties": {
+                "generated_prompt_string": {
+                    "title": "Generated Prompt String",
+                    "description": "The generated prompt to pass to an image generator AI",
+                    "type": "string"
+                },
+                "generated_prompt_file_path": {
+                    "title": "Generated Prompt File Path",
+                    "description": "The path to the generated prompt, in .txt format",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            }
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "PromptCreatorForImageGeneratorPiece secrets model",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "Your OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/PromptCreatorForImageGeneratorPiece"
+    },
+    "AudioTranscriptionPiece": {
+        "name": "AudioTranscriptionPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [
+            "OpenAI"
+        ],
+        "style": {
+            "node_label": "OpenAI Audio Transcript",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:headset",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "This Piece uses the OpenAI API to extract text transcripts from audio.",
+        "container_resources": {
+            "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+            },
+            "limits": {
+                "cpu": "500m",
+                "memory": "512Mi"
+            }
+        },
+        "input_schema": {
+            "title": "InputModel",
+            "description": "AudioTranscriptPiece input model",
+            "type": "object",
+            "properties": {
+                "audio_file_path": {
+                    "title": "Audio File Path",
+                    "description": "The path to the audio file to process.",
+                    "format": "file-path",
+                    "type": "string"
+                },
+                "output_type": {
+                    "description": "The type of output for the result text",
+                    "default": "string",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/OutputTypeType"
+                        }
+                    ]
+                },
+                "temperature": {
+                    "title": "Temperature",
+                    "description": "What sampling temperature to use, between 0 and 1",
+                    "default": 0.1,
+                    "exclusiveMinimum": 0.0,
+                    "maximum": 1,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "audio_file_path"
+            ],
+            "definitions": {
+                "OutputTypeType": {
+                    "title": "OutputTypeType",
+                    "description": "Output type for the result text",
+                    "enum": [
+                        "file",
+                        "string",
+                        "file_and_string"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "output_schema": {
+            "title": "OutputModel",
+            "description": "AudioTranscriptPiece output model",
+            "type": "object",
+            "properties": {
+                "message": {
+                    "title": "Message",
+                    "description": "Output message to log",
+                    "type": "string"
+                },
+                "string_transcription_result": {
+                    "title": "String Transcription Result",
+                    "description": "The result transcription text as a string.",
+                    "type": "string"
+                },
+                "file_path_transcription_result": {
+                    "title": "File Path Transcription Result",
+                    "description": "The result transcription text as a file path.",
+                    "format": "file-path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "secrets_schema": {
+            "title": "SecretsModel",
+            "description": "AudioTranscriptPiece secret model",
+            "type": "object",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "title": "Openai Api Key",
+                    "description": "OpenAI API key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ]
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionPiece"
+    },
     "InformationExtractionPiece": {
         "name": "InformationExtractionPiece",
         "dependency": {
@@ -703,7 +703,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fas fa-align-right",
+            "icon_class_name": "fa-solid:align-right",
             "iconStyle": {
                 "cursor": "pointer"
             }
