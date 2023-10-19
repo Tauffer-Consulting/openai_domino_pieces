@@ -11,6 +11,6 @@
     ],
     "style": {
         "node_label": "Text Summarizer",
-        "icon_class_name": "fas fa-align-right"
+        "icon_class_name": "fa-solid:align-right"
     }
 }

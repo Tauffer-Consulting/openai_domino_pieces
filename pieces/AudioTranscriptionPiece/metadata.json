@@ -19,6 +19,6 @@
     ],
     "style": {
         "node_label": "OpenAI Audio Transcript",
-        "icon_class_name": "fas fa-headset"
+        "icon_class_name": "fa-solid:headset"
     }
 }
