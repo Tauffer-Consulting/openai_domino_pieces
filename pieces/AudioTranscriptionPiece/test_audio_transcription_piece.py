@@ -1,3 +1,4 @@
+import pytest
 from domino.testing import piece_dry_run
 from pathlib import PosixPath
 from pydantic import FilePath
@@ -23,6 +24,8 @@ def run_piece(
         }
 )
 
+
+@pytest.mark.skip(reason="Skipping until we have a test audio file")
 def test_piece():
     piece_kwargs = {
         "audio_file_path": "",
@@ -34,11 +37,11 @@ def test_piece():
     )
 
     if piece_kwargs["output_type"] == "file":
-        assert output.string_transcription_result == None
-        assert type(output.file_path_transcription_result) == PosixPath and output.file_path_transcription_result.name.endswith(".txt")
+        assert output.get("string_transcription_result") == None
+        assert output.get("file_path_transcription_result").endswith(".txt")
     if piece_kwargs["output_type"] == "string":
-        assert output.string_transcription_result != None and type(output.string_transcription_result) == str
-        assert output.file_path_transcription_result == None
+        assert output.get("string_transcription_result") != None and type(output.get("string_transcription_result")) == str
+        assert output.get("file_path_transcription_result") == None
     if piece_kwargs["output_type"] == "file_and_string":
-        assert output.string_transcription_result != None and type(output.string_transcription_result) == str
-        assert type(output.file_path_transcription_result) == PosixPath and output.file_path_transcription_result.name.endswith(".txt")
+        assert output.get("string_transcription_result") != None and type(output.get("string_transcription_result")) == str
+        assert output.get("file_path_transcription_result").endswith(".txt")

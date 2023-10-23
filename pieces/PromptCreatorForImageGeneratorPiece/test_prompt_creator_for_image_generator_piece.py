@@ -1,6 +1,4 @@
 from domino.testing import piece_dry_run
-from dotenv import load_dotenv
-from pathlib import PosixPath
 import tiktoken
 import os
 
@@ -12,13 +10,12 @@ def run_piece(
         openai_model: str = "gpt-3.5-turbo",
         temperature: float = 0.7,
 ):
-    
-    load_dotenv()
+
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
     return piece_dry_run(
         piece_name="PromptCreatorForImageGeneratorPiece",
-        piece_data={
+        input_data={
             "context": context,
             "art_style": art_style,
             "completion_max_tokens": completion_max_tokens,
@@ -46,25 +43,23 @@ def test_piece():
     )
 
     if piece_kwargs["output_type"] == "file":
-        assert output.generated_prompt_string == None
-        assert type(output.generated_prompt_file_path) == PosixPath and output.generated_prompt_file_path.name.endswith(".txt")
-        generated_prompt = output.generated_prompt_file_path.read_text()
+        assert output.get("generated_prompt_string") == None
+        assert output.get("generated_prompt_file_path").endswith(".txt")
+        generated_prompt_path = output.get("generated_prompt_file_path")
+        with open(generated_prompt_path, "r") as f:
+            generated_prompt = f.read()
+        
     if piece_kwargs["output_type"] == "string":
-        assert output.generated_prompt_string != None and type(output.generated_prompt_string) == str
-        assert output.generated_prompt_file_path == None
-        generated_prompt = output.generated_prompt_string
+        assert output.get("generated_prompt_string") != None and type(output.get("generated_prompt_string")) == str
+        assert output.get("generated_prompt_file_path") == None
+        generated_prompt = output.get("generated_prompt_string")
     if piece_kwargs["output_type"] == "file_and_string":
-        assert output.generated_prompt_string != None and type(output.generated_prompt_string) == str
-        assert type(output.generated_prompt_file_path) == PosixPath and output.generated_prompt_file_path.name.endswith(".txt")
-        generated_prompt = output.generated_prompt_string
-    
+        assert output.get("generated_prompt_string") != None and type(output.get("generated_prompt_string")) == str
+        assert output.get("generated_prompt_file_path").endswith(".txt")
+        generated_prompt = output.get("generated_prompt_string")
+
     encoding = tiktoken.encoding_for_model(piece_kwargs["openai_model"])
     text_tokens = encoding.encode(text=generated_prompt)
     assert len(text_tokens) <= piece_kwargs["completion_max_tokens"]
 
-    
-    
 
-
-if __name__ == "__main__":
-    test_piece()

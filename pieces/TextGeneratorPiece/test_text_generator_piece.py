@@ -1,7 +1,4 @@
 from domino.testing import piece_dry_run
-from dotenv import load_dotenv
-from pathlib import PosixPath
-from pydantic import FilePath
 from typing import List
 import tiktoken
 import os
@@ -14,13 +11,12 @@ def run_piece(
        completion_max_tokens: int,
        temperature: float = 0.3
 ):
-    
-    load_dotenv()
+
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
     return piece_dry_run(
         piece_name="TextGeneratorPiece",
-        piece_data={
+        input_data={
             "template": template,
             "prompt_args": prompt_args,
             "output_type": output_type,
@@ -50,17 +46,19 @@ def test_piece():
     )
 
     if piece_kwargs["output_type"] == "file":
-        assert output.string_generated_text == None
-        assert type(output.file_path_generated_text) == PosixPath and output.file_path_generated_text.name.endswith(".txt")
-        generated_prompt = output.file_path_generated_text.read_text()
+        assert output.get("string_generated_text") == None
+        assert output.get("file_path_generated_text").endswith(".txt")
+        generated_prompt_path = output.get("file_path_generated_text")
+        with open(generated_prompt_path, "r") as f:
+            generated_prompt = f.read()
     if piece_kwargs["output_type"] == "string":
-        assert output.string_generated_text != None and type(output.string_generated_text) == str
-        assert output.file_path_generated_text == None
-        generated_prompt = output.string_generated_text
+        assert output.get("string_generated_text") != None and type(output.get("string_generated_text")) == str
+        assert output.get("file_path_generated_text") == None
+        generated_prompt = output.get("string_generated_text")
     if piece_kwargs["output_type"] == "file_and_string":
-        assert output.string_generated_text != None and type(output.string_generated_text) == str
-        assert type(output.file_path_generated_text) == PosixPath and output.file_path_generated_text.name.endswith(".txt")
-        generated_prompt = output.string_generated_text
+        assert output.get("string_generated_text") != None and type(output.get("string_generated_text")) == str
+        assert output.get("file_path_generated_text").endswith(".txt")
+        generated_prompt = output.get("string_generated_text")
     
     encoding = tiktoken.encoding_for_model(piece_kwargs["openai_model"])
     text_tokens = encoding.encode(text=generated_prompt)
