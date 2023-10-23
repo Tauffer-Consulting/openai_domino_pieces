@@ -17,10 +17,10 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
 
-      - name: Set up Python 3.8
+      - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
-          python-version: "3.8"
+          python-version: "3.10"
 
       - name: Pip install packages
         run: |
@@ -41,12 +41,14 @@ jobs:
         run: |
           domino piece organize --build-images --source-url=https://github.com/${{github.repository}}
 
-      # - name: Install Tests Dependencies
-      #   run: pip install pytest
+      - name: Install Tests Dependencies
+        run: pip install pytest
 
-      # - name: Run tests over built images
-      #   run: |
-      #     pytest
+      - name: Run tests over built images
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          pytest
       
       - name: Publish images
         env:
