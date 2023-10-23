@@ -1,7 +1,7 @@
 from domino.testing import piece_dry_run
 import tiktoken
 import os
-from pathlib import Path
+
 
 
 def run_piece(
@@ -30,12 +30,12 @@ def run_piece(
         }
 )
 
-def test_piece():
+def test_prompt_creator_for_image_generator_piece():
     piece_kwargs = {
         "context": "Explorers dive into a mesmerizing underwater city, discovering ancient secrets, mysterious symbols, and evidence of an advanced civilization.",
         "art_style": "surrealistic oceanic exploration",
         "completion_max_tokens": 350,
-        "output_type": "file",
+        "output_type": "file_and_string",
         "openai_model": "gpt-3.5-turbo",
         "temperature": 0.7,
     }
@@ -47,7 +47,7 @@ def test_piece():
     if piece_kwargs["output_type"] == "file":
         assert output.get("generated_prompt_string") == None
         assert output.get("generated_prompt_file_path").endswith(".txt")
-        generated_prompt_path = Path(output.get("generated_prompt_file_path"))
+        generated_prompt_path = output.get("generated_prompt_file_path")
         with open(generated_prompt_path, "r") as f:
             generated_prompt = f.read()
         

@@ -3,6 +3,7 @@ from typing import List
 import tiktoken
 import os
 
+
 def run_piece(
        template: str,
        prompt_args: List[dict],
@@ -29,14 +30,14 @@ def run_piece(
         }
 )
 
-def test_piece():
+def test_text_generator_piece():
     template = "tell me about the history of {event_history}"
     prompt_args = [{"arg_name": "event_history", "arg_value": "artifical intelligence"}]
 
     piece_kwargs = {
         "template": template,
         "prompt_args": prompt_args,
-        "output_type": "file",
+        "output_type": "file_and_string",
         "completion_max_tokens": 500,
         "openai_model": "gpt-3.5-turbo",
     }
@@ -48,9 +49,6 @@ def test_piece():
     if piece_kwargs["output_type"] == "file":
         assert output.get("string_generated_text") == None
         assert output.get("file_path_generated_text").endswith(".txt")
-        generated_prompt_path = output.get("file_path_generated_text")
-        with open(generated_prompt_path, "r") as f:
-            generated_prompt = f.read()
     if piece_kwargs["output_type"] == "string":
         assert output.get("string_generated_text") != None and type(output.get("string_generated_text")) == str
         assert output.get("file_path_generated_text") == None
@@ -64,6 +62,3 @@ def test_piece():
     text_tokens = encoding.encode(text=generated_prompt)
     assert len(text_tokens) <= piece_kwargs["completion_max_tokens"]
 
-
-if __name__ == "__main__":
-    test_piece()
