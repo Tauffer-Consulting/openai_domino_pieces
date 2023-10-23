@@ -68,10 +68,3 @@ Within the surrealistic tapestry of this underwater world, the divers unearth ev
     encoding = tiktoken.encoding_for_model(piece_kwargs["openai_model"])
     text_tokens = encoding.encode(text=generated_prompt)
     assert len(text_tokens) <= piece_kwargs["completion_max_tokens"]
-
-    
-    
-
-
-if __name__ == "__main__":
-    test_piece()
