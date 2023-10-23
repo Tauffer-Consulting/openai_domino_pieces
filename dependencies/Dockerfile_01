@@ -1,4 +1,4 @@
-FROM ghcr.io/tauffer-consulting/domino-airflow-pod:latest
+FROM ghcr.io/tauffer-consulting/domino-base-piece:latest
 
 # Install specific requirements
 RUN apt-get -y update
