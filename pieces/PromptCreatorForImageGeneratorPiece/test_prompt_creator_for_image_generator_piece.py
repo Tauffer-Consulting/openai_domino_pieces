@@ -1,6 +1,8 @@
 from domino.testing import piece_dry_run
 import tiktoken
 import os
+from pathlib import Path
+
 
 def run_piece(
         context: str,
@@ -45,7 +47,7 @@ def test_piece():
     if piece_kwargs["output_type"] == "file":
         assert output.get("generated_prompt_string") == None
         assert output.get("generated_prompt_file_path").endswith(".txt")
-        generated_prompt_path = output.get("generated_prompt_file_path")
+        generated_prompt_path = Path(output.get("generated_prompt_file_path"))
         with open(generated_prompt_path, "r") as f:
             generated_prompt = f.read()
         
