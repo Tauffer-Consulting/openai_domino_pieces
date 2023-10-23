@@ -1,4 +1,4 @@
-from domino.scripts.piece_dry_run import piece_dry_run
+from domino.testing import piece_dry_run
 import os
 
 
@@ -20,14 +20,13 @@ extract_items = [
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 output = piece_dry_run(
-    repository_folder_path="../",
     piece_name="InformationExtractionPiece",
-    piece_input={
+    piece_data={
         "input_text": input_text,
         "openai_model": openai_model,
         "extract_items": extract_items
     },
-    secrets_input={
+    secrets_data={
         "OPENAI_API_KEY": OPENAI_API_KEY
     }
 )

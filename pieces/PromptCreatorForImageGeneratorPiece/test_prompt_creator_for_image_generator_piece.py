@@ -1,4 +1,4 @@
-from domino.scripts.piece_dry_run import piece_dry_run
+from domino.testing import piece_dry_run
 from dotenv import load_dotenv
 from pathlib import PosixPath
 import tiktoken
@@ -17,26 +17,18 @@ def run_piece(
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
     return piece_dry_run(
-    
-    #local piece repository path
-    repository_folder_path="../",
-
-    #name of the piece
-    piece_name="PromptCreatorForImageGeneratorPiece",
-
-    #values to the InputModel arguments
-    piece_input={
-        "context": context,
-        "art_style": art_style,
-        "completion_max_tokens": completion_max_tokens,
-        "output_type": output_type,
-        "openai_model": openai_model,
-        "temperature": temperature
-    },    
-    #values to the SecretModel arguments
-    secrets_input={ 
-        "OPENAI_API_KEY": OPENAI_API_KEY
-    }
+        piece_name="PromptCreatorForImageGeneratorPiece",
+        piece_data={
+            "context": context,
+            "art_style": art_style,
+            "completion_max_tokens": completion_max_tokens,
+            "output_type": output_type,
+            "openai_model": openai_model,
+            "temperature": temperature
+        },
+        secrets_data={ 
+            "OPENAI_API_KEY": OPENAI_API_KEY
+        }
 )
 
 def test_piece():

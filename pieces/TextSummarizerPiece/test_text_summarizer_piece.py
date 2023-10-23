@@ -1,4 +1,4 @@
-from domino.scripts.piece_dry_run import piece_dry_run
+from domino.testing import piece_dry_run
 from dotenv import load_dotenv
 from pathlib import PosixPath
 from pydantic import FilePath
@@ -20,28 +20,20 @@ def run_piece(
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
     return piece_dry_run(
-    
-    #local piece repository path
-    repository_folder_path="../",
-
-    #name of the piece
-    piece_name="TextSummarizerPiece",
-
-    #values to the InputModel arguments
-    piece_input={
-        "output_type": output_type,
-        "completion_max_tokens": completion_max_tokens,
-        "text": text,
-        "text_file_path": text_file_path,
-        "chunk_size": chunk_size,
-        "chunk_overlap_rate": chunk_overlap_rate,
-        "openai_model": openai_model,
-        "temperature": temperature,
-    },    
-    #values to the SecretModel arguments
-    secrets_input={ 
-        "OPENAI_API_KEY": OPENAI_API_KEY
-    }
+        piece_name="TextSummarizerPiece",
+        piece_data={
+            "output_type": output_type,
+            "completion_max_tokens": completion_max_tokens,
+            "text": text,
+            "text_file_path": text_file_path,
+            "chunk_size": chunk_size,
+            "chunk_overlap_rate": chunk_overlap_rate,
+            "openai_model": openai_model,
+            "temperature": temperature,
+        },
+        secrets_data={ 
+            "OPENAI_API_KEY": OPENAI_API_KEY
+        }
 )
 
 def test_piece():
