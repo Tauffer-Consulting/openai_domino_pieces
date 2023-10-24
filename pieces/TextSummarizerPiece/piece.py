@@ -88,7 +88,7 @@ class TextSummarizerPiece(BasePiece):
         token_limits = TokenLimit[input_data.openai_model.name].value
         completion_max_tokens = input_data.completion_max_tokens
         text_token_count = token_limits
-        if input_data.text_file_path.strip():
+        if input_data.text_file_path:
              with open(input_data.text_file_path, "r") as f:
                 text = f.read()
         else:
