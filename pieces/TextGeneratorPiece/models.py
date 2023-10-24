@@ -29,12 +29,10 @@ class InnerArgModel(BaseModel):
     Inner argument model to use in the prompt args
     """
     arg_name: str = Field(
-        default=None,
         description='Name of the prompt argument.',
         from_upstream="never"
     )
     arg_value: str = Field(
-        default=None,
         description='Value of the prompt argument.',
     )
 

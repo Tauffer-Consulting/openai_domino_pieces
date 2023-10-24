@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, Extra
 from enum import Enum
 from typing import List
+from typing import Optional
 
 
 class LLMModelType(str, Enum):
@@ -23,12 +24,10 @@ class ExtractItemType(str, Enum):
 
 class ExtractItemsModel(BaseModel):
     name: str = Field(
-        default=None,
         description='Name of the output argument.',
         from_upstream="never"
     )
     description: str = Field(
-        default=None,
         description='Description of the output argument.',
         from_upstream="never"
     )
@@ -44,7 +43,6 @@ class InputModel(BaseModel):
     InformationExtractionPiece Input model
     """    
     input_text: str = Field(
-        default=None,
         description='Source text from where information should be extracted.',
         from_upstream="always"
     )
@@ -54,8 +52,8 @@ class InputModel(BaseModel):
     )
     extract_items: List[ExtractItemsModel] = Field(
         default=[
-            ExtractItemsModel(name="name", type=ExtractItemType.string),
-            ExtractItemsModel(name="age", type=ExtractItemType.integer),
+            ExtractItemsModel(name="name", type=ExtractItemType.string, description="Name of the person."),
+            ExtractItemsModel(name="age", type=ExtractItemType.integer, description="Age of the person."),
         ],
         description='Information items to be extracted from source text.',
         from_upstream="never"
