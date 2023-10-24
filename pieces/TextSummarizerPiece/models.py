@@ -31,34 +31,42 @@ class InputModel(BaseModel):
     text: Optional[str] = Field(
         default=None,
         description="Text to summarize",
+        required=False # Setting to false because can use text or text_file_path
     )
     text_file_path: Optional[str] = Field(
         default=None,
-        description="Use it only if not using text field. File path to the text to summarize"
+        description="Use it only if not using text field. File path to the text to summarize",
+        required=False # Setting to false because can use text or text_file_path
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
-        description="The type of output to return"
+        description="The type of output to return",
+        required=True
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
-        description="OpenAI model name to use for summarization"
+        description="OpenAI model name to use for summarization",
+        required=True
     )
     chunk_size: int = Field(
         default=1000,
-        description="Chunk size, measured in tokens, of each pre-summary chunk"
+        description="Chunk size, measured in tokens, of each pre-summary chunk",
+        required=True
     )
     chunk_overlap_rate: float = Field(
         default=0.2,
-        description="The percentage of overlap between each chunk"
+        description="The percentage of overlap between each chunk",
+        required=True
     )
     completion_max_tokens: int = Field(
         default=500,
-        description="The maximum number of tokens to generate in the summary."
+        description="The maximum number of tokens to generate in the summary.",
+        required=True
     )
     temperature: float = Field(
         description="Temperature of the model, between 0 (more precise) and 1 (more creative)",
-        default=0.2
+        default=0.2,
+        required=True
     )
 
 

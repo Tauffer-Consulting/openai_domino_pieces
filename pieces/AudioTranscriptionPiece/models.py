@@ -19,16 +19,19 @@ class InputModel(BaseModel):
     audio_file_path: str = Field(
         ...,
         description='The path to the audio file to process.',
+        required=True
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
-        description='The type of output for the result text'
+        description='The type of output for the result text',
+        required=True
     )
     temperature: float = Field(
         description="What sampling temperature to use, between 0 and 1",
         default=0.1,
         gt=0.,
-        le=1
+        le=1,
+        required=True
     )
 
 

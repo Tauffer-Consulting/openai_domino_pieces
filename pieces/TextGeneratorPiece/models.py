@@ -30,10 +30,12 @@ class InnerArgModel(BaseModel):
     """
     arg_name: str = Field(
         description='Name of the prompt argument.',
-        from_upstream="never"
+        from_upstream="never",
+        required=True
     )
     arg_value: str = Field(
         description='Value of the prompt argument.',
+        required=True
     )
 
 
@@ -44,6 +46,7 @@ class InputModel(BaseModel):
     template: str = Field(
         default="What is the capital city of {country}?",
         description="Compose a prompt template using the {arg_name} notation to insert arguments.",
+        required=True
     )
     prompt_args: List[InnerArgModel] = Field(
         default=[InnerArgModel(arg_name="country", arg_value="Brazil")],
@@ -51,21 +54,25 @@ class InputModel(BaseModel):
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string, 
-        description="The type of output to return."
+        description="The type of output to return.",
+        required=True
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo, 
-        description="OpenAI model name."
+        description="OpenAI model name.",
+        required=True
     )
     completion_max_tokens: int = Field(
         default=500, 
-        description="The maximum number of tokens in the generated text."
+        description="The maximum number of tokens in the generated text.",
+        required=True
     )
     temperature: float = Field(
         default=0.3,
         description="Temperature of the model, between 0 (more precise) and 1 (more creative).",
         gt=0,
         lt=1,
+        required=True
     )
 
 
