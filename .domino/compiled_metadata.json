@@ -97,7 +97,11 @@
                             "description": "Value of the prompt argument.",
                             "type": "string"
                         }
-                    }
+                    },
+                    "required": [
+                        "arg_name",
+                        "arg_value"
+                    ]
                 },
                 "OutputTypeType": {
                     "title": "OutputTypeType",
@@ -728,12 +732,12 @@
                     "default": [
                         {
                             "name": "name",
-                            "description": null,
+                            "description": "Name of the person.",
                             "type": "string"
                         },
                         {
                             "name": "age",
-                            "description": null,
+                            "description": "Age of the person.",
                             "type": "integer"
                         }
                     ],
@@ -744,6 +748,9 @@
                     }
                 }
             },
+            "required": [
+                "input_text"
+            ],
             "definitions": {
                 "LLMModelType": {
                     "title": "LLMModelType",
@@ -791,7 +798,11 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "required": [
+                        "name",
+                        "description"
+                    ]
                 }
             }
         },
