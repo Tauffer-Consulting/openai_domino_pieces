@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, Field
 from enum import Enum
 
 
@@ -31,7 +31,7 @@ class InputModel(BaseModel):
         default=None,
         description="Text to summarize",
     )
-    text_file_path: FilePath = Field(
+    text_file_path: str = Field(
         default=None,
         description="Use it only if not using text field. File path to the text to summarize"
     )
@@ -69,7 +69,7 @@ class OutputModel(BaseModel):
         default=None,
         description="summarized text"
     )
-    file_path_summarized_text: FilePath = Field(
+    file_path_summarized_text: str = Field(
         default=None,
         description="Path to summarized text file"
     )

@@ -1,5 +1,4 @@
 from domino.testing import piece_dry_run
-from pydantic import FilePath
 import tiktoken
 import os
 
@@ -7,7 +6,7 @@ def run_piece(
         output_type: str,
         completion_max_tokens: int,
         text: str = None,
-        text_file_path: FilePath = None,
+        text_file_path: str = None,
         chunk_size: int = 1000,
         chunk_overlap_rate: float = 0.2,
         openai_model: str = "gpt-3.5-turbo",

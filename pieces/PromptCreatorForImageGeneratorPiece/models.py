@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, Field
 from enum import Enum
 
 
@@ -61,7 +61,7 @@ class OutputModel(BaseModel):
         default=None,
         description="The generated prompt to pass to an image generator AI",
     )
-    generated_prompt_file_path: FilePath = Field(
+    generated_prompt_file_path: str = Field(
         default=None,
         description="The path to the generated prompt, in .txt format",
     )

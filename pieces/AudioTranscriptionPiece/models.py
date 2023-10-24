@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, Field
 from enum import Enum
 from typing import Union
 
@@ -16,7 +16,7 @@ class InputModel(BaseModel):
     """
     AudioTranscriptPiece input model
     """
-    audio_file_path: FilePath = Field(
+    audio_file_path: str = Field(
         ...,
         description='The path to the audio file to process.',
     )
@@ -43,7 +43,7 @@ class OutputModel(BaseModel):
         default=None,
         description="The result transcription text as a string."
     )
-    file_path_transcription_result: FilePath = Field(
+    file_path_transcription_result: str = Field(
         default=None,
         description="The result transcription text as a file path."
     )

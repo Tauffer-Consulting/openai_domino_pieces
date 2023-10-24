@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, Field
 from enum import Enum
 from typing import List
 
@@ -79,7 +79,7 @@ class OutputModel(BaseModel):
         default=None, 
         description="The generated text as a string"
     )
-    file_path_generated_text: FilePath = Field(
+    file_path_generated_text: str = Field(
         default=None, 
         description="The path to text file containing generated text"
     )

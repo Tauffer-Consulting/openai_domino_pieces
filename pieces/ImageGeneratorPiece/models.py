@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, Field
 from enum import Enum
 
 
@@ -59,7 +59,7 @@ class OutputModel(BaseModel):
         default=None,
         description="The generated image as string",
     )
-    output_file_path: FilePath = Field(
+    output_file_path: str = Field(
         default=None,
         description="Path to the generated image",
     )

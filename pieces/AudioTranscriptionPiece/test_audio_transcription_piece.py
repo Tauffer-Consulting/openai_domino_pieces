@@ -1,12 +1,10 @@
 import pytest
 from domino.testing import piece_dry_run
-from pathlib import PosixPath
-from pydantic import FilePath
 import os
 
 
 def run_piece(
-    audio_file_path: FilePath,
+    audio_file_path: str,
     output_type: str,
     temperature: float = 0.1,
 ):
