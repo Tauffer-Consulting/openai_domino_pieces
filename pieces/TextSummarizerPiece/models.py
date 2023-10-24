@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from enum import Enum
+from typing import Optional
 
 
 class OutputTypeType(str, Enum):
@@ -27,11 +28,11 @@ class InputModel(BaseModel):
     """
     TextSummarizerPiece Input model
     """    
-    text: str = Field(
+    text: Optional[str] = Field(
         default=None,
         description="Text to summarize",
     )
-    text_file_path: str = Field(
+    text_file_path: Optional[str] = Field(
         default=None,
         description="Use it only if not using text field. File path to the text to summarize"
     )

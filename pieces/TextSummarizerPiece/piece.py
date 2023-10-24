@@ -88,10 +88,10 @@ class TextSummarizerPiece(BasePiece):
         token_limits = TokenLimit[input_data.openai_model.name].value
         completion_max_tokens = input_data.completion_max_tokens
         text_token_count = token_limits
-        if input_data.text_file_path:
+        if input_data.text_file_path.strip():
              with open(input_data.text_file_path, "r") as f:
                 text = f.read()
-        else: 
+        else:
             text = input_data.text
 
         self.prompt = """Write a concise summary of the text below, while maintaining its original writing form.
