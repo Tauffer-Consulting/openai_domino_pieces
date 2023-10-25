@@ -31,7 +31,6 @@
                     "title": "Template",
                     "description": "Compose a prompt template using the {arg_name} notation to insert arguments.",
                     "default": "What is the capital city of {country}?",
-                    "required": true,
                     "type": "string"
                 },
                 "prompt_args": {
@@ -51,7 +50,6 @@
                 "output_type": {
                     "description": "The type of output to return.",
                     "default": "string",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -61,7 +59,6 @@
                 "openai_model": {
                     "description": "OpenAI model name.",
                     "default": "gpt-3.5-turbo",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
@@ -72,7 +69,6 @@
                     "title": "Completion Max Tokens",
                     "description": "The maximum number of tokens in the generated text.",
                     "default": 500,
-                    "required": true,
                     "type": "integer"
                 },
                 "temperature": {
@@ -81,7 +77,6 @@
                     "default": 0.3,
                     "exclusiveMinimum": 0,
                     "exclusiveMaximum": 1,
-                    "required": true,
                     "type": "number"
                 }
             },
@@ -95,13 +90,11 @@
                             "title": "Arg Name",
                             "description": "Name of the prompt argument.",
                             "from_upstream": "never",
-                            "required": true,
                             "type": "string"
                         },
                         "arg_value": {
                             "title": "Arg Value",
                             "description": "Value of the prompt argument.",
-                            "required": true,
                             "type": "string"
                         }
                     },
@@ -213,7 +206,6 @@
                 "output_type": {
                     "description": "The type of output to return",
                     "default": "string",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -223,7 +215,6 @@
                 "openai_model": {
                     "description": "OpenAI model name to use for summarization",
                     "default": "gpt-3.5-turbo",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
@@ -234,28 +225,24 @@
                     "title": "Chunk Size",
                     "description": "Chunk size, measured in tokens, of each pre-summary chunk",
                     "default": 1000,
-                    "required": true,
                     "type": "integer"
                 },
                 "chunk_overlap_rate": {
                     "title": "Chunk Overlap Rate",
                     "description": "The percentage of overlap between each chunk",
                     "default": 0.2,
-                    "required": true,
                     "type": "number"
                 },
                 "completion_max_tokens": {
                     "title": "Completion Max Tokens",
                     "description": "The maximum number of tokens to generate in the summary.",
                     "default": 500,
-                    "required": true,
                     "type": "integer"
                 },
                 "temperature": {
                     "title": "Temperature",
                     "description": "Temperature of the model, between 0 (more precise) and 1 (more creative)",
                     "default": 0.2,
-                    "required": true,
                     "type": "number"
                 }
             },
@@ -347,13 +334,11 @@
                 "prompt": {
                     "title": "Prompt",
                     "description": "A text description of the desired image",
-                    "required": true,
                     "type": "string"
                 },
                 "size": {
                     "description": "The size of the generated images",
                     "default": "1024x1024",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/ImageSize"
@@ -363,7 +348,6 @@
                 "image_format": {
                     "description": "The format in which the generated image is returned",
                     "default": "url",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/ImageFormat"
@@ -373,7 +357,6 @@
                 "output_type": {
                     "description": "The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.",
                     "default": "string",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -479,20 +462,17 @@
                 "context": {
                     "title": "Context",
                     "description": "The context to generate an image from",
-                    "required": true,
                     "type": "string"
                 },
                 "art_style": {
                     "title": "Art Style",
                     "description": "The art style to generate an image from. Your imagination is the limit!",
                     "default": "You know many art styles, so you always vary a lot on your suggestions!",
-                    "required": true,
                     "type": "string"
                 },
                 "output_type": {
                     "description": "The type of output to return",
                     "default": "string",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -502,7 +482,6 @@
                 "openai_model": {
                     "description": "OpenAI model to bring your character to life",
                     "default": "gpt-3.5-turbo",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
@@ -513,7 +492,6 @@
                     "title": "Completion Max Tokens",
                     "description": "The maximum number of tokens to generate the prompt.",
                     "default": 350,
-                    "required": true,
                     "type": "integer"
                 },
                 "temperature": {
@@ -522,7 +500,6 @@
                     "default": 0.7,
                     "exclusiveMinimum": 0,
                     "maximum": 1,
-                    "required": true,
                     "type": "number"
                 }
             },
@@ -629,13 +606,11 @@
                 "audio_file_path": {
                     "title": "Audio File Path",
                     "description": "The path to the audio file to process.",
-                    "required": true,
                     "type": "string"
                 },
                 "output_type": {
                     "description": "The type of output for the result text",
                     "default": "string",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/OutputTypeType"
@@ -648,7 +623,6 @@
                     "default": 0.1,
                     "exclusiveMinimum": 0.0,
                     "maximum": 1,
-                    "required": true,
                     "type": "number"
                 }
             },
@@ -743,13 +717,11 @@
                     "title": "Input Text",
                     "description": "Source text from where information should be extracted.",
                     "from_upstream": "always",
-                    "required": true,
                     "type": "string"
                 },
                 "openai_model": {
                     "description": "OpenAI model name to use for information extraction.",
                     "default": "gpt-3.5-turbo-0613",
-                    "required": true,
                     "allOf": [
                         {
                             "$ref": "#/definitions/LLMModelType"
