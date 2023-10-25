@@ -28,34 +28,34 @@ class InputModel(BaseModel):
     context: str = Field(
         ...,
         description="The context to generate an image from",
-        required=True
+        
     )
     art_style: str = Field(
         default="You know many art styles, so you always vary a lot on your suggestions!",
         description="The art style to generate an image from. Your imagination is the limit!",
-        required=True
+        
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
         description="The type of output to return",
-        required=True
+        
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model to bring your character to life",
-        required=True
+        
     )
     completion_max_tokens: int = Field(
         default=350,
         description="The maximum number of tokens to generate the prompt.",
-        required=True
+        
     )
     temperature: float = Field(
         default=0.7,
         description="Temperature of the model, between 0 (more precise) and 1 (more creative)",
         gt=0,
         le=1,
-        required=True
+        
     )
 
 

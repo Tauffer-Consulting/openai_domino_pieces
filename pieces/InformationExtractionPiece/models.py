@@ -45,12 +45,12 @@ class InputModel(BaseModel):
     input_text: str = Field(
         description='Source text from where information should be extracted.',
         from_upstream="always",
-        required=True
+        
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for information extraction.",
-        required=True
+        
     )
     extract_items: List[ExtractItemsModel] = Field(
         default=[
