@@ -1,5 +1,5 @@
 # TODO update to :latest
-FROM ghcr.io/tauffer-consulting/domino-base-piece:latest-dev
+FROM ghcr.io/tauffer-consulting/domino-base-piece:latest
 
 # Install specific requirements
 RUN apt-get update && \
