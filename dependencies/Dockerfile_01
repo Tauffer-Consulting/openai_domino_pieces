@@ -1,7 +1,14 @@
-FROM ghcr.io/tauffer-consulting/domino-base-piece:latest
+FROM ghcr.io/tauffer-consulting/domino-base-piece:latest-dev
 
 # Install specific requirements
-RUN apt-get -y update
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    cmake \
+    build-essential \
+    gcc \
+    g++
+
 RUN apt-get install -y ffmpeg
 
 # Need to copy pieces source code
