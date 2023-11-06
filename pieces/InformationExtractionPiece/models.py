@@ -67,7 +67,7 @@ class InputModel(BaseModel):
     )
 
 
-class OutputModel(BaseModel, extra=Extra.allow):
+class OutputModel(BaseModel):
     """
     InformationExtractionPiece Output Model
     """
