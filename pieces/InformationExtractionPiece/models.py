@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 from typing import List
 
@@ -49,7 +49,9 @@ class InputModel(BaseModel):
     """    
     input_text: str = Field(
         description='Source text from where information should be extracted.',
-        from_upstream="always",
+        json_schema_extra={
+            "from_upstream": "always"
+        }
         
     )
     openai_model: LLMModelType = Field(
@@ -63,7 +65,9 @@ class InputModel(BaseModel):
             ExtractItemsModel(name="age", type=ExtractItemType.integer, description="Age of the person."),
         ],
         description='Information items to be extracted from source text.',
-        from_upstream="never"
+        json_schema_extra={
+            "from_upstream": "never"
+        }
     )
 
 
@@ -72,7 +76,9 @@ class OutputModel(BaseModel):
     InformationExtractionPiece Output Model
     """
     # ref: https://stackoverflow.com/a/75381426/11483674
-    pass
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class SecretsModel(BaseModel):
