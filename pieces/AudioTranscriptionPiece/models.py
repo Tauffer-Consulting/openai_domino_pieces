@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from enum import Enum
-from typing import Union
+
 
 
 class OutputTypeType(str, Enum):

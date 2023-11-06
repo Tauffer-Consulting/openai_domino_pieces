@@ -40,33 +40,27 @@ class InputModel(BaseModel):
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
-        description="The type of output to return",
-        
+        description="The type of output to return"
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
-        description="OpenAI model name to use for summarization",
-        
+        description="OpenAI model name to use for summarization"
     )
     chunk_size: int = Field(
         default=1000,
-        description="Chunk size, measured in tokens, of each pre-summary chunk",
-        
+        description="Chunk size, measured in tokens, of each pre-summary chunk"
     )
     chunk_overlap_rate: float = Field(
         default=0.2,
-        description="The percentage of overlap between each chunk",
-        
+        description="The percentage of overlap between each chunk"
     )
     completion_max_tokens: int = Field(
         default=500,
-        description="The maximum number of tokens to generate in the summary.",
-        
+        description="The maximum number of tokens to generate in the summary."
     )
     temperature: float = Field(
         description="Temperature of the model, between 0 (more precise) and 1 (more creative)",
-        default=0.2,
-        
+        default=0.2
     )
 
 

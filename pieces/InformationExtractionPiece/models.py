@@ -1,7 +1,6 @@
-from pydantic import BaseModel, Field, Extra
+from pydantic import BaseModel, Field
 from enum import Enum
 from typing import List
-from typing import Optional
 
 
 class LLMModelType(str, Enum):
@@ -25,16 +24,22 @@ class ExtractItemType(str, Enum):
 class ExtractItemsModel(BaseModel):
     name: str = Field(
         description='Name of the output argument.',
-        from_upstream="never"
+        json_schema_extra={
+            "from_upstream": "never"
+        }
     )
     description: str = Field(
         description='Description of the output argument.',
-        from_upstream="never"
+        json_schema_extra={
+            "from_upstream": "never"
+        }
     )
     type: ExtractItemType = Field(
         default=ExtractItemType.string,
         description='Type of the output argument.',
-        from_upstream="never"
+        json_schema_extra={
+            "from_upstream": "never"
+        }
     )
 
 

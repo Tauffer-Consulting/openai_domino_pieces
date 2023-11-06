@@ -36,22 +36,18 @@ class InputModel(BaseModel):
     prompt: str = Field(
         ...,
         description="A text description of the desired image",
-        
     )
     size: ImageSize = Field(
         default=ImageSize.high_quality,
         description="The size of the generated images",
-        
     )
     image_format: ImageFormat = Field(
         default=ImageFormat.url,
-        description="The format in which the generated image is returned",
-        
+        description="The format in which the generated image is returned",   
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
         description='The type of the output. Attention: if Response Format equals to image_png, then Output Type must be file type.',
-        
     )
 
 
