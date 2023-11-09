@@ -18,10 +18,6 @@ class LLMModelType(str, Enum):
     """
     gpt_3_5_turbo = "gpt-3.5-turbo"
     gpt_4 = "gpt-4"
-    ada = "text-ada-001"
-    babbage = "text-babbage-001"
-    curie = "text-curie-001"
-    davinci = "text-davinci-003"
 
 
 class InnerArgModel(BaseModel):

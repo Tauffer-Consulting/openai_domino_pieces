@@ -1,6 +1,6 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel, SecretsModel
-import openai
+from openai import OpenAI
 
 
 class TextGeneratorPiece(BasePiece):   
@@ -9,7 +9,7 @@ class TextGeneratorPiece(BasePiece):
         # OpenAI settings
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-        openai.api_key = secrets_data.OPENAI_API_KEY
+        client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
         # Input arguments
         openai_model = input_data.openai_model
@@ -24,25 +24,16 @@ class TextGeneratorPiece(BasePiece):
         # Generate text based on prompt
         self.logger.info("Running OpenAI completion request...")
         try:
-            if openai_model in ["gpt-3.5-turbo", "gpt-4"]:
-                response = openai.ChatCompletion.create(
-                    model=openai_model,
-                    messages=[
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=temperature,
-                    max_tokens=completion_max_tokens,
-                )
-                string_generated_text = response['choices'][0]['message']['content']
-            else:
-                response = openai.Completion.create(
-                    model=openai_model,
-                    prompt=prompt,
-                    temperature=temperature,
-                    max_tokens=completion_max_tokens,
-                )
-                r_dict = response.to_dict_recursive()
-                string_generated_text = r_dict["choices"][0]["text"]
+            response = client.chat.completions.create(
+                model=openai_model,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=temperature,
+                max_tokens=completion_max_tokens,
+            )
+            string_generated_text = response.choices[0].message.content
+    
         except Exception as e:
             self.logger.info(f"\nCompletion task failed: {e}")
             raise Exception(f"Completion task failed: {e}")
