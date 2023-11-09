@@ -1,34 +1,24 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel, SecretsModel
-import openai
+from openai import OpenAI
 
 class PromptCreatorForImageGeneratorPiece(BasePiece):
-    def openai_response(self, input_data: InputModel, prompt: str):
+    def openai_response(self, input_data: InputModel, prompt: str, client: OpenAI):
         # Input arguments
         openai_model = input_data.openai_model
         completion_max_tokens = input_data.completion_max_tokens
         temperature = input_data.temperature
 
         try:
-            if openai_model in ["gpt-3.5-turbo", "gpt-4"]:
-                response = openai.ChatCompletion.create(
-                    model=openai_model,
-                    messages = [
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=temperature,
-                    max_tokens=completion_max_tokens,
-                )
-                return response['choices'][0]['message']['content']
-            else:
-                response = openai.Completion.create(
-                    model=openai_model,
-                    prompt=prompt,
-                    temperature=temperature,
-                    max_tokens=completion_max_tokens,
-                )
-                r_dict = response.to_dict_recursive()
-                return r_dict["choices"][0]["text"]
+            response = client.chat.completions.create(
+                model=openai_model,
+                messages = [
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=temperature,
+                max_tokens=completion_max_tokens,
+            )
+            return response.choices[0].message.content
         except Exception as e:
             self.logger.info(f"\nCompletion task failed: {e}")
             raise Exception(f"Completion task failed: {e}")
@@ -36,7 +26,8 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
     def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-        openai.api_key = secrets_data.OPENAI_API_KEY
+        
+        client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
         template = """You have access to an AI that generates images through text prompts. 
 Your function is to write a prompt for this AI from a given context. 
@@ -51,7 +42,7 @@ Now, create a prompt to help the image generator AI to create an image for this 
 
         prompt = template.format(art_style=input_data.art_style, context=input_data.context)
         self.logger.info(f"Generating prompt")
-        generated_prompt = self.openai_response(input_data, prompt)
+        generated_prompt = self.openai_response(input_data, prompt, client)
 
         if input_data.output_type == "string":
             self.logger.info("Returning prompt as a string")

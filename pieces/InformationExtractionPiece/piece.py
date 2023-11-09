@@ -1,7 +1,7 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel, SecretsModel
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import create_extraction_chain
+from openai import OpenAI
+import json
 
 
 class InformationExtractionPiece(BasePiece):  
@@ -10,34 +10,37 @@ class InformationExtractionPiece(BasePiece):
         # OpenAI settings
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-
-        llm = ChatOpenAI(
-            openai_api_key=secrets_data.OPENAI_API_KEY,
+        
+        client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
+        prompt = f"""
+Extract the following information from the text below as JSON. 
+Use the items to be extract as information to identify the right information to be extract:
+---
+Input text: {input_data.input_text}
+Items to be extracted::
+{input_data.extract_items}
+"""
+        response = client.chat.completions.create(
+            response_format={
+                "type": "json_object"
+            },
+            temperature=0,
             model=input_data.openai_model,
-            temperature=0
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
         )
-        schema = {
-            "properties": {},
-            "required": [],
-        }
-        for item in input_data.extract_items:
-            schema["properties"][item.name] = {
-                "type": item.type,
-                "description": item.description,
-            }
-            schema["required"].append(item.name)
-        chain = create_extraction_chain(schema, llm)
+        if not response.choices:
+            raise Exception("No response from OpenAI")
 
-        # Run extraction chain
-        self.logger.info(f"Running extraction chain")
-        result = chain.run(input_data.input_text)
+        output_json = json.loads(response.choices[0].message.content)
 
         # Display result in the Domino GUI
-        self.format_display_result(input_data, result[0])
+        self.format_display_result(input_data, output_json)
 
         # Return extracted information
         self.logger.info(f"Returning extracted information")
-        return OutputModel(**result[0])
+        return OutputModel(**output_json)
         
 
     def format_display_result(self, input_data: InputModel, result: dict):

@@ -1,7 +1,6 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel, SecretsModel
-import os
-import openai
+from openai import OpenAI
 from pydub import AudioSegment
 
 
@@ -13,7 +12,7 @@ class AudioTranscriptionPiece(BasePiece):
         openai_api_key = secrets_data.OPENAI_API_KEY
         if openai_api_key is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-        openai.api_key = openai_api_key
+        client = OpenAI(api_key=openai_api_key)
 
         # Input arguments are retrieved from the Input model object
         file_path = input_data.audio_file_path
@@ -33,12 +32,12 @@ class AudioTranscriptionPiece(BasePiece):
                 minutes = full_audio[i*ten_minutes:endpoint]
                 minutes.export(f"audio_piece_{i}.mp3", format="mp3")
                 audio_file= open(f"audio_piece_{i}.mp3", "rb")
-                transcript = openai.Audio.transcribe(
+                transcript = client.audio.transcriptions.create(
                     model="whisper-1", 
                     file=audio_file,
                     temperature=input_data.temperature
-                ).to_dict()["text"]
-                full_transcript += " " + transcript
+                )
+                full_transcript += " " + transcript.text
                 i += 1
                 audio_file.close()
                 if endpoint == total_time-1:

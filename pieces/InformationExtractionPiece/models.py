@@ -7,7 +7,7 @@ class LLMModelType(str, Enum):
     """
     OpenAI model type
     """
-    gpt_3_5_turbo = "gpt-3.5-turbo-0613"
+    gpt_3_5_turbo = "gpt-3.5-turbo-1106"
     gpt_4 = "gpt-4"
 
 
