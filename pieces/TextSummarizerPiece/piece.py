@@ -2,7 +2,7 @@ from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel, SecretsModel
 from typing import List
 from enum import Enum
-import openai
+from openai import OpenAI
 import tiktoken
 import asyncio
 
@@ -10,41 +10,29 @@ import asyncio
 class TokenLimit(int, Enum):
     gpt_3_5_turbo = 4000
     gpt_4 = 8000
-    ada = 2000
-    babbage = 2000
-    curie = 2000
-    davinci = 2000
+
+
 class TextSummarizerPiece(BasePiece):  
 
-    async def chat_completion_method(self, input_data: InputModel, prompt: str):
+    async def chat_completion_method(self, input_data: InputModel, prompt: str, client: OpenAI):
         self.logger.info("Running OpenAI completion request...")
         try:
-            if input_data.openai_model in ["gpt-3.5-turbo", "gpt-4"]:
-                response = openai.ChatCompletion.create(
-                    model = input_data.openai_model,
-                    messages = [
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature = input_data.temperature,
-                    max_tokens = input_data.completion_max_tokens,
-                )
-                string_generated_text = response['choices'][0]['message']['content']
-            else:
-                response = openai.Completion.create(
-                    model = input_data.openai_model,
-                    prompt = prompt,
-                    temperature = input_data.temperature,
-                    max_tokens = input_data.completion_max_tokens,
-                )
-                r_dict = response.to_dict_recursive()
-                string_generated_text = r_dict["choices"][0]["text"]
+            response = client.chat.completions.create(
+                model = input_data.openai_model,
+                messages = [
+                    {"role": "user", "content": prompt}
+                ],
+                temperature = input_data.temperature,
+                max_tokens = input_data.completion_max_tokens,
+            )
+            string_generated_text = response.choices[0].message.content
         except Exception as e:
             self.logger.info(f"\nCompletion task failed: {e}")
             raise Exception(f"Completion task failed: {e}")
         return string_generated_text
     
-    async def agenerate_chat_completion(self, input_data: InputModel, texts_chunks: List):
-        tasks = [self.chat_completion_method(input_data=input_data, prompt=text) for text in texts_chunks]
+    async def agenerate_chat_completion(self, input_data: InputModel, texts_chunks: List, client: OpenAI):
+        tasks = [self.chat_completion_method(input_data=input_data, prompt=text, client=client) for text in texts_chunks]
         return await asyncio.gather(*tasks)
     
     def create_chunks_with_prompt(self, input_data: InputModel, text: str):
@@ -82,7 +70,8 @@ class TextSummarizerPiece(BasePiece):
         # OpenAI settings
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-        openai.api_key = secrets_data.OPENAI_API_KEY
+
+        client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
         # Input arguments
         token_limits = TokenLimit[input_data.openai_model.name].value
@@ -108,12 +97,12 @@ concise summary:"""
         self.logger.info(f"Loading text")
         while text_token_count > (token_limits - completion_max_tokens):
             texts_chunks_with_prompt = self.create_chunks_with_prompt(input_data=input_data, text=text)
-            summaries_chunks = loop.run_until_complete(self.agenerate_chat_completion(input_data, texts_chunks_with_prompt))
+            summaries_chunks = loop.run_until_complete(self.agenerate_chat_completion(input_data, texts_chunks_with_prompt, client))
             text = " ".join(summaries_chunks)
             text_token_count = len(self.encoding.encode(text=text))
 
         self.logger.info(f"Summarizing text")
-        response = loop.run_until_complete(self.agenerate_chat_completion(input_data, [text]))
+        response = loop.run_until_complete(self.agenerate_chat_completion(input_data, [text], client))
         final_summary = response[0]
 
         # Display result in the Domino GUI
