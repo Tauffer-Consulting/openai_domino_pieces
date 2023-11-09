@@ -22,4 +22,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
     openai==1.2.0 \
     pydub==0.25.1 \
-    tiktoken==0.4.0
+    tiktoken==0.5.1
