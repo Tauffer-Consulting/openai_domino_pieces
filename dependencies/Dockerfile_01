@@ -20,7 +20,6 @@ COPY .domino domino/pieces_repository/.domino
 # Install specific python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
-    openai==0.27.8 \
+    openai==1.2.0 \
     pydub==0.25.1 \
-    tiktoken==0.4.0 \
-    langchain[llms]==0.0.330
+    tiktoken==0.4.0
