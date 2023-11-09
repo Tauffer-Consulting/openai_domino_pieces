@@ -4,7 +4,7 @@ import os
 
 def test_information_extraction_piece():
     input_text = "My name is John and I am 30 years old."
-    openai_model = "gpt-3.5-turbo-0613"
+    openai_model = "gpt-3.5-turbo-1106"
     extract_items = [
         {
             "name": "name",
