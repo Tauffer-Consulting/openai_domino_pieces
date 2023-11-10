@@ -75,10 +75,8 @@ class OutputModel(BaseModel):
     """
     InformationExtractionPiece Output Model
     """
-    # ref: https://stackoverflow.com/a/75381426/11483674
-    model_config = ConfigDict(
-        extra='allow',
-    )
+    # ref: https://docs.pydantic.dev/latest/concepts/models/#extra-fields
+    model_config = ConfigDict(extra='allow')
 
 
 class SecretsModel(BaseModel):
