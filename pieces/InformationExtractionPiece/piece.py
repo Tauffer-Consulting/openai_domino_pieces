@@ -12,8 +12,7 @@ class InformationExtractionPiece(BasePiece):
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
 
         client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
-        prompt = f"""
-Extract the following information from the text below as JSON.
+        prompt = f"""Extract the following information from the text below as JSON.
 Use the items to be extract as information to identify the right information to be extract:
 ---
 Input text: {input_data.input_text}
@@ -33,7 +32,10 @@ Items to be extracted::
         if not response.choices:
             raise Exception("No response from OpenAI")
 
-        output_json = json.loads(str(response.choices[0].message.content))
+        if response.choices[0].message.content is None:
+            raise Exception("No response from OpenAI")
+
+        output_json = json.loads(response.choices[0].message.content)
 
         # Display result in the Domino GUI
         self.format_display_result(input_data, output_json)
