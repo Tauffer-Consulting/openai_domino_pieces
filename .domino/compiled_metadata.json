@@ -1,4 +1,163 @@
 {
+    "TextTaggingPiece": {
+        "name": "TextTaggingPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [
+            "openai",
+            "text classification"
+        ],
+        "style": {
+            "node_label": "Text Tagging",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:i-cursor",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "classification of text with user defined tags",
+        "input_schema": {
+            "$defs": {
+                "LLMModelType": {
+                    "description": "OpenAI model type",
+                    "enum": [
+                        "gpt-3.5-turbo-1106",
+                        "gpt-4"
+                    ],
+                    "title": "LLMModelType",
+                    "type": "string"
+                },
+                "OutputModifierItemType": {
+                    "description": "OutputArgsType Enum",
+                    "enum": [
+                        "string",
+                        "integer",
+                        "float",
+                        "boolean",
+                        "array"
+                    ],
+                    "title": "OutputModifierItemType",
+                    "type": "string"
+                },
+                "OutputModifierModel": {
+                    "description": "OutputModifierModel with extra fields",
+                    "properties": {
+                        "name": {
+                            "description": "Name of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Name",
+                            "type": "string"
+                        },
+                        "type": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/OutputModifierItemType"
+                                }
+                            ],
+                            "default": "string",
+                            "description": "Type of the output argument.",
+                            "from_upstream": "never"
+                        },
+                        "description": {
+                            "default": "",
+                            "description": "Description of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Description",
+                            "type": "string"
+                        },
+                        "enum": {
+                            "default": "",
+                            "description": "Comma separated list of possible values for the output modifier. Example: 'negative,neutral,positive'. If not provided, this will be ignored.",
+                            "title": "Enum",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ],
+                    "title": "OutputModifierModel",
+                    "type": "object"
+                }
+            },
+            "description": "TextTaggingPiece Input model",
+            "properties": {
+                "input_text": {
+                    "description": "Source text to be tagged.",
+                    "from_upstream": "always",
+                    "title": "Input Text",
+                    "type": "string"
+                },
+                "openai_model": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/LLMModelType"
+                        }
+                    ],
+                    "default": "gpt-3.5-turbo-1106",
+                    "description": "OpenAI model name to use for tagging."
+                },
+                "tags": {
+                    "default": [
+                        {
+                            "description": "Sentiment of the text. Should be a number between -1 and 1.",
+                            "enum": "",
+                            "name": "sentiment",
+                            "type": "float"
+                        }
+                    ],
+                    "description": "Tags to classify the source text.",
+                    "from_upstream": "never",
+                    "items": {
+                        "$ref": "#/$defs/OutputModifierModel"
+                    },
+                    "title": "Tags",
+                    "type": "array"
+                },
+                "temperature": {
+                    "default": 0.0,
+                    "description": "Temperature of the model, between 0 (more precise) and 1 (more creative).",
+                    "exclusiveMaximum": 1.0,
+                    "exclusiveMinimum": 0.0,
+                    "title": "Temperature",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "input_text"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "additionalProperties": true,
+            "description": "TextTaggingPiece Output Model",
+            "properties": {},
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": {
+            "description": "TextTaggingPiece Secrets model",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "description": "Your OpenAI API key.",
+                    "title": "Openai Api Key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ],
+            "title": "SecretsModel",
+            "type": "object"
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/TextTaggingPiece"
+    },
     "PromptCreatorForImageGeneratorPiece": {
         "name": "PromptCreatorForImageGeneratorPiece",
         "dependency": {
@@ -164,9 +323,42 @@
                             "type": "string"
                         },
                         "arg_value": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "items": {},
+                                    "type": "array"
+                                },
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "format": "date",
+                                    "type": "string"
+                                },
+                                {
+                                    "format": "time",
+                                    "type": "string"
+                                },
+                                {
+                                    "format": "date-time",
+                                    "type": "string"
+                                }
+                            ],
                             "description": "Value of the prompt argument.",
-                            "title": "Arg Value",
-                            "type": "string"
+                            "from_upstream": "always",
+                            "title": "Arg Value"
                         }
                     },
                     "required": [
@@ -202,7 +394,8 @@
                     "default": "What is the capital city of {country}?",
                     "description": "Compose a prompt template using the {arg_name} notation to insert arguments.",
                     "title": "Template",
-                    "type": "string"
+                    "type": "string",
+                    "widget": "textarea"
                 },
                 "prompt_args": {
                     "default": [
@@ -446,49 +639,6 @@
         "description": "Extracts user-defined information from the input text.",
         "input_schema": {
             "$defs": {
-                "ExtractItemType": {
-                    "description": "OutputArgsType Enum",
-                    "enum": [
-                        "string",
-                        "integer",
-                        "float",
-                        "boolean"
-                    ],
-                    "title": "ExtractItemType",
-                    "type": "string"
-                },
-                "ExtractItemsModel": {
-                    "properties": {
-                        "name": {
-                            "description": "Name of the output argument.",
-                            "from_upstream": "never",
-                            "title": "Name",
-                            "type": "string"
-                        },
-                        "description": {
-                            "description": "Description of the output argument.",
-                            "from_upstream": "never",
-                            "title": "Description",
-                            "type": "string"
-                        },
-                        "type": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/$defs/ExtractItemType"
-                                }
-                            ],
-                            "default": "string",
-                            "description": "Type of the output argument.",
-                            "from_upstream": "never"
-                        }
-                    },
-                    "required": [
-                        "name",
-                        "description"
-                    ],
-                    "title": "ExtractItemsModel",
-                    "type": "object"
-                },
                 "LLMModelType": {
                     "description": "OpenAI model type",
                     "enum": [
@@ -497,6 +647,50 @@
                     ],
                     "title": "LLMModelType",
                     "type": "string"
+                },
+                "OutputModifierItemType": {
+                    "description": "OutputArgsType Enum",
+                    "enum": [
+                        "string",
+                        "integer",
+                        "float",
+                        "boolean",
+                        "array"
+                    ],
+                    "title": "OutputModifierItemType",
+                    "type": "string"
+                },
+                "OutputModifierModel": {
+                    "properties": {
+                        "name": {
+                            "description": "Name of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Name",
+                            "type": "string"
+                        },
+                        "type": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/OutputModifierItemType"
+                                }
+                            ],
+                            "default": "string",
+                            "description": "Type of the output argument.",
+                            "from_upstream": "never"
+                        },
+                        "description": {
+                            "default": "",
+                            "description": "Description of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Description",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ],
+                    "title": "OutputModifierModel",
+                    "type": "object"
                 }
             },
             "description": "InformationExtractionPiece Input model",
@@ -532,7 +726,7 @@
                     "description": "Information items to be extracted from source text.",
                     "from_upstream": "never",
                     "items": {
-                        "$ref": "#/$defs/ExtractItemsModel"
+                        "$ref": "#/$defs/OutputModifierModel"
                     },
                     "title": "Extract Items",
                     "type": "array"
