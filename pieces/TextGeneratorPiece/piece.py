@@ -3,8 +3,8 @@ from .models import InputModel, OutputModel, SecretsModel
 from openai import OpenAI
 
 
-class TextGeneratorPiece(BasePiece):   
-        
+class TextGeneratorPiece(BasePiece):
+
     def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):
         # OpenAI settings
         if secrets_data.OPENAI_API_KEY is None:
@@ -18,7 +18,7 @@ class TextGeneratorPiece(BasePiece):
         template = input_data.template
         dict_args = {}
         for arg in input_data.prompt_args:
-            dict_args[arg.arg_name] = arg.arg_value
+            dict_args[arg.arg_name] = str(arg.arg_value)
         prompt = template.format(**dict_args)
 
         # Generate text based on prompt

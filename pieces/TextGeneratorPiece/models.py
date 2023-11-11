@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
-from typing import List
+from typing import List, Union
+from datetime import date as dt_date, datetime as dt_datetime, time as dt_time
 
 
 class OutputTypeType(str, Enum):
@@ -30,9 +31,11 @@ class InnerArgModel(BaseModel):
             "from_upstream": "never"
         }
     )
-    arg_value: str = Field(
+    arg_value: Union[str, list, int, float, bool, dict, dt_date, dt_time, dt_datetime] = Field(
         description='Value of the prompt argument.',
-        
+        json_schema_extra={
+            "from_upstream": "always"
+        }
     )
 
 
@@ -42,18 +45,21 @@ class InputModel(BaseModel):
     """
     template: str = Field(
         default="What is the capital city of {country}?",
-        description="Compose a prompt template using the {arg_name} notation to insert arguments."
+        description="Compose a prompt template using the {arg_name} notation to insert arguments.",
+        json_schema_extra={
+            'widget': "textarea",
+        }
     )
     prompt_args: List[InnerArgModel] = Field(
         default=[InnerArgModel(arg_name="country", arg_value="Brazil")],
         description="List of arguments to insert into the prompt."
     )
     output_type: OutputTypeType = Field(
-        default=OutputTypeType.string, 
+        default=OutputTypeType.string,
         description="The type of output to return."
     )
     openai_model: LLMModelType = Field(
-        default=LLMModelType.gpt_3_5_turbo, 
+        default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name."
     )
     completion_max_tokens: int = Field(
@@ -73,11 +79,11 @@ class OutputModel(BaseModel):
     TextGeneratorPiece Output model
     """
     string_generated_text: str = Field(
-        default=None, 
+        default=None,
         description="The generated text as a string"
     )
     file_path_generated_text: str = Field(
-        default=None, 
+        default=None,
         description="The path to text file containing generated text"
     )
 
@@ -87,4 +93,3 @@ class SecretsModel(BaseModel):
     TextGeneratorPiece Secrets model
     """
     OPENAI_API_KEY: str = Field(description="Your OpenAI API key")
-
