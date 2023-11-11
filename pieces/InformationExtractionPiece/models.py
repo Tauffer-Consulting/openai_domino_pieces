@@ -17,7 +17,7 @@ class ExtractItemType(str, Enum):
     """
     string = 'string'
     integer = 'integer'
-    float = 'float'
+    float_ = 'float'
     boolean = 'boolean'
 
 
@@ -34,7 +34,7 @@ class ExtractItemsModel(BaseModel):
             "from_upstream": "never"
         }
     )
-    type: ExtractItemType = Field(
+    type_: ExtractItemType = Field(
         default=ExtractItemType.string,
         description='Type of the output argument.',
         json_schema_extra={
@@ -46,23 +46,21 @@ class ExtractItemsModel(BaseModel):
 class InputModel(BaseModel):
     """
     InformationExtractionPiece Input model
-    """    
+    """
     input_text: str = Field(
         description='Source text from where information should be extracted.',
         json_schema_extra={
             "from_upstream": "always"
         }
-        
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
         description="OpenAI model name to use for information extraction.",
-        
     )
     extract_items: List[ExtractItemsModel] = Field(
         default=[
-            ExtractItemsModel(name="name", type=ExtractItemType.string, description="Name of the person."),
-            ExtractItemsModel(name="age", type=ExtractItemType.integer, description="Age of the person."),
+            ExtractItemsModel(name="name", type_=ExtractItemType.string, description="Name of the person."),
+            ExtractItemsModel(name="age", type_=ExtractItemType.integer, description="Age of the person."),
         ],
         description='Information items to be extracted from source text.',
         json_schema_extra={
