@@ -78,4 +78,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           domino piece delete-release --tag-name=dev
-          domino piece release
+          domino piece release --tag-name=dev

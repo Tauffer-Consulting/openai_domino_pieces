@@ -20,7 +20,7 @@ def test_texttagging():
         {
             "name": "language",
             "type": "string",
-            "description": "Language of the text. "
+            "description": "Language of the text."
         },
     ]
 
