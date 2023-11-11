@@ -1,0 +1,15 @@
+{
+    "name": "TextTaggingPiece",
+    "description": "classification of text with user defined tags",
+    "dependency": {
+        "dockerfile": "Dockerfile_01"
+    },
+    "tags": [
+        "openai",
+        "text classification"
+    ],
+    "style": {
+        "node_label": "Text Tagging",
+        "icon_class_name": "fa-solid:i-cursor"
+    }
+}
