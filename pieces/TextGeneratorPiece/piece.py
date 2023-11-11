@@ -33,13 +33,13 @@ class TextGeneratorPiece(BasePiece):
                 max_tokens=completion_max_tokens,
             )
             string_generated_text = response.choices[0].message.content
-    
+
         except Exception as e:
             self.logger.info(f"\nCompletion task failed: {e}")
             raise Exception(f"Completion task failed: {e}")
-        
+
         # Display result in the Domino GUI
-        self.format_display_result(input_data,string_generated_text, prompt)
+        self.format_display_result(input_data, string_generated_text, prompt)
 
         # Format output
         self.logger.info("Text generated!")
@@ -48,11 +48,11 @@ class TextGeneratorPiece(BasePiece):
             return OutputModel(
                 string_generated_text=string_generated_text,
             )
-        
+
         output_file_path = f"{self.results_path}/generated_text.txt"
         with open(output_file_path, "w") as f:
             f.write(string_generated_text)
-        
+
         if input_data.output_type == "file":
             self.logger.info(f"Generated text saved at: {output_file_path}")
             return OutputModel(
@@ -64,7 +64,7 @@ class TextGeneratorPiece(BasePiece):
             string_generated_text=string_generated_text,
             file_path_generated_text=output_file_path
         )
-    
+
     def format_display_result(self, input_data: InputModel, string_generated_text: str, prompt: str):
         md_text = f"""
 ## Generated text
