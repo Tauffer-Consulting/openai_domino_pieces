@@ -42,14 +42,19 @@ jobs:
           domino piece organize --build-images --source-url=https://github.com/${{github.repository}}
 
       - name: Install Tests Dependencies
-        run: pip install pytest && pip install tiktoken
+        run: pip install -r requirements-tests.txt
 
       - name: Run tests over built images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          pytest
-      
+          pytest --cov=pieces --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Publish images
         env:
           GHCR_USERNAME: ${{ github.actor }}
