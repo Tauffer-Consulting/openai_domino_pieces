@@ -17,7 +17,7 @@ class ExtractItemType(str, Enum):
     """
     string = 'string'
     integer = 'integer'
-    float_ = 'float'
+    float = 'float'
     boolean = 'boolean'
 
 
@@ -34,12 +34,13 @@ class ExtractItemsModel(BaseModel):
             "from_upstream": "never"
         }
     )
-    type_: ExtractItemType = Field(
+    type: ExtractItemType = Field(
         default=ExtractItemType.string,
         description='Type of the output argument.',
         json_schema_extra={
             "from_upstream": "never"
-        }
+        },
+        alias="type"
     )
 
 
@@ -59,8 +60,8 @@ class InputModel(BaseModel):
     )
     extract_items: List[ExtractItemsModel] = Field(
         default=[
-            ExtractItemsModel(name="name", type_=ExtractItemType.string, description="Name of the person."),
-            ExtractItemsModel(name="age", type_=ExtractItemType.integer, description="Age of the person."),
+            ExtractItemsModel(name="name", type=ExtractItemType.string, description="Name of the person."),
+            ExtractItemsModel(name="age", type=ExtractItemType.integer, description="Age of the person."),
         ],
         description='Information items to be extracted from source text.',
         json_schema_extra={
