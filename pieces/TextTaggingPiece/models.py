@@ -21,7 +21,7 @@ class OutputModifierModel(OutputModifierModelBase):
     """
     enum: str = Field(
         default="",
-        description="Comma separated list of possible values for the output modifier. Example: 'negative,neutral,positive'. If not provided, this will be ignored.",
+        description="Comma separated list of possible values for the output modifier. Example: 'negative,neutral,positive'. If not provided, this will be ignored. ",
     )
 
 
