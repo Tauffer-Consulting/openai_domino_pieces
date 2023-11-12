@@ -42,6 +42,7 @@ class TextTaggingPiece(BasePiece):
         llm = ChatOpenAI(
             model=model,
             temperature=temperature,
+            api_key=secrets_data.OPENAI_API_KEY
         )
         chain = create_tagging_chain(
             schema=schema,
