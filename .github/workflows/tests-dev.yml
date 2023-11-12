@@ -69,7 +69,7 @@ jobs:
             echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
           else
             echo "No changes to commit"
-            echo "::set-output name=commit_sha::"
+            echo "::set-output name=commit_sha::${{ github.sha }}"
           fi
 
       - name: Push changes
