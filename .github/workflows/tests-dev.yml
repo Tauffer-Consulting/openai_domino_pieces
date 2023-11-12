@@ -66,10 +66,10 @@ jobs:
           git config --local user.name "github-actions[bot]"
           if [[ ! -z "$GIT_STATUS" ]]; then
             git add .domino/* && git commit -m "auto-organize" -a
-            echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
+            echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
           else
             echo "No changes to commit"
-            echo "::set-output name=commit_sha::${{ github.sha }}"
+            echo "commit_sha=${{ github.sha }}" >> $GITHUB_ENV
           fi
 
       - name: Push changes
@@ -84,4 +84,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           domino piece delete-release --tag-name=dev
-          domino piece release --tag-name=dev --commit-sha=${{ steps.commit_files.outputs.commit_sha }}
+          domino piece release --tag-name=dev --commit-sha=$commit_sha
