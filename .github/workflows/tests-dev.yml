@@ -60,11 +60,17 @@ jobs:
         run: domino piece publish-images --registry-token ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit files
+        id: commit_files
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          GIT_STATUS=$(git status -s)
-          [[ ! -z "$GIT_STATUS" ]] && git add .domino/* && git commit -m "auto-organize" -a || echo "No changes to commit"
+          if [[ ! -z "$GIT_STATUS" ]]; then
+            git add .domino/* && git commit -m "auto-organize" -a
+            echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
+          else
+            echo "No changes to commit"
+            echo "::set-output name=commit_sha::"
+          fi
 
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -78,4 +84,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           domino piece delete-release --tag-name=dev
-          domino piece release --tag-name=dev
+          domino piece release --tag-name=dev --commit-sha=${{ steps.commit_files.outputs.commit_sha }}
