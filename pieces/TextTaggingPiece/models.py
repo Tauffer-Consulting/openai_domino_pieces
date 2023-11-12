@@ -31,7 +31,6 @@ class InputModel(BaseModel):
     """
     input_text: str = Field(
         description='Source text to be tagged.',
-        json_schema_extra={"from_upstream": "always"}
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,

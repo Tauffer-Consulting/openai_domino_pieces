@@ -48,7 +48,23 @@ class TextTaggingPiece(BasePiece):
             schema=schema,
             llm=llm
         )
-
         res = chain.run(input_text)
 
+        # Format display result as markdown
+        self.format_display_result(input_data, res)
+
         return OutputModel(**res)
+
+    def format_display_result(self, input_data: InputModel, result: dict):
+        md_text = """## Tags\n"""
+        for k, v in result.items():
+            md_text += f"""**{k}**: {v}\n"""
+        md_text += "\n"
+        md_text += f"""**Input text**: {input_data.input_text}\n"""
+        file_path = f"{self.results_path}/display_result.md"
+        with open(file_path, "w") as f:
+            f.write(md_text)
+        self.display_result = {
+            "file_type": "md",
+            "file_path": file_path
+        }
