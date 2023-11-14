@@ -73,7 +73,7 @@
                         },
                         "enum": {
                             "default": "",
-                            "description": "Comma separated list of possible values for the output modifier. Example: 'negative,neutral,positive'. If not provided, this will be ignored.",
+                            "description": "Comma separated list of possible values for the output modifier. Example: 'negative,neutral,positive'. If not provided, this will be ignored. ",
                             "title": "Enum",
                             "type": "string"
                         }
@@ -89,7 +89,6 @@
             "properties": {
                 "input_text": {
                     "description": "Source text to be tagged.",
-                    "from_upstream": "always",
                     "title": "Input Text",
                     "type": "string"
                 },
