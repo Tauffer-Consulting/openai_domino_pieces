@@ -5,6 +5,7 @@
             "requirements_file": null
         },
         "pieces": [
+            "TextTaggingPiece",
             "PromptCreatorForImageGeneratorPiece",
             "TextGeneratorPiece",
             "ImageGeneratorPiece",
@@ -15,6 +16,6 @@
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.6.0-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:dev-group0"
     }
 }

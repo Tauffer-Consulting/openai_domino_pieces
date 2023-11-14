@@ -3,7 +3,7 @@ import os
 
 
 def test_information_extraction_piece():
-    input_text = "My name is John and I am 30 years old."
+    input_text = "My name is John and I am 30 years old. I have 976,47 euros in my bank account."
     openai_model = "gpt-3.5-turbo-1106"
     extract_items = [
         {
@@ -15,6 +15,11 @@ def test_information_extraction_piece():
             "name": "age",
             "type": "integer",
             "description": "Age of the person."
+        },
+        {
+            "name": "money",
+            "type": "float_",
+            "description": "Numeric value of the amount of money in the bank account."
         }
     ]
 
@@ -34,3 +39,4 @@ def test_information_extraction_piece():
 
     assert output.get('name') == "John"
     assert output.get('age') == 30
+    assert output.get('money') == 976.47
