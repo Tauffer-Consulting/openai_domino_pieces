@@ -18,7 +18,7 @@ def test_information_extraction_piece():
         },
         {
             "name": "money",
-            "type": "float_",
+            "type": "float",
             "description": "Numeric value of the amount of money in the bank account."
         }
     ]

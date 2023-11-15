@@ -16,7 +16,7 @@ class InformationExtractionPiece(BasePiece):
 Use the items to be extract as information to identify the right information to be extract:
 ---
 Input text: {input_data.input_text}
-Items to be extracted::
+Items to be extracted:
 {input_data.extract_items}
 """
         response = client.chat.completions.create(
@@ -47,7 +47,7 @@ Items to be extracted::
     def format_display_result(self, input_data: InputModel, result: dict):
         md_text = """## Extracted Information\n"""
         for item in input_data.extract_items:
-            md_text += f"""### {item.name}:\n{result[item.name]}\n"""
+            md_text += f"""### {item.name}:\n{result.get(item.name)}\n"""
         file_path = f"{self.results_path}/display_result.md"
         with open(file_path, "w") as f:
             f.write(md_text)
