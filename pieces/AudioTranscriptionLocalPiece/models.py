@@ -1,10 +1,19 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
+from typing import Union
 from enum import Enum
 
 
+class ModelSizeType(str, Enum):
+    tiny = "tiny"
+    base = "base"
+    small = "small"
+    medium = "medium"
+    large = "large"
+
+
 class OutputTypeType(str, Enum):
-    file = "file"
     string = "string"
+    file = "file"
     both = "both"
 
 
@@ -19,12 +28,9 @@ class InputModel(BaseModel):
         default=OutputTypeType.string,
         description='The type of output for the result text. Options are `string`, `file` or `both`. Default is `string`.',
     )
-    temperature: float = Field(
-        description="What sampling temperature to use, between 0 and 1",
-        default=0.1,
-        gt=0.,
-        le=1,
-
+    model_size: ModelSizeType = Field(
+        description='The size of the model to use. Default is tiny.',
+        default=ModelSizeType.tiny
     )
 
 
@@ -33,13 +39,7 @@ class OutputModel(BaseModel):
         default="",
         description="The result transcription text as a string."
     )
-    file_path_transcription_result: str = Field(
+    file_path_transcription_result: Union[FilePath, str] = Field(
         default="",
         description="The path to the text file with the transcription result."
-    )
-
-
-class SecretsModel(BaseModel):
-    OPENAI_API_KEY: str = Field(
-        description="OpenAI API key"
     )

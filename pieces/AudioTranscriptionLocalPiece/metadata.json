@@ -1,0 +1,22 @@
+{
+    "name": "AudioTranscriptionLocalPiece",
+    "description": "Runs transcription locally using Whisper, a general-purpose speech recognition model. Ref: https://github.com/openai/whisper",
+    "dependency": {
+        "dockerfile": "Dockerfile_whisper"
+    },
+    "container_resources": {
+        "use_gpu": true,
+        "requests": {
+            "cpu": "1000m",
+            "memory": "3Gi"
+        },
+        "limits": {
+            "cpu": "5000m",
+            "memory": "15Gi"
+        }
+    },
+    "style": {
+        "node_label": "Audio Transcription Local",
+        "icon_class_name": "fa-solid:comment-dots"
+    }
+}
