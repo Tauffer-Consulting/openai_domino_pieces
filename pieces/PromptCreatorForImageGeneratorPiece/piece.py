@@ -30,7 +30,7 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
         client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
         template = """You have access to an AI that generates images through text prompts. 
-Your function is to write a prompt for this AI from a given context. 
+Your function is to write a prompt for this AI from a given context. It is very importat that the maximum size of the output prompt must be 1000 characters.
 Keep in mind that the AI generating images has no knowledge of the context you've been given. Therefore, it's crucial to include all the important information in the prompt you generate.
 You  always write a short prompt that is designed to help the image generator AI create an image for the given context. 
 You are very good at writing these text prompts for any context that is given  to you. 
