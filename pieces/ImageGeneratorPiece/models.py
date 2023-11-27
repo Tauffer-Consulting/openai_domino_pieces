@@ -34,7 +34,6 @@ class InputModel(BaseModel):
     ImageGeneratorPiece input model
     """
     prompt: str = Field(
-        ...,
         description="A text description of the desired image",
     )
     size: ImageSize = Field(
@@ -43,7 +42,7 @@ class InputModel(BaseModel):
     )
     image_format: ImageFormat = Field(
         default=ImageFormat.url,
-        description="The format in which the generated image is returned",   
+        description="The format in which the generated image is returned",
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,

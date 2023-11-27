@@ -26,15 +26,15 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
     def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
-        
+
         client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
-        template = """You have access to an AI that generates images through text prompts. 
-Your function is to write a prompt for this AI from a given context. 
+        template = """You have access to an AI that generates images through text prompts.
+Your function is to write a prompt for this AI from a given context. It is very importat that the maximum size of the output prompt must be 1000 characters.
 Keep in mind that the AI generating images has no knowledge of the context you've been given. Therefore, it's crucial to include all the important information in the prompt you generate.
-You  always write a short prompt that is designed to help the image generator AI create an image for the given context. 
-You are very good at writing these text prompts for any context that is given  to you. 
-You're very creative in how you describe the context you've been given, and like to vary the mood that runs through the prompt you've written. 
+You  always write a short prompt that is designed to help the image generator AI create an image for the given context.
+You are very good at writing these text prompts for any context that is given  to you.
+You're very creative in how you describe the context you've been given, and like to vary the mood that runs through the prompt you've written.
 You always suggest some specific art style for the AI to create the image.
 For this one the art style would be: {art_style}
 Now, create a prompt to help the image generator AI to create an image for this context:
@@ -50,7 +50,7 @@ Now, create a prompt to help the image generator AI to create an image for this 
             return OutputModel(
                 generated_prompt_string=generated_prompt,
             )
-        
+
         output_file_path = f"{self.results_path}/generated_prompt.txt"
         with open(output_file_path, "w") as f:
             f.write(generated_prompt)
@@ -61,14 +61,14 @@ Now, create a prompt to help the image generator AI to create an image for this 
             return OutputModel(
                 generated_prompt_file_path=output_file_path
             )
-        
+
         self.logger.info(f"Returning prompt as a string and file in: {output_file_path}")
         self.format_display_result(input_data, generated_prompt)
         return OutputModel(
             generated_prompt_string=generated_prompt,
             generated_prompt_file_path=output_file_path
         )
-    
+
     def format_display_result(self, input_data: InputModel, generated_prompt_string: str):
         md_text = f"""
 ## Generated prompt:
