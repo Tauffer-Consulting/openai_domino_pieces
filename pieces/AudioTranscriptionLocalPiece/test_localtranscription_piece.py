@@ -5,7 +5,7 @@ from pathlib import Path
 test_file = str(Path(__file__).parent / "test-audio-to-transcribe.mp3")
 
 
-def test_whisper_piece():
+def test_audio_transcription_piece():
     input_data = {
         "audio_file_path": test_file,
         "model_size": "tiny",
