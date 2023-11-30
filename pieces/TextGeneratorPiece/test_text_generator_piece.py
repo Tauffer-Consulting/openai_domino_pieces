@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run, skip_envs
+from domino.testing import piece_dry_run
 from typing import List
 import tiktoken
 import os
@@ -31,7 +31,7 @@ def run_piece(
 )
 
 
-@skip_envs('github')
+
 def test_text_generator_piece():
     template = "tell me about the history of {event_history}"
     prompt_args = [{"arg_name": "event_history", "arg_value": "artifical intelligence"}]

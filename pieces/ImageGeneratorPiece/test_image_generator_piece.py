@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run, skip_envs
+from domino.testing import piece_dry_run
 import os
 
 def run_piece(
@@ -23,7 +23,6 @@ def run_piece(
         }
 )
 
-@skip_envs('github')
 def test_piece():
     piece_kwargs = {
         "prompt": "draw a punk art style painting",

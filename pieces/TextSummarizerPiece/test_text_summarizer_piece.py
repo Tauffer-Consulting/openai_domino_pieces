@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run, skip_envs
+from domino.testing import piece_dry_run
 import tiktoken
 import os
 
@@ -33,7 +33,7 @@ def run_piece(
 )
 
 
-@skip_envs('github')
+
 def test_piece():
     text = """
 In the realm of surrealistic oceanic exploration, a team of intrepid divers embarks on a mesmerizing journey into an underwater city. With every dive, they plunge into a world of wonder and discovery, where the laws of nature blend with the imaginative depths of the human mind. The vast expanse of the underwater city unfolds before their eyes, adorned with ethereal bioluminescent hues and architectural wonders that defy imagination.

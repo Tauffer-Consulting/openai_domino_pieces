@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run, skip_envs
+from domino.testing import piece_dry_run
 import tiktoken
 import os
 
@@ -31,7 +31,6 @@ def run_piece(
 )
 
 
-@skip_envs('github')
 def test_prompt_creator_for_image_generator_piece():
     piece_kwargs = {
         "context": "Explorers dive into a mesmerizing underwater city, discovering ancient secrets, mysterious symbols, and evidence of an advanced civilization.",

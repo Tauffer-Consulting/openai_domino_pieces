@@ -1,7 +1,7 @@
-from domino.testing import piece_dry_run, skip_envs
+from domino.testing import piece_dry_run
 import os
 
-@skip_envs('github')
+
 def test_information_extraction_piece():
     input_text = "My name is John and I am 30 years old. I have 976,47 euros in my bank account."
     openai_model = "gpt-3.5-turbo-1106"
