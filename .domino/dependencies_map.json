@@ -5,17 +5,28 @@
             "requirements_file": null
         },
         "pieces": [
+            "InformationExtractionPiece",
             "TextTaggingPiece",
-            "PromptCreatorForImageGeneratorPiece",
             "TextGeneratorPiece",
             "ImageGeneratorPiece",
-            "InformationExtractionPiece",
+            "PromptCreatorForImageGeneratorPiece",
             "TextSummarizerPiece",
             "AudioTranscriptionPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:dev-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.0-group0"
+    },
+    "group1": {
+        "dependency": {
+            "dockerfile": "Dockerfile_whisper",
+            "requirements_file": null
+        },
+        "pieces": [
+            "AudioTranscriptionLocalPiece"
+        ],
+        "secrets": [],
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.0-group1"
     }
 }
