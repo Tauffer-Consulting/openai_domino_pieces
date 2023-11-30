@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run
+from domino.testing import piece_dry_run, skip_envs
 import tiktoken
 import os
 
@@ -25,11 +25,13 @@ def run_piece(
             "openai_model": openai_model,
             "temperature": temperature
         },
-        secrets_data={ 
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )
 
+
+@skip_envs('github')
 def test_prompt_creator_for_image_generator_piece():
     piece_kwargs = {
         "context": "Explorers dive into a mesmerizing underwater city, discovering ancient secrets, mysterious symbols, and evidence of an advanced civilization.",
@@ -50,7 +52,7 @@ def test_prompt_creator_for_image_generator_piece():
         generated_prompt_path = output.get("generated_prompt_file_path")
         with open(generated_prompt_path, "r") as f:
             generated_prompt = f.read()
-        
+
     if piece_kwargs["output_type"] == "string":
         assert output.get("generated_prompt_string") != None and type(output.get("generated_prompt_string")) == str
         assert output.get("generated_prompt_file_path") == None

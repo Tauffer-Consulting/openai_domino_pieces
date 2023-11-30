@@ -1,7 +1,8 @@
-from domino.testing import piece_dry_run
+from domino.testing import piece_dry_run, skip_envs
 import os
 
 
+@skip_envs('github')
 def test_texttagging():
     input_text = "Estoy increiblemente contento de haberte conocido! Creo que seremos muy buenos amigos!"
     openai_model = "gpt-3.5-turbo-1106"

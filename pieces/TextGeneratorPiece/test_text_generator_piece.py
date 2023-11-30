@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run
+from domino.testing import piece_dry_run, skip_envs
 from typing import List
 import tiktoken
 import os
@@ -24,12 +24,14 @@ def run_piece(
             "completion_max_tokens": completion_max_tokens,
             "openai_model": openai_model,
             "temperature": temperature,
-        },    
-        secrets_data={ 
+        },
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )
 
+
+@skip_envs('github')
 def test_text_generator_piece():
     template = "tell me about the history of {event_history}"
     prompt_args = [{"arg_name": "event_history", "arg_value": "artifical intelligence"}]
@@ -57,7 +59,7 @@ def test_text_generator_piece():
         assert output.get("string_generated_text") != None and type(output.get("string_generated_text")) == str
         assert output.get("file_path_generated_text").endswith(".txt")
         generated_prompt = output.get("string_generated_text")
-    
+
     encoding = tiktoken.encoding_for_model(piece_kwargs["openai_model"])
     text_tokens = encoding.encode(text=generated_prompt)
     assert len(text_tokens) <= piece_kwargs["completion_max_tokens"]

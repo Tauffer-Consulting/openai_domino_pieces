@@ -1,4 +1,4 @@
-from domino.testing import piece_dry_run
+from domino.testing import piece_dry_run, skip_envs
 import os
 
 def run_piece(
@@ -7,7 +7,7 @@ def run_piece(
     output_type: str,
     size: str = "1024x1024",
 ):
-    
+
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
     return piece_dry_run(
@@ -17,12 +17,13 @@ def run_piece(
             "image_format": image_format,
             "output_type": output_type,
             "size": size
-        },    
-        secrets_data={ 
+        },
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )
 
+@skip_envs('github')
 def test_piece():
     piece_kwargs = {
         "prompt": "draw a punk art style painting",
