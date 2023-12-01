@@ -46,6 +46,7 @@ jobs:
       - name: Run tests over built images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DOMINO_TESTS_ENVIRONMENT: github
         run: |
           pytest --cov=pieces --cov-report=xml --cov-report=term-missing
 
