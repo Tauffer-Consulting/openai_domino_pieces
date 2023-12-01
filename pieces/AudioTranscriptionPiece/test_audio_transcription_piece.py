@@ -17,7 +17,7 @@ def run_piece(
             "output_type": output_type,
             "temperature": temperature
         },
-        secrets_data={ 
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )

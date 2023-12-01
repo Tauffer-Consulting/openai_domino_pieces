@@ -27,10 +27,12 @@ def run_piece(
             "openai_model": openai_model,
             "temperature": temperature,
         },
-        secrets_data={ 
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )
+
+
 
 def test_piece():
     text = """
@@ -63,7 +65,7 @@ Within the surrealistic tapestry of this underwater world, the divers unearth ev
         assert output.get("string_summarized_text") != None and type(output.get("string_summarized_text")) == str
         assert output.get("file_path_summarized_text").endswith(".txt")
         generated_prompt = output.get("string_summarized_text")
-    
+
     encoding = tiktoken.encoding_for_model(piece_kwargs["openai_model"])
     text_tokens = encoding.encode(text=generated_prompt)
     assert len(text_tokens) <= piece_kwargs["completion_max_tokens"]

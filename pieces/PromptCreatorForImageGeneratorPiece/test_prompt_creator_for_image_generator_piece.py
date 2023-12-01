@@ -25,10 +25,11 @@ def run_piece(
             "openai_model": openai_model,
             "temperature": temperature
         },
-        secrets_data={ 
+        secrets_data={
             "OPENAI_API_KEY": OPENAI_API_KEY
         }
 )
+
 
 def test_prompt_creator_for_image_generator_piece():
     piece_kwargs = {
@@ -50,7 +51,7 @@ def test_prompt_creator_for_image_generator_piece():
         generated_prompt_path = output.get("generated_prompt_file_path")
         with open(generated_prompt_path, "r") as f:
             generated_prompt = f.read()
-        
+
     if piece_kwargs["output_type"] == "string":
         assert output.get("generated_prompt_string") != None and type(output.get("generated_prompt_string")) == str
         assert output.get("generated_prompt_file_path") == None

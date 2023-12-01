@@ -16,7 +16,7 @@
         "secrets": [
             "OPENAI_API_KEY"
         ],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.0-group0"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:development-group0"
     },
     "group1": {
         "dependency": {
@@ -27,6 +27,6 @@
             "AudioTranscriptionLocalPiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.0-group1"
+        "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:development-group1"
     }
 }
