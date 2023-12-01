@@ -1,5 +1,4 @@
 [repository]
-# The name of the github organization / person owner, e.g. tauffer-consulting.
 # Must be in lower-case letters
 REGISTRY_NAME = "tauffer-consulting"
 
