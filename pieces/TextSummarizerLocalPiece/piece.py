@@ -2,6 +2,8 @@ from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 from transformers import pipeline
 import torch
+from pathlib import Path
+
 
 
 def summarize_long_text(text: str, summarizer, iteration: int=0):
@@ -75,7 +77,7 @@ class TextSummarizerLocalPiece(BasePiece):
             self.logger.info("Sumamrization completed successfully. Result returned as file.")
             msg = f"Summarization completed successfully. Result returned as file."
             summary_result = ""
-            output_file_path = "summary_result.txt"
+            output_file_path = str(Path(self.results_path) / "summary_result.txt")
             with open(output_file_path, "w") as f:
                 f.write(result)
 

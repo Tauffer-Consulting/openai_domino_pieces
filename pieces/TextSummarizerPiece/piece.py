@@ -12,7 +12,7 @@ class TokenLimit(int, Enum):
     gpt_4 = 8000
 
 
-class TextSummarizerPiece(BasePiece):  
+class TextSummarizerPiece(BasePiece):
 
     async def chat_completion_method(self, input_data: InputModel, prompt: str, client: OpenAI):
         self.logger.info("Running OpenAI completion request...")
@@ -30,11 +30,11 @@ class TextSummarizerPiece(BasePiece):
             self.logger.info(f"\nCompletion task failed: {e}")
             raise Exception(f"Completion task failed: {e}")
         return string_generated_text
-    
+
     async def agenerate_chat_completion(self, input_data: InputModel, texts_chunks: List, client: OpenAI):
         tasks = [self.chat_completion_method(input_data=input_data, prompt=text, client=client) for text in texts_chunks]
         return await asyncio.gather(*tasks)
-    
+
     def create_chunks_with_prompt(self, input_data: InputModel, text: str):
         text_chunk_size = input_data.chunk_size - len(self.encoding.encode(text=self.prompt))
         total_text_tokens = self.encoding.encode(text=text)
@@ -43,10 +43,10 @@ class TextSummarizerPiece(BasePiece):
         for i in range(0, len(total_text_tokens), text_chunk_size):
             idx_chunk_start = [i - chunk_overlap if i>0 else 0][0]
             decoded_text_chunk = self.encoding.decode(total_text_tokens[idx_chunk_start:i+text_chunk_size])
-            chunk_with_prompt = self.prompt.format(text=decoded_text_chunk) 
+            chunk_with_prompt = self.prompt.format(text=decoded_text_chunk)
             text_chunks_with_prompt.append(chunk_with_prompt)
         return text_chunks_with_prompt
-    
+
     def format_display_result(self, input_data: InputModel, final_summary: str):
         md_text = f"""
 ## Summarized text
@@ -65,8 +65,8 @@ class TextSummarizerPiece(BasePiece):
             "file_type": "md",
             "file_path": file_path
         }
-        
-    def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):                
+
+    def piece_function(self, input_data: InputModel, secrets_data: SecretsModel):
         # OpenAI settings
         if secrets_data.OPENAI_API_KEY is None:
             raise Exception("OPENAI_API_KEY not found in ENV vars. Please add it to the secrets section of the Piece.")
@@ -84,9 +84,9 @@ class TextSummarizerPiece(BasePiece):
             text = input_data.text
 
         self.prompt = """Write a concise summary of the text below, while maintaining its original writing form.
----        
+---
 text:
-    
+
 {text}
 ---
 concise summary:"""
@@ -113,17 +113,17 @@ concise summary:"""
             return OutputModel(
                 string_summarized_text=final_summary,
             )
-        
+
         output_file_path = f"{self.results_path}/summarized_text.txt"
         with open(output_file_path, "w") as f:
-                f.write(final_summary)
-        
+            f.write(final_summary)
+
         if input_data.output_type == "file":
             self.logger.info(f"Saved final summary as file in {output_file_path}")
             return OutputModel(
                 file_path_summarized_text=output_file_path
             )
-        
+
         self.logger.info(f"Returning final summary as a string and file in: {output_file_path}")
         return OutputModel(
             string_summarized_text=final_summary,
