@@ -1,0 +1,22 @@
+{
+    "name": "TextSummarizerLocalPiece",
+    "description": "Text Summarizer with local model",
+    "dependency": {
+        "dockerfile": "Dockerfile_summarizer"
+    },
+    "container_resources": {
+        "use_gpu": true,
+        "requests": {
+            "cpu": 1000,
+            "memory": 3072
+        },
+        "limits": {
+            "cpu": 5000,
+            "memory": 15360
+        }
+    },
+    "style": {
+        "node_label": "Text Summarizer Piece",
+        "icon_class_name": "fa-solid:quote-left"
+    }
+}
