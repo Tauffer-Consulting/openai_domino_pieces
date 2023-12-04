@@ -429,7 +429,7 @@
         },
         "tags": [],
         "style": {
-            "node_label": "Text Summarizer Piece",
+            "node_label": "Text Summarizer Local Piece",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"

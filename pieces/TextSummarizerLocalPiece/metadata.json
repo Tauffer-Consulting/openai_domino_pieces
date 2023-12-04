@@ -16,7 +16,7 @@
         }
     },
     "style": {
-        "node_label": "Text Summarizer Piece",
+        "node_label": "Text Summarizer Local Piece",
         "icon_class_name": "fa-solid:quote-left"
     }
 }
