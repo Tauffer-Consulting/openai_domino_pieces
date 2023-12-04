@@ -1,6 +1,7 @@
 from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 import whisper
+from pathlib import Path
 
 
 class AudioTranscriptionLocalPiece(BasePiece):
@@ -20,16 +21,17 @@ class AudioTranscriptionLocalPiece(BasePiece):
         elif input_data.output_type == "file":
             self.logger.info("Transcription complete successfully. Result returned as file.")
             transcription_result = ""
-            output_file_path = "transcription_result.txt"
+            output_file_path = str(Path(self.results_path) / "transcription_result.txt")
             with open(output_file_path, "w") as f:
                 f.write(result)
         else:
             self.logger.info("Transcription complete successfully. Result returned as string and file.")
             transcription_result = result
-            output_file_path = "transcription_result.txt"
+            output_file_path = str(Path(self.results_path) / "transcription_result.txt")
             with open(output_file_path, "w") as f:
                 f.write(result)
 
+        print("LOGGER", output_file_path)
         # Display result in the Domino GUI
         self.format_display_result(input_data=input_data, string_transcription_result=result)
 
