@@ -466,16 +466,32 @@
             "description": "Input data for TextSummarizerPiece",
             "properties": {
                 "input_file_path": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
                     "default": "",
                     "description": "The path to the text file to summarize.",
-                    "title": "Input File Path",
-                    "type": "string"
+                    "from_upstream": "always",
+                    "title": "Input File Path"
                 },
                 "input_text": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
                     "default": "",
                     "description": "The text to summarize.",
                     "title": "Input Text",
-                    "type": "string"
+                    "widget": "textarea"
                 },
                 "output_type": {
                     "allOf": [
@@ -1046,8 +1062,8 @@
                     ],
                     "default": null,
                     "description": "Text to summarize",
-                    "required": false,
-                    "title": "Text"
+                    "title": "Text",
+                    "widget": "textarea"
                 },
                 "text_file_path": {
                     "anyOf": [
@@ -1060,7 +1076,7 @@
                     ],
                     "default": null,
                     "description": "Use it only if not using text field. File path to the text to summarize",
-                    "required": false,
+                    "from_upstream": "always",
                     "title": "Text File Path"
                 },
                 "output_type": {

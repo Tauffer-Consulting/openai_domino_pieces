@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, FilePath, validators
-from typing import Union
+from typing import Union, Optional
 from enum import Enum
 
 
@@ -12,13 +12,19 @@ class InputModel(BaseModel):
     """
     Input data for TextSummarizerPiece
     """
-    input_file_path: str = Field(
+    input_file_path: Optional[str] = Field(
         description='The path to the text file to summarize.',
-        default=""
+        default="",
+        json_schema_extra={
+            "from_upstream": "always"
+        }
     )
-    input_text: str = Field(
+    input_text: Optional[str] = Field(
         description='The text to summarize.',
-        default=""
+        default="",
+        json_schema_extra={
+            'widget': "textarea",
+        }
     )
     output_type: OutputTypeType = Field(
         description='The type of output fot the result text.',

@@ -23,16 +23,20 @@ class LLMModelType(str, Enum):
 class InputModel(BaseModel):
     """
     TextSummarizerPiece Input model
-    """    
+    """
     text: Optional[str] = Field(
         default=None,
         description="Text to summarize",
-        required=False # Setting to false because can use text or text_file_path
+        json_schema_extra={
+            'widget': "textarea",
+        }
     )
     text_file_path: Optional[str] = Field(
         default=None,
         description="Use it only if not using text field. File path to the text to summarize",
-        required=False # Setting to false because can use text or text_file_path
+        json_schema_extra={
+            "from_upstream": "always"
+        }
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,

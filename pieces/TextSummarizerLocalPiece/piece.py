@@ -6,36 +6,48 @@ from pathlib import Path
 
 
 
-def summarize_long_text(text: str, summarizer, iteration: int=0):
-    """
-    Generate the summary by concatenating the summaries of the individual chunks.
-    """
-    iteration += 1
-    print(f"Iteration: {iteration}")
-
-    # Preprocess text
-    text = text.lower().replace(".", " ").replace(",", " ").replace("\n", " ")
-    text = "".join(ch if ch.isalnum() or ch == " " else " " for ch in text)
-
-    # Split the input text into chunks
-    chunk_size = 1000
-    chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
-    print(f"chunks to process: {len(chunks)}")
-
-    # Generate the summary for each chunk
-    summary_list = [
-        summarizer(chunk, max_length=60, min_length=30, no_repeat_ngram_size=3)[0]['summary_text']
-        for chunk in chunks
-    ]
-    summary = " ".join(summary_list)
-
-    if len(summary) > 2000:
-        return summarize_long_text(summary, summarizer, iteration)
-    else:
-        return summary
-
-
 class TextSummarizerLocalPiece(BasePiece):
+
+    def summarize_long_text(self, text: str, summarizer, iteration: int=0):
+        """
+        Generate the summary by concatenating the summaries of the individual chunks.
+        """
+        iteration += 1
+        print(f"Iteration: {iteration}")
+
+        # Preprocess text
+        text = text.lower().replace(".", " ").replace(",", " ").replace("\n", " ")
+        text = "".join(ch if ch.isalnum() or ch == " " else " " for ch in text)
+
+        # Split the input text into chunks
+        chunk_size = 1000
+        chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
+        print(f"chunks to process: {len(chunks)}")
+
+        # Generate the summary for each chunk
+        summary_list = [
+            summarizer(chunk, max_length=60, min_length=30, no_repeat_ngram_size=3)[0]['summary_text']
+            for chunk in chunks
+        ]
+        summary = " ".join(summary_list)
+
+        if len(summary) > 2000:
+            return self.summarize_long_text(summary, summarizer, iteration)
+        else:
+            return summary
+
+    def format_display_result(self, final_summary: str):
+        md_text = f"""
+## Summarized text
+{final_summary}
+"""
+        file_path = f"{self.results_path}/display_result.md"
+        with open(file_path, "w") as f:
+            f.write(md_text)
+        self.display_result = {
+            "file_type": "md",
+            "file_path": file_path
+        }
 
     def piece_function(self, input_data: InputModel):
 
@@ -65,7 +77,7 @@ class TextSummarizerLocalPiece(BasePiece):
 
         # Run summarizer
         self.logger.info("Running summarizer...")
-        result = summarize_long_text(text=text_str, summarizer=summarizer)
+        result = self.summarize_long_text(text=text_str, summarizer=summarizer)
 
         # Return result
         if input_data.output_type == "xcom":
@@ -81,6 +93,7 @@ class TextSummarizerLocalPiece(BasePiece):
             with open(output_file_path, "w") as f:
                 f.write(result)
 
+        self.format_display_result(final_summary=result)
         return OutputModel(
             message=msg,
             summary_result=summary_result,
