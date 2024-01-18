@@ -27,7 +27,7 @@ class InputModel(BaseModel):
     )
     art_style: str = Field(
         default="You know many art styles, so you always vary a lot on your suggestions!",
-        description="The art style to generate an image from. Your imagination is the limit!"
+        description="Realistic"
     )
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
