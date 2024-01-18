@@ -33,11 +33,13 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
 Your function is to write a prompt for this AI from a given context.
 It is very importat that the prompt be very sucint and direct, around 30 to 100 characters.
 Examples of prompts:
+- Cartoon of a dog playing with a ball in the park.
 - A painting of a sunset in the mountains.
 - Portrait of a child playing in a park, using natural lighting and candid expressions.
 - Capture a street performer in action amidst a bustling city. Use a blurred background to emphasize the subject and show movement.
 - Create a stylized portrait of an entrepreneur against a city skyline. Use dramatic lighting and post-processing techniques to create a futuristic look.
 - Illustrate a lone lighthouse standing against the vibrant colors of a sunset. Emphasize the contrasting elements, such as the lighthouse’s solidity against the ephemeral beauty of the sunset.
+VERY IMPORTANT: The output must be ONLY and ONLY the prompt, nothing else (no title, no description, no context, no nothing).
 Context:
 {context}"""
 
