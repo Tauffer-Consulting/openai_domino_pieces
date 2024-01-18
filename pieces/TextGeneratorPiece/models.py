@@ -63,7 +63,7 @@ class InputModel(BaseModel):
         description="OpenAI model name."
     )
     completion_max_tokens: int = Field(
-        default=500, 
+        default=500,
         description="The maximum number of tokens in the generated text."
     )
     temperature: float = Field(

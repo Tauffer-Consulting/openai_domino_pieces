@@ -23,7 +23,7 @@ class InputModel(BaseModel):
     """
     context: str = Field(
         ...,
-        description="The context to generate an image from"
+        description="The context to generate an image from",
     )
     art_style: str = Field(
         default="You know many art styles, so you always vary a lot on your suggestions!",
@@ -32,7 +32,7 @@ class InputModel(BaseModel):
     output_type: OutputTypeType = Field(
         default=OutputTypeType.string,
         description="The type of output to return"
-        
+
     )
     openai_model: LLMModelType = Field(
         default=LLMModelType.gpt_3_5_turbo,
@@ -67,7 +67,7 @@ class OutputModel(BaseModel):
 class SecretsModel(BaseModel):
     """
     PromptCreatorForImageGeneratorPiece secrets model
-    """    
+    """
     OPENAI_API_KEY: str = Field(
         description="Your OpenAI API key"
     )
