@@ -24,15 +24,15 @@ class InputModel(BaseModel):
     """
     TextSummarizerPiece Input model
     """
-    text: Optional[str] = Field(
-        default=None,
+    text: str = Field(
+        default="",
         description="Text to summarize",
         json_schema_extra={
             'widget': "textarea",
         }
     )
-    text_file_path: Optional[str] = Field(
-        default=None,
+    text_file_path: str = Field(
+        default="",
         description="Use it only if not using text field. File path to the text to summarize",
         json_schema_extra={
             "from_upstream": "always"

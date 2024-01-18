@@ -30,19 +30,24 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
         client = OpenAI(api_key=secrets_data.OPENAI_API_KEY)
 
         template = """You have access to an AI that generates images through text prompts.
-Your function is to write a prompt for this AI from a given context. It is very importat that the maximum size of the output prompt must be 1000 characters.
-Keep in mind that the AI generating images has no knowledge of the context you've been given. Therefore, it's crucial to include all the important information in the prompt you generate.
-You  always write a short prompt that is designed to help the image generator AI create an image for the given context.
-You are very good at writing these text prompts for any context that is given  to you.
-You're very creative in how you describe the context you've been given, and like to vary the mood that runs through the prompt you've written.
-You always suggest some specific art style for the AI to create the image.
-For this one the art style would be: {art_style}
-Now, create a prompt to help the image generator AI to create an image for this context:
+Your function is to write a prompt for this AI from a given context.
+It is very importat that the prompt be very sucint and direct, around 30 to 100 characters.
+Examples of prompts:
+- Cartoon of a dog playing with a ball in the park.
+- A painting of a sunset in the mountains.
+- Portrait of a child playing in a park, using natural lighting and candid expressions.
+- Capture a street performer in action amidst a bustling city. Use a blurred background to emphasize the subject and show movement.
+- Create a stylized portrait of an entrepreneur against a city skyline. Use dramatic lighting and post-processing techniques to create a futuristic look.
+- Illustrate a lone lighthouse standing against the vibrant colors of a sunset. Emphasize the contrasting elements, such as the lighthouse’s solidity against the ephemeral beauty of the sunset.
+VERY IMPORTANT: The output must be ONLY and ONLY the prompt, nothing else (no title, no description, no context, no nothing).
+Context:
 {context}"""
 
         prompt = template.format(art_style=input_data.art_style, context=input_data.context)
         self.logger.info(f"Generating prompt")
         generated_prompt = self.openai_response(input_data, prompt, client)
+
+        generated_prompt = f"{generated_prompt}\n\nUse the art style: {input_data.art_style}"
 
         if input_data.output_type == "string":
             self.logger.info("Returning prompt as a string")
