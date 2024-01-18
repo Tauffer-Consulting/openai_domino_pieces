@@ -31,7 +31,12 @@ class PromptCreatorForImageGeneratorPiece(BasePiece):
 
         template = """You have access to an AI that generates images through text prompts.
 Your function is to write a prompt for this AI from a given context.
-It is very importat that the prompt be very sucint and direct, around 30 to 100 characters.
+If the context has characters or personas you should include them and what they are, for example:
+- pedro is a person, so you should include "person" in the prompt.
+- pedro is a dog, so you should include "dog" in the prompt.
+- pedro is a ball, so you should include "ball" in the prompt.
+
+It is very importat that the prompt be very sucint and direct, around 30 to 300 characters.
 Examples of prompts:
 - Cartoon of a dog playing with a ball in the park.
 - A painting of a sunset in the mountains.
