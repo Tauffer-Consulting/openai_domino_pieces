@@ -7,11 +7,11 @@
         "pieces": [
             "InformationExtractionPiece",
             "TextTaggingPiece",
+            "AudioTranscriptionPiece",
             "TextGeneratorPiece",
-            "ImageGeneratorPiece",
             "PromptCreatorForImageGeneratorPiece",
             "TextSummarizerPiece",
-            "AudioTranscriptionPiece"
+            "ImageGeneratorPiece"
         ],
         "secrets": [
             "OPENAI_API_KEY"
@@ -20,22 +20,22 @@
     },
     "group1": {
         "dependency": {
-            "dockerfile": "Dockerfile_whisper",
+            "dockerfile": "Dockerfile_summarizer",
             "requirements_file": null
         },
         "pieces": [
-            "AudioTranscriptionLocalPiece"
+            "TextSummarizerLocalPiece"
         ],
         "secrets": [],
         "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.1-group1"
     },
     "group2": {
         "dependency": {
-            "dockerfile": "Dockerfile_summarizer",
+            "dockerfile": "Dockerfile_whisper",
             "requirements_file": null
         },
         "pieces": [
-            "TextSummarizerLocalPiece"
+            "AudioTranscriptionLocalPiece"
         ],
         "secrets": [],
         "source_image": "ghcr.io/tauffer-consulting/openai_domino_pieces:0.7.1-group2"
