@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 from typing import List
 from domino.models import OutputModifierModel, OutputModifierItemType
-
+from typing import Optional
 
 class LLMModelType(str, Enum):
     """
@@ -40,6 +40,7 @@ class OutputModel(BaseModel):
     """
     # ref: https://docs.pydantic.dev/latest/concepts/models/#extra-fields
     model_config = ConfigDict(extra='allow')
+    output_data: Optional[str] = Field(description="Extracted information as Stringfieid JSON.")
 
 
 class SecretsModel(BaseModel):

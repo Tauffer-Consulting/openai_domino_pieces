@@ -127,7 +127,23 @@
         "output_schema": {
             "additionalProperties": true,
             "description": "InformationExtractionPiece Output Model",
-            "properties": {},
+            "properties": {
+                "output_data": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Extracted information as Stringfieid JSON.",
+                    "title": "Output Data"
+                }
+            },
+            "required": [
+                "output_data"
+            ],
             "title": "OutputModel",
             "type": "object"
         },
