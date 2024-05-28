@@ -92,7 +92,6 @@ Items to be extracted:
             ]
             md_text += "| " + " | ".join(row) + " |\n"
 
-        self.logger.info(md_text)
         file_path = f"{self.results_path}/display_result.md"
         with open(file_path, "w") as f:
             f.write(md_text)
