@@ -1,0 +1,16 @@
+{
+    "name": "FileInformationExtractionPiece",
+    "description": "Extracts user-defined information from the input text.",
+    "dependency": {
+        "dockerfile": "Dockerfile_01"
+    },
+    "tags": [
+        "text",
+        "information extraction",
+        "openai"
+    ],
+    "style": {
+        "node_label": "File Information Extraction",
+        "icon_class_name": "fa-solid:align-right"
+    }
+}
