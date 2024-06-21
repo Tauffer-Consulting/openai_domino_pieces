@@ -1142,6 +1142,179 @@
         "secrets_schema": null,
         "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/AudioTranscriptionLocalPiece"
     },
+    "FileInformationExtractionPiece": {
+        "name": "FileInformationExtractionPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_01",
+            "requirements_file": null
+        },
+        "tags": [
+            "text",
+            "information extraction",
+            "openai"
+        ],
+        "style": {
+            "node_label": "File Information Extraction",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:align-right",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Extracts user-defined information from the input text.",
+        "input_schema": {
+            "$defs": {
+                "LLMModelType": {
+                    "description": "OpenAI model type",
+                    "enum": [
+                        "gpt-3.5-turbo-1106",
+                        "gpt-4"
+                    ],
+                    "title": "LLMModelType",
+                    "type": "string"
+                },
+                "OutputModifierItemType": {
+                    "description": "OutputArgsType Enum",
+                    "enum": [
+                        "string",
+                        "integer",
+                        "float",
+                        "boolean",
+                        "array"
+                    ],
+                    "title": "OutputModifierItemType",
+                    "type": "string"
+                },
+                "OutputModifierModel": {
+                    "properties": {
+                        "name": {
+                            "description": "Name of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Name",
+                            "type": "string"
+                        },
+                        "type": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/OutputModifierItemType"
+                                }
+                            ],
+                            "default": "string",
+                            "description": "Type of the output argument.",
+                            "from_upstream": "never"
+                        },
+                        "description": {
+                            "default": "",
+                            "description": "Description of the output argument.",
+                            "from_upstream": "never",
+                            "title": "Description",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ],
+                    "title": "OutputModifierModel",
+                    "type": "object"
+                }
+            },
+            "description": "InformationExtractionPiece Input model",
+            "properties": {
+                "input_file_path": {
+                    "description": "Source text from where information should be extracted.",
+                    "from_upstream": "always",
+                    "title": "Input File Path",
+                    "type": "string"
+                },
+                "additional_information": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Additional useful information to help with the extraction.",
+                    "title": "Additional Information"
+                },
+                "openai_model": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/LLMModelType"
+                        }
+                    ],
+                    "default": "gpt-3.5-turbo-1106",
+                    "description": "OpenAI model name to use for information extraction."
+                },
+                "extract_items": {
+                    "default": [
+                        {
+                            "description": "Name of the person.",
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "description": "Age of the person.",
+                            "name": "age",
+                            "type": "integer"
+                        }
+                    ],
+                    "description": "Information items to be extracted from source text.",
+                    "from_upstream": "never",
+                    "items": {
+                        "$ref": "#/$defs/OutputModifierModel"
+                    },
+                    "title": "Extract Items",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "input_file_path"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "InformationExtractionPiece Output Model",
+            "properties": {
+                "output_data": {
+                    "description": "Extracted information as JSON.",
+                    "items": {
+                        "type": "object"
+                    },
+                    "title": "Output Data",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "output_data"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": {
+            "description": "InformationExtractionPiece Secrets model",
+            "properties": {
+                "OPENAI_API_KEY": {
+                    "description": "Your OpenAI API key.",
+                    "title": "Openai Api Key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "OPENAI_API_KEY"
+            ],
+            "title": "SecretsModel",
+            "type": "object"
+        },
+        "source_url": "https://github.com/Tauffer-Consulting/openai_domino_pieces/tree/main/pieces/FileInformationExtractionPiece"
+    },
     "ImageGeneratorPiece": {
         "name": "ImageGeneratorPiece",
         "dependency": {
